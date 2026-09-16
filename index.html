@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NutriLab · Crashkurs Ernährung & Verdauung</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk/index.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css">
@@ -26,8 +26,7 @@
   --r:16px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-html,body{overflow-x:hidden;max-width:100%}
+html{scroll-behavior:smooth}
 body{
   background:
     radial-gradient(1200px 700px at 85% -10%, rgba(95,178,255,.13), transparent 60%),
@@ -38,7 +37,6 @@ body{
   font-size:16px;
   line-height:1.65;
   -webkit-font-smoothing:antialiased;
-  width:100%;
 }
 h1,h2,h3,h4,.display{font-family:'Space Grotesk Variable','Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.15}
 button{font-family:inherit}
@@ -47,17 +45,15 @@ button{font-family:inherit}
 ::-webkit-scrollbar-thumb{background:#22304f;border-radius:10px;border:2px solid var(--bg)}
 ::-webkit-scrollbar-thumb:hover{background:#31436c}
 
-/* Alle Diagramm-SVGs skalieren automatisch mit der Breite */
-svg[viewBox]{width:100%;height:auto;display:block;max-width:100%}
-
 /* ============ LAYOUT ============ */
-.app{display:grid;grid-template-columns:296px 1fr;min-height:100vh;max-width:100%}
+.app{display:grid;grid-template-columns:296px 1fr;min-height:100vh}
 .sidebar{
   position:sticky;top:0;height:100vh;overflow-y:auto;
-  background:linear-gradient(180deg,rgba(13,19,36,.97),rgba(9,13,24,.99));
+  background:linear-gradient(180deg,rgba(13,19,36,.96),rgba(9,13,24,.98));
   border-right:1px solid var(--line);
   padding:22px 16px 40px;
-  z-index:80;
+  backdrop-filter:blur(8px);
+  z-index:50;
 }
 .brand{display:flex;align-items:center;gap:11px;padding:4px 8px 20px}
 .brand-mark{
@@ -99,8 +95,8 @@ svg[viewBox]{width:100%;height:auto;display:block;max-width:100%}
 .navbtn.done .num{background:var(--mint);color:#052b1c}
 .navbtn.done .num::after{content:'✓'}
 .navbtn.done .num i{display:none}
-.navbtn .lbl{flex:1;min-width:0}
-.main{padding:34px 44px 90px;max-width:1160px;width:100%;min-width:0}
+.navbtn .lbl{flex:1}
+.main{padding:34px 44px 90px;max-width:1160px;width:100%}
 
 /* ============ COMPONENTS ============ */
 .view{animation:fadeUp .45s cubic-bezier(.2,.8,.3,1)}
@@ -108,14 +104,14 @@ svg[viewBox]{width:100%;height:auto;display:block;max-width:100%}
 
 .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
 .eyebrow::before{content:'';width:22px;height:2px;background:var(--mint);border-radius:2px}
-h1{font-size:clamp(28px,4.4vw,46px);margin-bottom:12px;overflow-wrap:break-word}
+h1{font-size:clamp(30px,4.4vw,46px);margin-bottom:12px}
 .lead{color:var(--muted);font-size:17px;max-width:70ch}
 
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px;position:relative;overflow:hidden;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:18px;position:relative;overflow:hidden}
 .card.glow::before{content:'';position:absolute;inset:-1px;border-radius:var(--r);padding:1px;background:linear-gradient(135deg,rgba(70,227,154,.5),transparent 40%,transparent 60%,rgba(95,178,255,.4));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
 .card h2{font-size:22px;margin-bottom:6px}
 .card h3{font-size:16px;margin-bottom:8px;color:#fff}
-.card p{color:var(--muted);font-size:14.6px;overflow-wrap:break-word}
+.card p{color:var(--muted);font-size:14.6px}
 .card p strong,.card li strong{color:#fff;font-weight:600}
 .hl{color:var(--mint);font-weight:600}
 .hl-a{color:var(--amber);font-weight:600}
@@ -142,13 +138,12 @@ h1{font-size:clamp(28px,4.4vw,46px);margin-bottom:12px;overflow-wrap:break-word}
 .btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
 .btn-sm{padding:7px 13px;font-size:12.5px;border-radius:9px}
 
-.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.04em;border:1px solid;white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:99px;font-size:11.5px;font-weight:700;letter-spacing:.04em;border:1px solid}
 .pill.mint{color:var(--mint);border-color:rgba(70,227,154,.35);background:rgba(70,227,154,.09)}
 .pill.amber{color:var(--amber);border-color:rgba(247,185,85,.35);background:rgba(247,185,85,.09)}
 .pill.sky{color:var(--sky);border-color:rgba(95,178,255,.35);background:rgba(95,178,255,.09)}
 .pill.coral{color:var(--coral);border-color:rgba(255,125,125,.35);background:rgba(255,125,125,.09)}
 .pill.violet{color:var(--violet);border-color:rgba(169,139,255,.35);background:rgba(169,139,255,.09)}
-.pill.pink{color:var(--pink);border-color:rgba(255,143,208,.35);background:rgba(255,143,208,.09)}
 
 ul.tick{list-style:none;display:flex;flex-direction:column;gap:9px;margin-top:10px}
 ul.tick li{position:relative;padding-left:26px;font-size:14.4px;color:var(--muted)}
@@ -163,29 +158,19 @@ ul.dot li::before{content:'';position:absolute;left:2px;top:9px;width:6px;height
 .examtip{border-left:3px solid var(--coral);background:rgba(255,125,125,.07);padding:13px 16px;border-radius:0 11px 11px 0;font-size:13.8px;color:#f0d4d4;margin-top:14px}
 .examtip b{color:var(--coral)}
 
-/* Tabellen: eigener Scrollbereich, damit die Seite nie überläuft */
-.twrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:12px;border:1px solid var(--line);border-radius:12px}
-.twrap::-webkit-scrollbar{height:8px}
-table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
 th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}
-th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700;background:rgba(255,255,255,.02)}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700}
 tbody tr:hover{background:rgba(255,255,255,.025)}
-tbody tr:last-child td{border-bottom:none}
 td{color:var(--muted)}
 td:first-child{color:#fff;font-weight:600}
 
-/* Labore: Diagramme scrollen bei kleinen Screens horizontal statt winzig zu schrumpfen */
-.lab{background:linear-gradient(160deg,rgba(20,29,52,.9),rgba(12,18,34,.9));border:1px solid var(--line2);border-radius:14px;padding:20px;margin:16px 0;overflow-x:auto;-webkit-overflow-scrolling:touch;min-width:0}
-.lab svg{min-width:560px}
-@media(max-width:700px){
-  .lab{box-shadow:inset -16px 0 18px -16px rgba(95,178,255,.45), inset 16px 0 18px -16px rgba(95,178,255,.45)}
-}
+.lab{background:linear-gradient(160deg,rgba(20,29,52,.9),rgba(12,18,34,.9));border:1px solid var(--line2);border-radius:14px;padding:20px;margin:16px 0}
 .lab-head{display:flex;align-items:center;gap:9px;margin-bottom:14px;flex-wrap:wrap}
 .lab-head .lab-title{font-family:'Space Grotesk Variable',sans-serif;font-size:14px;font-weight:700;letter-spacing:.01em}
 .lab-head .lab-sub{font-size:12px;color:var(--dim);margin-left:auto}
-.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted)}
-.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
 
+/* Hero */
 .hero{position:relative;padding:44px 40px 40px;border-radius:24px;overflow:hidden;margin-bottom:22px;
   background:linear-gradient(135deg,#101a30 0%,#0d1425 50%,#131a33 100%);border:1px solid var(--line2)}
 .hero::after{content:'';position:absolute;right:-90px;top:-90px;width:340px;height:340px;border-radius:50%;
@@ -195,15 +180,14 @@ td:first-child{color:#fff;font-weight:600}
 .hero>*{position:relative;z-index:2}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px}
 @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
-@media(max-width:480px){.steps{grid-template-columns:1fr}}
-.step{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:13px;padding:15px;transition:.2s;cursor:pointer;min-width:0}
+.step{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:13px;padding:15px;transition:.2s;cursor:pointer}
 .step:hover{background:rgba(255,255,255,.07);transform:translateY(-3px);border-color:var(--line2)}
 .step b{display:flex;align-items:center;gap:7px;font-family:'Space Grotesk Variable',sans-serif;font-size:13px;margin-bottom:5px}
-.step .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px;flex:0 0 26px}
+.step .ic{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:14px}
 .step p{font-size:12.3px;color:var(--dim);line-height:1.45}
 
-.modgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:13px}
-.modtile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px;cursor:pointer;transition:.2s;text-align:left;color:inherit;position:relative;overflow:hidden;min-width:0}
+.modgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:13px}
+.modtile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px;cursor:pointer;transition:.2s;text-align:left;color:inherit;position:relative;overflow:hidden}
 .modtile:hover{transform:translateY(-4px);border-color:var(--line2);box-shadow:0 14px 32px rgba(0,0,0,.42)}
 .modtile .mt-n{font-family:'Space Grotesk Variable',sans-serif;font-size:11px;color:var(--dim);letter-spacing:.14em}
 .modtile .mt-i{font-size:26px;margin:6px 0 8px;display:block}
@@ -212,6 +196,7 @@ td:first-child{color:#fff;font-weight:600}
 .modtile.isdone{border-color:rgba(70,227,154,.4)}
 .modtile.isdone::after{content:'✓ erledigt';position:absolute;top:13px;right:13px;font-size:10px;font-weight:700;color:var(--mint);letter-spacing:.06em}
 
+/* Module header */
 .modhead{display:flex;gap:18px;align-items:flex-start;margin-bottom:22px;flex-wrap:wrap}
 .modhead .big{
   width:70px;height:70px;flex:0 0 70px;border-radius:20px;display:grid;place-items:center;font-size:34px;
@@ -226,24 +211,19 @@ td:first-child{color:#fff;font-weight:600}
 .fc-wrap{perspective:1800px;margin:0 auto;max-width:620px}
 .fc{position:relative;width:100%;height:330px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,.1,.2,1);cursor:pointer}
 .fc.flipped{transform:rotateY(180deg)}
-.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line2);overflow-y:auto}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line2)}
 .fc-front{background:linear-gradient(150deg,#18233e,#111a2e)}
 .fc-back{background:linear-gradient(150deg,#123028,#0e1c22);transform:rotateY(180deg)}
-.fc-face .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:14px;flex:0 0 auto}
-.fc-front .q{font-family:'Space Grotesk Variable',sans-serif;font-size:21px;line-height:1.4;font-weight:600}
-.fc-back .a{font-size:16.5px;color:#d9f5e7;line-height:1.6}
-.fc-hint{font-size:11.5px;color:var(--dim);margin-top:16px;flex:0 0 auto}
-@media(max-width:700px){
-  .fc{height:420px}
-  .fc-front .q{font-size:18px}
-  .fc-back .a{font-size:14.5px}
-}
+.fc-face .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
+.fc-front .q{font-family:'Space Grotesk Variable',sans-serif;font-size:22px;line-height:1.4;font-weight:600}
+.fc-back .a{font-size:17px;color:#d9f5e7;line-height:1.6}
+.fc-hint{font-size:11.5px;color:var(--dim);margin-top:20px}
 
 /* Quiz */
 .qprog{height:6px;background:#1b2540;border-radius:99px;overflow:hidden;margin-bottom:20px}
 .qprog i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--sky));border-radius:99px;transition:width .45s}
 .qopts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
-.qopt{background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;color:var(--text);font-size:14.6px;transition:.16s;display:flex;gap:12px;align-items:flex-start;width:100%}
+.qopt{background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;color:var(--text);font-size:14.6px;transition:.16s;display:flex;gap:12px;align-items:flex-start}
 .qopt:hover:not(:disabled){border-color:var(--sky);background:#1d2a49;transform:translateX(3px)}
 .qopt .k{width:24px;height:24px;flex:0 0 24px;border-radius:7px;background:#233150;display:grid;place-items:center;font-size:11.5px;font-weight:700;font-family:'Space Grotesk Variable',sans-serif;color:var(--muted)}
 .qopt.correct{border-color:var(--mint);background:rgba(70,227,154,.14)}
@@ -257,13 +237,13 @@ td:first-child{color:#fff;font-weight:600}
 .qfb.no{background:rgba(255,125,125,.1);border:1px solid rgba(255,125,125,.35);color:#f6d3d3}
 
 /* Interactive widgets */
-.bucket{border:2px dashed var(--line2);border-radius:13px;padding:13px;min-height:132px;transition:.2s;background:rgba(255,255,255,.015);min-width:0}
+.bucket{border:2px dashed var(--line2);border-radius:13px;padding:13px;min-height:132px;transition:.2s;background:rgba(255,255,255,.015)}
 .bucket.hover{border-color:var(--sky);background:rgba(95,178,255,.08)}
 .bucket.ok{border-color:var(--mint);background:rgba(70,227,154,.09)}
 .bucket.bad{border-color:var(--coral);animation:shake .4s}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
-.bucket h4{font-size:13px;margin-bottom:9px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#1d2a49;border:1px solid var(--line2);color:#fff;padding:7px 12px;border-radius:99px;font-size:12.6px;font-weight:600;cursor:pointer;transition:.16s;margin:0 6px 8px 0;max-width:100%}
+.bucket h4{font-size:13px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#1d2a49;border:1px solid var(--line2);color:#fff;padding:7px 12px;border-radius:99px;font-size:12.6px;font-weight:600;cursor:pointer;transition:.16s;margin:0 6px 8px 0}
 .chip:hover{background:#26375e;transform:translateY(-2px)}
 .chip.sel{background:var(--sky);color:#06131f;border-color:var(--sky);box-shadow:0 0 0 3px rgba(95,178,255,.25)}
 .chip.placed{background:rgba(70,227,154,.14);border-color:rgba(70,227,154,.4);color:#bff2d9;cursor:default;transform:none}
@@ -274,11 +254,11 @@ td:first-child{color:#fff;font-weight:600}
 .jdot{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#18223c;border:1.5px solid var(--line2);transition:.25s;flex:0 0 46px}
 .jline{width:2px;flex:1;min-height:20px;background:linear-gradient(180deg,var(--line2),transparent);margin:4px 0}
 .jstep:last-child .jline{display:none}
-.jbody{flex:1;padding-bottom:16px;min-width:0}
+.jbody{flex:1;padding-bottom:16px}
 .jbody h4{font-size:15.5px;margin-bottom:3px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
 .jbody p{font-size:13.4px;color:var(--dim);line-height:1.5}
 .jdetail{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0}
-.jstep.open .jdetail{max-height:640px;opacity:1;margin-top:10px}
+.jstep.open .jdetail{max-height:520px;opacity:1;margin-top:10px}
 .jstep.open .jdot{background:linear-gradient(150deg,var(--mint),#28b878);border-color:var(--mint);transform:scale(1.06)}
 .jstep.open .jbody h4{color:#fff}
 .jinner{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.7px;color:var(--muted)}
@@ -286,7 +266,7 @@ td:first-child{color:#fff;font-weight:600}
 .jinner li{position:relative;padding-left:16px}
 .jinner li::before{content:'▸';position:absolute;left:0;color:var(--mint)}
 
-input[type=range]{width:100%;accent-color:var(--mint);height:6px;cursor:pointer;flex:1;min-width:120px}
+input[type=range]{width:100%;accent-color:var(--mint);height:6px;cursor:pointer}
 .sliderrow{display:flex;align-items:center;gap:15px;margin-top:14px;flex-wrap:wrap}
 .readout{font-family:'Space Grotesk Variable',sans-serif;font-size:34px;font-weight:700;color:var(--mint);line-height:1}
 .readout small{font-size:14px;color:var(--dim);font-weight:500;margin-left:5px}
@@ -294,19 +274,17 @@ input[type=range]{width:100%;accent-color:var(--mint);height:6px;cursor:pointer;
 .flip3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
 @media(max-width:900px){.flip3{grid-template-columns:1fr}}
 .flipcard{perspective:1200px;height:190px;cursor:pointer}
-@media(max-width:900px){.flipcard{height:250px}}
 .flipin{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
 .flipcard.flipped .flipin{transform:rotateY(180deg)}
-.flface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;border:1px solid var(--line2);display:flex;flex-direction:column;justify-content:center;overflow-y:auto}
+.flface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;border:1px solid var(--line2);display:flex;flex-direction:column;justify-content:center}
 .flfront{background:linear-gradient(150deg,#18233e,#111a2e);align-items:center;text-align:center;gap:8px}
 .flfront .e{font-size:32px}
 .flfront b{font-family:'Space Grotesk Variable',sans-serif;font-size:15px}
 .flfront span{font-size:11.5px;color:var(--dim)}
 .flback{background:linear-gradient(150deg,#152c46,#0f1a2b);transform:rotateY(180deg);font-size:13.3px;color:#cfe2f7;line-height:1.55}
-@media(max-width:900px){.flback{font-size:12.8px}}
 
-.stat{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center;min-width:0}
-.stat .v{font-family:'Space Grotesk Variable',sans-serif;font-size:27px;font-weight:700;line-height:1.1;overflow-wrap:break-word}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center}
+.stat .v{font-family:'Space Grotesk Variable',sans-serif;font-size:27px;font-weight:700;line-height:1.1}
 .stat .l{font-size:11.5px;color:var(--dim);margin-top:4px;letter-spacing:.03em}
 
 svg text{font-family:'Space Grotesk Variable',sans-serif}
@@ -315,7 +293,7 @@ svg .lbl-b{font-size:11.5px;fill:#fff;font-weight:600}
 
 .gloss{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 @media(max-width:900px){.gloss{grid-template-columns:1fr}}
-.gterm{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s;min-width:0}
+.gterm{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
 .gterm:hover{border-color:var(--line2);transform:translateY(-2px)}
 .gterm b{display:block;font-size:14px;margin-bottom:3px;color:#fff;font-family:'Space Grotesk Variable',sans-serif}
 .gterm span{font-size:13px;color:var(--muted);line-height:1.5;display:block}
@@ -330,28 +308,26 @@ svg .lbl-b{font-size:11.5px;fill:#fff;font-weight:600}
 .crashsec li{font-size:13.9px;color:var(--muted);position:relative;padding-left:15px}
 .crashsec li::before{content:'·';position:absolute;left:2px;color:var(--sky);font-weight:900}
 
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:#132a20;border:1px solid var(--mint);color:#c9f5df;padding:13px 22px;border-radius:99px;font-size:14px;font-weight:600;transition:.4s cubic-bezier(.2,.9,.3,1);z-index:200;box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0;max-width:92vw;text-align:center}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:#132a20;border:1px solid var(--mint);color:#c9f5df;padding:13px 22px;border-radius:99px;font-size:14px;font-weight:600;transition:.4s cubic-bezier(.2,.9,.3,1);z-index:200;box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 
-.menubtn{display:none;position:fixed;top:14px;right:14px;z-index:90;width:46px;height:46px;border-radius:13px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:20px;cursor:pointer}
-/* Scrim liegt UNTER der Sidebar (70 < 80): Sidebar bleibt scharf, nur der Inhalt wird abgedunkelt */
-.scrim{display:none;position:fixed;inset:0;background:rgba(4,7,14,.72);z-index:70}
-.scrim.show{display:block}
+.menubtn{display:none;position:fixed;top:14px;right:14px;z-index:120;width:46px;height:46px;border-radius:13px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:20px;cursor:pointer}
 @media(max-width:1020px){
   .app{grid-template-columns:1fr}
-  .sidebar{position:fixed;left:0;top:0;width:296px;max-width:86vw;transform:translateX(-105%);transition:transform .34s cubic-bezier(.3,.9,.3,1);box-shadow:24px 0 60px rgba(0,0,0,.6)}
+  .sidebar{position:fixed;left:0;top:0;width:296px;transform:translateX(-105%);transition:transform .34s cubic-bezier(.3,.9,.3,1);box-shadow:24px 0 60px rgba(0,0,0,.6)}
   .sidebar.open{transform:none}
   .menubtn{display:grid;place-items:center}
-  .main{padding:76px 16px 80px}
-  .hero{padding:28px 20px}
-  .card{padding:18px}
-  .lab{padding:15px}
+  .main{padding:76px 18px 80px}
+  .hero{padding:30px 22px}
+  .card{padding:19px}
 }
-@media print{.sidebar,.menubtn,.modnav,.scrim{display:none!important}.app{grid-template-columns:1fr}.main{padding:0}.lab{overflow:visible}.lab svg{min-width:0}}
+.scrim{display:none;position:fixed;inset:0;background:rgba(4,7,14,.7);z-index:60;backdrop-filter:blur(3px)}
+.scrim.show{display:block}
+@media print{.sidebar,.menubtn,.modnav{display:none}.app{grid-template-columns:1fr}.main{padding:0}}
 </style>
 </head>
 <body>
-<button class="menubtn" id="menuBtn" aria-label="Menü öffnen">☰</button>
+<button class="menubtn" id="menuBtn">☰</button>
 <div class="scrim" id="scrim"></div>
 
 <div class="app">
@@ -384,9 +360,7 @@ svg .lbl-b{font-size:11.5px;fill:#fff;font-weight:600}
 
 <script>
 /* ================================================================
-   NUTRILAB — Interaktiver Crashkurs Ernährung & Verdauung (v2.1)
-   Fixes: Sidebar-Blur behoben, responsives Scaling, Lab-SVGs
-   scrollen statt zu schrumpfen, Nieren-Sim neu aufgebaut.
+   NUTRILAB — Interaktiver Crashkurs Ernährung & Verdauung
    ================================================================ */
 
 const MODULES = [
@@ -474,7 +448,6 @@ function updateProgress(){
   });
 }
 function go(v){
-  document.onkeydown = null;
   state.view = v;
   const V = VIEWS[v];
   $('#view').innerHTML = V.render();
@@ -515,7 +488,7 @@ function shell(m, body){
   return '<div class="view">'+
     '<div class="modhead">'+
       '<div class="big">'+m.icon+'</div>'+
-      '<div style="flex:1;min-width:240px">'+
+      '<div style="flex:1;min-width:260px">'+
         '<div class="eyebrow">Lernziel '+m.n+' von 10</div>'+
         '<h1>'+m.title+'</h1>'+
         '<p class="lead">'+m.sub+'</p>'+
@@ -560,15 +533,15 @@ function renderStart(){
       '<div class="steps">'+
         stepBox('1','📗','Module lesen','10 Lernziele – je 3–5 Minuten', '#46e39a')+
         stepBox('2','🔬','Labore testen','Klicken, schieben, beobachten', '#5fb2ff')+
-        stepBox('3','🃏','Karten wiederholen','49 Karteikarten mit Selbsttest', '#a98bff')+
-        stepBox('4','🎯','Quiz bestehen','42 Fragen wie im echten Test', '#f7b955')+
+        stepBox('3','🃏','Karten wiederholen','45 Karteikarten mit Selbsttest', '#a98bff')+
+        stepBox('4','🎯','Quiz bestehen','30 Fragen wie im echten Test', '#f7b955')+
       '</div>'+
     '</div>';
 
   h += '<div class="card"><h2>Dein Fortschritt</h2><p>Der Balken füllt sich, sobald du ein Lernziel als gelernt markierst.</p>'+
        '<div style="height:10px;background:#1b2540;border-radius:99px;overflow:hidden;margin-top:14px">'+
        '<i style="display:block;height:100%;width:'+p+'%;background:linear-gradient(90deg,#46e39a,#5fb2ff);border-radius:99px;transition:width .6s"></i></div>'+
-       '<p style="margin-top:9px;font-size:13px"><span class="hl">'+state.done.size+'/10</span> Lernziele erledigt · <span class="hl-a">'+state.knownCards.size+'/49</span> Karteikarten gemeistert</p></div>';
+       '<p style="margin-top:9px;font-size:13px"><span class="hl">'+state.done.size+'/10</span> Lernziele erledigt · <span class="hl-a">'+state.knownCards.size+'/45</span> Karteikarten gemeistert</p></div>';
 
   h += '<div class="card"><h2>Alle Module</h2><p style="margin-bottom:16px">Klicke ein Lernziel an – die Reihenfolge folgt deinem Dossier.</p><div class="modgrid">';
   MODULES.forEach(m=>{
@@ -680,7 +653,7 @@ function m1init(){
     const max = 42;
     $('#ebar').innerHTML = keys.map(k=>{
       const d = data[k];
-      return '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px;gap:8px">'+
+      return '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">'+
         '<span style="font-weight:600;color:#fff">'+d.n+'</span><span style="color:'+d.c+';font-weight:700;font-family:\'Space Grotesk Variable\',sans-serif">'+d.v+' kJ/g</span></div>'+
         '<div style="height:14px;background:#1b2540;border-radius:99px;overflow:hidden"><i style="display:block;height:100%;width:0;background:'+d.c+';border-radius:99px;transition:width 1s cubic-bezier(.2,.9,.3,1)" data-w="'+(d.v/max*100)+'"></i></div></div>';
     }).join('');
@@ -703,7 +676,6 @@ function m2(){
     <span class="pill amber">AUFBAU</span>
     <h2 style="margin-top:12px">Einfach – zweifach – vielfach</h2>
     <p>Kohlenhydrate werden nach der Anzahl ihrer Bausteine in drei Gruppen unterteilt. Alle bestehen letztlich aus <strong>Einfachzucker-Bausteinen</strong>.</p>
-    <div class="twrap">
     <table>
       <thead><tr><th>Gruppe</th><th>Beispiele</th><th>Besonderheit</th></tr></thead>
       <tbody>
@@ -712,7 +684,6 @@ function m2(){
         <tr><td><span class="hl-s">Vielfachzucker</span></td><td>Stärke (pflanzlich), Glykogen (tierisch/Mensch), Cellulose</td><td>Lange Ketten aus vielen Einfachzuckern</td></tr>
       </tbody>
     </table>
-    </div>
     <div class="note"><b>Nicht verwechseln:</b> <b>Stärke</b> = pflanzlicher Speicher · <b>Glykogen</b> = menschlicher/tierischer Speicher (Leber + Muskeln) · <b>Cellulose</b> = Pflanzen-Baustoff, für uns unverdaulich → <b>Ballaststoff</b>.</div>
   </div>
 
@@ -737,7 +708,12 @@ function m2(){
     <h2>🔬 Labor 3 · Der Blutzuckerspiegel</h2>
     <p>Starte die Simulation: Was passiert nach <span class="hl-c">Gummibärchen</span> und nach <span class="hl-s">Vollkornbrot</span>?</p>
     <div class="lab">
-      <svg viewBox="0 0 660 280">
+      <svg viewBox="0 0 660 280" width="100%" style="display:block">
+        <defs>
+          <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff7d7d" stop-opacity=".28"/><stop offset="100%" stop-color="#ff7d7d" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
         <line x1="56" y1="20" x2="56" y2="232" stroke="#33456e" stroke-width="1.5"/>
         <line x1="56" y1="232" x2="640" y2="232" stroke="#33456e" stroke-width="1.5"/>
         <line x1="56" y1="150" x2="640" y2="150" stroke="#25314f" stroke-width="1" stroke-dasharray="4 5"/>
@@ -765,7 +741,7 @@ function m2(){
       </div>
       <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
         <div class="readout" id="bzVal">–<small>relativer Blutzucker</small></div>
-        <p style="font-size:13.2px;flex:1;min-width:200px;color:#94a2c2" id="bzTxt">Drücke «abspielen» und beobachte den roten Punkt.</p>
+        <p style="font-size:13.2px;flex:1;min-width:220px;color:#94a2c2" id="bzTxt">Drücke «abspielen» und beobachte den roten Punkt.</p>
       </div>
     </div>
     <div class="grid2" style="margin-top:6px">
@@ -803,7 +779,7 @@ function m2init(){
   let sel = null, placed = 0;
   function renderPool(){
     const order = [...ITEMS].sort(()=>Math.random()-.5);
-    $('#pool').innerHTML = order.map(it=>'<button class="chip" data-i="'+ITEMS.indexOf(it)+'">'+it.t+'</button>').join('');
+    $('#pool').innerHTML = order.map((it,i)=>'<button class="chip" data-i="'+ITEMS.indexOf(it)+'">'+it.t+'</button>').join('');
     $$('#pool .chip').forEach(c=> c.addEventListener('click',()=>{
       if(c.classList.contains('placed')) return;
       $$('#pool .chip').forEach(x=>x.classList.remove('sel'));
@@ -841,6 +817,7 @@ function m2init(){
     p.style.transition='none'; p.style.strokeDasharray=L; p.style.strokeDashoffset=L;
     p.getBoundingClientRect();
     p.style.transition='stroke-dashoffset 3.6s ease-in-out'; p.style.strokeDashoffset='0';
+    return L;
   }
   function resetCurves(){
     if(raf) cancelAnimationFrame(raf);
@@ -850,7 +827,7 @@ function m2init(){
     $('#bzVal').innerHTML='–<small>relativer Blutzucker</small>';
     $('#bzTxt').textContent='Drücke «abspielen» und beobachte den roten Punkt.';
   }
-  resetCurves();
+  resetCurves(); A.style.strokeDasharray='none'; B.style.strokeDasharray='none';
   $('#bzPlay').addEventListener('click',()=>{
     resetCurves();
     const LA = A.getTotalLength(), LB = B.getTotalLength();
@@ -891,7 +868,7 @@ function m3(){
     <h2 style="margin-top:12px">Woraus besteht ein Fett?</h2>
     <p>Chemisch gesehen bestehen Fette aus den Grundbausteinen <strong>Glycerin</strong> und <strong>drei Fettsäuren</strong>. Es gibt viele verschiedene Fette – sie unterscheiden sich in der <strong>Länge der Fettsäuren</strong>. Fette können fest, halbfest oder flüssig sein, tierisch oder pflanzlich.</p>
     <div class="lab" style="text-align:center">
-      <svg viewBox="0 0 460 210">
+      <svg viewBox="0 0 460 210" width="100%" style="max-width:460px">
         <rect x="196" y="20" width="66" height="170" rx="14" fill="#f7b95522" stroke="#f7b955" stroke-width="2"/>
         <text x="229" y="112" class="lbl-b" text-anchor="middle" transform="rotate(-90 229 112)">GLYCERIN</text>
         ${[40,105,170].map((y,i)=>{
@@ -925,7 +902,7 @@ function m3(){
     <h2>🔬 Labor 4 · Fette als Vitamin-Taxi</h2>
     <p>Die Vitamine <strong>A, D, E und K</strong> sind <span class="hl-a">fettlöslich</span>. Schalte das Fett in der Mahlzeit aus – und beobachte, was mit den Vitaminen passiert.</p>
     <div class="lab">
-      <svg viewBox="0 0 620 210" id="taxiSvg">
+      <svg viewBox="0 0 620 210" width="100%" id="taxiSvg">
         <rect x="0" y="150" width="620" height="60" rx="10" fill="#101a2e" stroke="#25314f"/>
         <text x="18" y="185" class="lbl" font-size="10.5">Darmwand → Blut</text>
         <g id="taxiFat">
@@ -979,20 +956,12 @@ function m3init(){
 
   const vits = $$('#vitamins .vit');
   let raf=null;
-  function resetVits(){
-    vits.forEach(v=>{
-      const c=v.querySelector('circle'),t=v.querySelector('text');
-      c.style.transition='none';t.style.transition='none';
-      c.style.transform='none';t.style.transform='none';
-      v.style.opacity='1';
-    });
-  }
   function withFat(){
     if(raf) cancelAnimationFrame(raf);
-    resetVits();
     const path = $('#taxiPath'); const L = path.getTotalLength();
     path.setAttribute('stroke','#46e39a'); path.setAttribute('stroke-dasharray','none');
-    $('#taxiFat').style.opacity='1';
+    $('#taxiFat').style.transition='.4s'; $('#taxiFat').style.opacity='1';
+    vits.forEach(v=>{ v.style.transition='opacity .3s'; v.style.opacity='1'; });
     const t0=performance.now();
     function f(now){
       const t=Math.min((now-t0)/2400,1);
@@ -1005,26 +974,26 @@ function m3init(){
         v.style.opacity = t>0.93 ? String(1-(t-0.93)/0.07) : '1';
       });
       if(t<1) raf=requestAnimationFrame(f);
-      else setTimeout(()=>{ if(state.view==='m3') withFat(); }, 900);
+      else setTimeout(withFat, 900);
     }
     raf=requestAnimationFrame(f);
     $('#taxiTxt').innerHTML='<span class="hl">Mit Fett:</span> Die Vitamine A, D, E und K steigen ins «Taxi» und gelangen durch die Darmwand ins Blut. Der Körper ist versorgt.';
   }
   function noFat(){
     if(raf) cancelAnimationFrame(raf);
-    resetVits();
     const path = $('#taxiPath'); path.setAttribute('stroke','#ff7d7d'); path.setAttribute('stroke-dasharray','4 8');
     $('#taxiFat').style.opacity='.15';
     vits.forEach((v,i)=>{
+      const x=+v.dataset.x, y=+v.dataset.y;
       const c=v.querySelector('circle'), tx=v.querySelector('text');
       c.style.transition='transform .8s cubic-bezier(.4,0,.2,1) '+(i*0.08)+'s';
       tx.style.transition='transform .8s cubic-bezier(.4,0,.2,1) '+(i*0.08)+'s';
-      requestAnimationFrame(()=>{ c.style.transform='translateY(56px)'; tx.style.transform='translateY(56px)'; });
+      c.style.transform='translateY(56px)'; tx.style.transform='translateY(56px)';
       v.style.opacity='.55';
     });
     $('#taxiTxt').innerHTML='<span class="hl-c">Ohne Fett:</span> Die fettlöslichen Vitamine können nicht aufgenommen werden – sie werden ungenutzt ausgeschieden. Langfristig drohen Mangelerscheinungen.';
   }
-  $('#fatOn').addEventListener('click', withFat);
+  $('#fatOn').addEventListener('click',()=>{ vits.forEach(v=>{const c=v.querySelector('circle'),t=v.querySelector('text');c.style.transition='none';t.style.transition='none';c.style.transform='none';t.style.transform='none';}); setTimeout(withFat,60); });
   $('#fatOff').addEventListener('click', noFat);
   withFat();
 }
@@ -1051,7 +1020,7 @@ function m4(){
     <h2>🔬 Labor 5 · Protein-Fabrik</h2>
     <p>Ein Protein besteht aus einer unterschiedlich langen Kette von aneinandergereihten Aminosäuren – und es ist <strong>gefaltet</strong>. Nur in dieser dreidimensionalen Form kann es seine Aufgabe übernehmen. Baue dein eigenes Protein:</p>
     <div class="lab">
-      <svg viewBox="0 0 640 190" id="pSvg">
+      <svg viewBox="0 0 640 190" width="100%" id="pSvg">
         <g id="pChain"></g>
       </svg>
       <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:10px">
@@ -1101,11 +1070,11 @@ function m4init(){
       chain.forEach((c,i)=>{
         const x=x0+step*(i+0.6);
         if(i>0) inner+='<line x1="'+(x-step)+'" y1="95" x2="'+x+'" y2="95" stroke="#33456e" stroke-width="3"/>';
-        inner+='<circle cx="'+x+'" cy="95" r="12" fill="'+c+'33" stroke="'+c+'" stroke-width="2.5"/>';
+        inner+='<circle cx="'+x+'" cy="95" r="12" fill="'+c+'33" stroke="'+c+'" stroke-width="2.5"><animate attributeName="r" from="0" to="12" dur=".35s" begin="'+(i*0.05)+'s" fill="freeze"/></circle>';
         inner+='<circle cx="'+x+'" cy="95" r="3.5" fill="'+c+'"/>';
       });
       inner+='<text x="320" y="150" class="lbl" text-anchor="middle" font-size="11.5">gerade Aminosäure-Kette ('+chain.length+' Perlen = '+chain.length+' Aminosäuren)</text>';
-      inner+='<text x="320" y="172" class="lbl" text-anchor="middle" font-size="11" fill="#6c7a99">So liegt sie noch nicht in der Zelle vor – erst falten!</text>';
+      inner+='<text x="320" y="170" class="lbl" text-anchor="middle" font-size="11" fill="#6c7a99">So liegt sie noch nicht in der Zelle vor – erst falten!</text>';
     } else {
       let pts=[];
       const cx=320, cy=90;
@@ -1121,7 +1090,7 @@ function m4init(){
         inner+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="10" fill="'+chain[i]+'33" stroke="'+chain[i]+'" stroke-width="2.5"/>';
         inner+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="'+chain[i]+'"/>';
       });
-      inner+='<text x="320" y="180" class="lbl-b" text-anchor="middle" font-size="12" fill="#46e39a">✓ Gefaltete, dreidimensionale Form – das Protein kann seine Aufgabe übernehmen</text>';
+      inner+='<text x="320" y="178" class="lbl-b" text-anchor="middle" font-size="12" fill="#46e39a">✓ Gefaltete, dreidimensionale Form – das Protein kann seine Aufgabe übernehmen</text>';
     }
     g.innerHTML = inner;
   }
@@ -1162,11 +1131,11 @@ function m5(){
     <h2>🔬 Labor 6 · Energiemodell – der Berg wird kleiner</h2>
     <p>Die Wirkung von Katalysatoren lässt sich mit einem Energiemodell zeigen: Mit Enzym muss die Kugel einen <strong>weniger grossen Berg</strong> hinaufgerollt werden.</p>
     <div class="lab">
-      <svg viewBox="0 0 640 240">
+      <svg viewBox="0 0 640 240" width="100%">
         <line x1="20" y1="200" x2="620" y2="200" stroke="#33456e" stroke-width="1.5"/>
         <path id="hillNo" d="M20,200 C 140,200 180,40 320,40 C 460,40 500,200 620,200" fill="none" stroke="#ff7d7d" stroke-width="3" stroke-dasharray="7 6" opacity=".9"/>
         <path id="hillEnz" d="M20,200 C 160,200 210,130 320,130 C 430,130 480,200 620,200" fill="none" stroke="#46e39a" stroke-width="3.5"/>
-        <circle id="ball" r="11" fill="#f7b955" cx="20" cy="189"/>
+        <circle id="ball" r="11" fill="#f7b955" cx="20" cy="200"/>
         <text x="320" y="28" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#ff7d7d">OHNE Enzym: hoher Energieberg</text>
         <text x="320" y="118" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#46e39a">MIT Enzym: kleinerer Berg</text>
         <text x="30" y="224" class="lbl" font-size="10.5">Ausgangsstoff (z. B. Stärke)</text>
@@ -1188,7 +1157,7 @@ function m5(){
         <button class="btn btn-sm" data-enz="amylase">Amylase (Speichel)</button>
         <button class="btn btn-sm" data-enz="pepsin">Pepsin (Magen)</button>
       </div>
-      <svg viewBox="0 0 640 180">
+      <svg viewBox="0 0 640 180" width="100%">
         <g id="lkSub"></g>
         <g id="lkEnz"></g>
         <g id="lkProd"></g>
@@ -1267,9 +1236,8 @@ function m5init(){
       txt:'<span class="hl">Pepsin passt zu Proteinen.</span> Zusammen mit der Salzsäure zerlegt es die Aminosäure-Ketten in einzelne Aminosäuren – die Grundbausteine.'
     }
   };
-  let cur = 'amylase', lkBusy=false;
+  let cur = 'amylase';
   function drawLock(){
-    lkBusy=false;
     const e = ENZ[cur];
     const n = e.sub.blocks;
     const w = 42, gap=4;
@@ -1282,7 +1250,6 @@ function m5init(){
     }
     sub+='<text x="'+(x0+totalW/2)+'" y="52" class="lbl-b" text-anchor="middle" font-size="12">'+e.sub.label+'</text>';
     $('#lkSub').innerHTML = sub;
-    $('#lkSub').style.opacity='1';
     $('#lkEnz').innerHTML =
       '<g id="lkEnzG">'+
       '<path d="M360,14 l34,0 l0,20 l-12,10 l0,26 l-20,0 l0,-26 l-14,-10 z" fill="#46e39a22" stroke="#46e39a" stroke-width="2.5"/>'+
@@ -1292,7 +1259,6 @@ function m5init(){
   }
   $$('[data-enz]').forEach(b=> b.addEventListener('click',()=>{ cur=b.dataset.enz; drawLock(); }));
   $('#lkRun').addEventListener('click',()=>{
-    if(lkBusy) return; lkBusy=true;
     const e = ENZ[cur];
     const g = $('#lkEnzG');
     g.style.transition='transform .8s cubic-bezier(.4,0,.2,1)';
@@ -1301,31 +1267,30 @@ function m5init(){
       $('#lkSub').style.transition='opacity .4s'; $('#lkSub').style.opacity='0';
       const parts = e.prod.parts;
       const w=42, gap=6;
+      const totalW = parts.reduce((a,b)=>a+b,0)*(w+gap)-gap;
       let x = 90, out='';
-      parts.forEach(cnt=>{
+      parts.forEach((cnt,pi)=>{
         for(let i=0;i<cnt;i++){
-          out+='<rect x="'+x+'" y="66" width="'+w+'" height="40" rx="9" fill="'+e.prod.col+'22" stroke="'+e.prod.col+'" stroke-width="2"/>';
+          out+='<rect x="'+x+'" y="66" width="'+w+'" height="40" rx="9" fill="'+e.prod.col+'22" stroke="'+e.prod.col+'" stroke-width="2"><animate attributeName="opacity" from="0" to="1" dur=".4s" fill="freeze"/></rect>';
           x+=w+gap;
         }
         x+=8;
       });
-      out+='<text x="220" y="52" class="lbl-b" text-anchor="middle" font-size="12" fill="'+e.prod.col+'">'+e.prod.label+'</text>';
+      out+='<text x="'+(90+totalW/2)+'" y="52" class="lbl-b" text-anchor="middle" font-size="12" fill="'+e.prod.col+'">'+e.prod.label+'</text>';
       setTimeout(()=>{ $('#lkProd').innerHTML=out; $('#lkSub').style.opacity='.12'; },150);
       g.style.transform='translate(0,0)';
       $('#lkTxt').innerHTML = e.txt;
       toast('⚗️ '+e.name+' hat zerlegt – Enzym bleibt unverändert!');
-      lkBusy=false;
     },800);
   });
   $('#lkWrong').addEventListener('click',()=>{
-    if(lkBusy) return; lkBusy=true;
     const g = $('#lkEnzG');
     g.style.transition='transform .5s cubic-bezier(.4,0,.2,1)';
     g.style.transform='translate(-190px,0)';
     setTimeout(()=>{
       g.style.transform='translate(-190px,-16px) rotate(-14deg)';
       $('#lkTxt').innerHTML='<span class="hl-c">Passt nicht!</span> Das aktive Zentrum des Enzyms hat keine passende Form für diesen Nährstoff – wie ein falscher Schlüssel vor dem Schloss. Es findet <b>keine Reaktion</b> statt. Das Enzym zieht weiter zum passenden Partner.';
-      setTimeout(()=>{ g.style.transform='translate(0,0) rotate(0deg)'; lkBusy=false; },1400);
+      setTimeout(()=>{ g.style.transform='translate(0,0) rotate(0deg)'; },1400);
     },500);
   });
   drawLock();
@@ -1443,7 +1408,7 @@ function m7(){
     <h2>🔬 Labor 8 · Warum Falten und Zotten?</h2>
     <p>Die Innenwand des Dünndarms ist <strong>stark gefaltet</strong>, und auf den Darmfalten gibt es unzählige winzige Ausstülpungen: die <span class="hl">Darmzotten</span>. Schiebe den Regler und beobachte die Oberfläche.</p>
     <div class="lab">
-      <svg viewBox="0 0 640 200">
+      <svg viewBox="0 0 640 200" width="100%">
         <rect x="0" y="150" width="640" height="50" fill="#101a2e"/>
         <g id="villi"></g>
         <line x1="0" y1="150" x2="640" y2="150" stroke="#33456e" stroke-width="2"/>
@@ -1452,12 +1417,12 @@ function m7(){
       </svg>
       <div class="sliderrow">
         <span style="font-size:12.5px;color:#94a2c2">glatt</span>
-        <input type="range" id="villiR" min="0" max="4" step="1" value="0">
+        <input type="range" id="villiR" min="0" max="4" step="1" value="0" style="flex:1">
         <span style="font-size:12.5px;color:#94a2c2">viele Zotten</span>
       </div>
       <div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap">
         <div class="readout" id="areaVal">1<small>m² Oberfläche</small></div>
-        <p style="flex:1;min-width:200px;font-size:13.4px;color:#94a2c2" id="areaTxt">Ein glattes Rohr – viel zu wenig Fläche, um uns zu ernähren.</p>
+        <p style="flex:1;min-width:240px;font-size:13.4px;color:#94a2c2" id="areaTxt">Ein glattes Rohr – viel zu wenig Fläche, um uns zu ernähren.</p>
       </div>
     </div>
     <div class="note"><b>Die Antwort für den Test:</b> Durch Darmfalten und Darmzotten wird die Dünndarmwand <b>stark vergrössert (Oberflächenvergrösserung)</b>. Ausgebreitet wäre sie so gross wie ein <b>Tennisfeld – etwa 200 m²</b>. Dank dieser grossen Oberfläche können die Nährstoffe <b>schnell und in grossen Mengen</b> aufgenommen werden.</div>
@@ -1542,7 +1507,7 @@ function m8(){
     <h2>🔬 Labor 9 · Der Glykogen-Speicher</h2>
     <p>Die Leber ist auch ein <strong>Energiespeicher</strong> – zusammen mit Muskulatur und Fettgewebe. Verschiebe den Regler und beobachte, was die Leber tut.</p>
     <div class="lab">
-      <svg viewBox="0 0 640 190">
+      <svg viewBox="0 0 640 190" width="100%">
         <rect x="200" y="30" width="240" height="120" rx="22" fill="#1a1206" stroke="#f7b955" stroke-width="2.5"/>
         <text x="320" y="22" class="lbl-b" text-anchor="middle" font-size="13" fill="#f7b955">LEBER</text>
         <g id="gly"></g>
@@ -1563,7 +1528,7 @@ function m8(){
       </svg>
       <div class="sliderrow">
         <span style="font-size:12.5px;color:#94a2c2">Speichern (nach dem Essen)</span>
-        <input type="range" id="glyR" min="0" max="100" value="50">
+        <input type="range" id="glyR" min="0" max="100" value="50" style="flex:1">
         <span style="font-size:12.5px;color:#94a2c2">Abgeben (beim Fasten/Sport)</span>
       </div>
       <div id="glyTxt" style="margin-top:14px;font-size:13.5px;color:#94a2c2"></div>
@@ -1573,7 +1538,7 @@ function m8(){
   <div class="card">
     <h2>Der Weg der Galle</h2>
     <div class="lab" style="text-align:center">
-      <svg viewBox="0 0 640 130">
+      <svg viewBox="0 0 640 130" width="100%">
         ${[['LEBER','80','#f7b955'],['Gallengang','225','#94a2c2'],['GALLENBLASE','370','#46e39a'],['Gallengang','500','#94a2c2'],['ZWÖLFFINGERDARM','600','#5fb2ff']].map((b,i)=>
           (i%2===0
             ? '<rect x="'+(b[1]-58)+'" y="42" width="116" height="46" rx="13" fill="'+b[2]+'1c" stroke="'+b[2]+'" stroke-width="2"/><text x="'+b[1]+'" y="70" text-anchor="middle" font-size="11" fill="'+b[2]+'" font-weight="700">'+b[0]+'</text>'
@@ -1617,7 +1582,7 @@ function m8init(){
 }
 
 /* ================================================================
-   MODULE 9 — NIEREN  (Sim komplett überarbeitet, keine Overlaps)
+   MODULE 9 — NIEREN
    ================================================================ */
 function m9(){
   const body = `
@@ -1634,46 +1599,41 @@ function m9(){
 
   <div class="card">
     <h2>🔬 Labor 10 · Filtration &amp; Resorption live</h2>
-    <p>Starte die Simulation und beobachte die beiden Schritte. <em style="color:#6c7a99">(Auf schmalen Screens: Diagramm seitlich wischen.)</em></p>
+    <p>Starte die Simulation und beobachte die beiden Schritte.</p>
     <div class="lab">
-      <svg viewBox="0 0 660 340">
+      <svg viewBox="0 0 660 300" width="100%">
         <defs>
           <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#46e39a"/></marker>
         </defs>
-        <text x="110" y="30" class="lbl-b" text-anchor="middle" font-size="12" fill="#5fb2ff">NIERENKÖRPERCHEN</text>
-        <text x="470" y="30" class="lbl-b" text-anchor="middle" font-size="12" fill="#94a2c2">NIERENKANÄLCHEN</text>
-        <ellipse cx="110" cy="130" rx="85" ry="64" fill="#101c30" stroke="#5fb2ff" stroke-width="2"/>
-        <path d="M60,130 q14,-30 30,0 q14,30 30,0 q14,-30 30,0" fill="none" stroke="#ff7d7d" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="40" cy="96" r="7" fill="#ff7d7d"/>
-        <circle cx="62" cy="82" r="7" fill="#ff7d7d"/>
-        <rect x="150" y="86" width="16" height="10" rx="3" fill="#a98bff"/>
-        <text x="215" y="70" font-size="10" fill="#ff9d9d">Blutzellen</text>
-        <text x="215" y="95" font-size="10" fill="#a98bff">grosse Proteine</text>
-        <text x="215" y="112" font-size="10" fill="#6c7a99">→ passen NICHT durch die Löcher, bleiben im Blut</text>
-        <text x="110" y="216" class="lbl" text-anchor="middle" font-size="10">Kapillarknäuel: dünne Wände mit winzigen Löchern</text>
-        <path id="neph" d="M195,130 C 280,130 300,130 360,130 C 430,130 440,240 510,240 C 560,240 600,240 640,240"
+        <!-- Nierenkörperchen -->
+        <ellipse cx="120" cy="96" rx="80" ry="62" fill="#101c30" stroke="#5fb2ff" stroke-width="2"/>
+        <text x="120" y="26" class="lbl-b" text-anchor="middle" font-size="12" fill="#5fb2ff">NIERENKÖRPERCHEN</text>
+        <path d="M70,96 q14,-30 30,0 q14,30 30,0 q14,-30 30,0" fill="none" stroke="#ff7d7d" stroke-width="4" stroke-linecap="round"/>
+        <text x="120" y="176" class="lbl" text-anchor="middle" font-size="10">Kapillarknäuel (dünne Wände mit Löchern)</text>
+        <circle cx="52" cy="66" r="8" fill="#ff7d7d"/><circle cx="76" cy="52" r="8" fill="#ff7d7d"/>
+        <text x="30" y="50" class="lbl" font-size="9.5" fill="#ff9d9d">Blutzellen</text>
+        <rect x="168" y="46" width="17" height="11" rx="3" fill="#a98bff"/>
+        <text x="196" y="55" class="lbl" font-size="9.5" fill="#a98bff">grosse Proteine</text>
+        <text x="240" y="76" class="lbl" font-size="9.5" fill="#6c7a99">→ passen NICHT durch die Löcher</text>
+        <!-- Kanal -->
+        <path id="neph" d="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"
           fill="none" stroke="#25314f" stroke-width="20" stroke-linecap="round"/>
-        <path d="M195,130 C 280,130 300,130 360,130 C 430,130 440,240 510,240 C 560,240 600,240 640,240"
+        <path d="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"
           fill="none" stroke="#132036" stroke-width="14" stroke-linecap="round"/>
+        <text x="330" y="76" class="lbl-b" text-anchor="middle" font-size="12" fill="#94a2c2">NIERENKANÄLCHEN</text>
         <g id="resorb" opacity="0">
-          <path d="M330,142 q-12,44 -34,60" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
-          <text x="262" y="224" font-size="10.5" fill="#46e39a" font-weight="700">Wasser</text>
-          <path d="M450,180 q26,-34 56,-44" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
-          <text x="512" y="128" font-size="10.5" fill="#46e39a" font-weight="700">Mineralstoffe</text>
-          <path d="M520,232 q-2,-40 14,-60" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
-          <text x="544" y="166" font-size="10.5" fill="#46e39a" font-weight="700">Zucker</text>
-          <text x="330" y="306" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#46e39a">RESORPTION zurück ins Blut</text>
+          <path d="M330,104 q-10,40 -30,58" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <path d="M420,150 q30,20 62,14" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <path d="M470,205 q-6,-46 10,-70" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <text x="286" y="184" font-size="10.5" fill="#46e39a" font-weight="700">Wasser</text>
+          <text x="480" y="180" font-size="10.5" fill="#46e39a" font-weight="700">Zucker</text>
+          <text x="430" y="128" font-size="10.5" fill="#46e39a" font-weight="700">Mineralstoffe</text>
+          <text x="330" y="248" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#46e39a">RESORPTION zurück ins Blut</text>
         </g>
-        <text x="650" y="222" class="lbl" text-anchor="end" font-size="10" fill="#f7b955">→ Harnleiter → Harnblase</text>
+        <text x="640" y="196" class="lbl" text-anchor="end" font-size="10.5" fill="#f7b955">→ Harnleiter → Harnblase</text>
         <g id="drops"></g>
       </svg>
-      <div class="legend">
-        <span><i style="background:#ff7d7d"></i>Blutzellen – bleiben im Blut</span>
-        <span><i style="background:#a98bff"></i>Grosse Proteine – bleiben im Blut</span>
-        <span><i style="background:#46e39a"></i>Pfeile = Resorption zurück ins Blut</span>
-        <span><i style="background:#f7b955"></i>Abfallstoffe → Urin</span>
-      </div>
-      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:14px">
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
         <button class="btn btn-sm btn-primary" id="nRun">▶ Filtration starten</button>
         <button class="btn btn-sm btn-ghost" id="nReset">↺ Zurücksetzen</button>
       </div>
@@ -1710,7 +1670,7 @@ function m9(){
     <p style="margin-top:12px">Diese Stoffe braucht der Körper noch – sie werden aus dem Primärharn <strong>zurück ins Blut aufgenommen</strong>. Diesen Vorgang nennt man <span class="hl">Resorption</span>.</p>
     <div class="lab" style="margin-top:16px">
       <div class="lab-head"><span class="pill mint">WICHTIG</span><span class="lab-title">Osmose hilft bei der Resorption</span></div>
-      <div class="grid2">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="grid2">
         <div>
           <p style="font-size:13.5px"><b style="color:#f7b955">Schritt 1 – aktiv:</b> Traubenzucker und ein Teil der Mineralstoffe werden <strong>aktiv aus dem Nierenkanälchen herausgepumpt</strong>. Dafür braucht der Körper <strong>Energie</strong>.</p>
           <p style="font-size:13.5px;margin-top:9px">→ Jetzt befinden sich <strong>ausserhalb</strong> des Kanälchens mehr gelöste Stoffe als innerhalb.</p>
@@ -1738,45 +1698,38 @@ function m9(){
 }
 function m9init(){
   shellInit(MODULES[8]);
-  let rafs=[], timers=[];
-  function clearAll(){
-    timers.forEach(t=>clearTimeout(t)); timers=[];
-    rafs.forEach(r=>cancelAnimationFrame(r)); rafs=[];
-  }
-  function count(el,to,dur){
+  let raf=null, timers=[];
+  function clearAll(){ timers.forEach(t=>clearTimeout(t)); timers=[]; if(raf)cancelAnimationFrame(raf); }
+  function count(el,to,dur,suf){
     const t0=performance.now();
     function f(now){
       const t=Math.min((now-t0)/dur,1);
-      el.textContent = (to*t).toFixed(to%1?1:0);
-      if(t<1) rafs.push(requestAnimationFrame(f));
+      el.textContent = (to*t).toFixed(to%1?1:0)+(suf||'');
+      if(t<1) raf=requestAnimationFrame(f);
     }
-    rafs.push(requestAnimationFrame(f));
+    raf=requestAnimationFrame(f);
   }
-  function resetSim(){
-    clearAll();
-    $('#drops').innerHTML='';
-    $('#resorb').setAttribute('opacity','0');
+  $('#nReset').addEventListener('click',()=>{
+    clearAll(); $('#drops').innerHTML=''; $('#resorb').setAttribute('opacity','0');
     ['cPrim','cRes','cUrin'].forEach(id=>$('#'+id).textContent='0');
-  }
-  $('#nReset').addEventListener('click', resetSim);
+  });
   $('#nRun').addEventListener('click',()=>{
-    resetSim();
-    const TUB = 'M195,130 C 280,130 300,130 360,130 C 430,130 440,240 510,240 C 560,240 600,240 640,240';
+    clearAll(); $('#drops').innerHTML=''; $('#resorb').setAttribute('opacity','0');
+    const path = $('#neph'); const L = path.getTotalLength();
     const STUFF = [
       {c:'#5fb2ff',r:5,t:'wasser'},{c:'#f7b955',r:4,t:'zucker'},{c:'#a98bff',r:4,t:'mineral'},
       {c:'#46e39a',r:4,t:'vitamin'},{c:'#ff7d7d',r:5,t:'abfall'},{c:'#5fb2ff',r:5,t:'wasser'}
     ];
     let html='';
     STUFF.forEach((s,i)=>{
-      html += '<circle r="'+s.r+'" fill="'+s.c+'" cx="195" cy="130"><animateMotion dur="3.4s" begin="'+(i*0.22)+'s" fill="freeze" path="'+TUB+'"/></circle>';
+      html += '<circle r="'+s.r+'" fill="'+s.c+'" data-t="'+s.t+'" cx="200" cy="96"><animateMotion dur="3.4s" begin="'+(i*0.22)+'s" fill="freeze" path="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"/></circle>';
     });
     $('#drops').innerHTML = html;
     count($('#cPrim'),180,1600);
     timers.push(setTimeout(()=>{
       $('#resorb').setAttribute('opacity','1');
-      $('#drops').innerHTML =
-        '<circle r="5" fill="#ff7d7d" cx="510" cy="240"><animateMotion dur="1.6s" fill="freeze" path="M510,240 C 560,240 600,240 640,240"/></circle>'+
-        '<circle r="5" fill="#ff7d7d" cx="510" cy="240"><animateMotion dur="1.6s" begin="0.4s" fill="freeze" path="M510,240 C 560,240 600,240 640,240"/></circle>';
+      $('#drops').innerHTML = STUFF.filter(s=>s.t==='abfall').map((s,i)=>
+        '<circle r="'+s.r+'" fill="'+s.c+'" cx="500" cy="210"><animateMotion dur="1.6s" begin="'+(i*0.3)+'s" fill="freeze" path="M500,210 C 560,210 600,210 640,210"/></circle>').join('');
       count($('#cRes'),178.5,2000);
     },2400));
     timers.push(setTimeout(()=>{ count($('#cUrin'),1.5,1400); toast('💧 180 L Primärharn → 1,5 L Urin'); },4600));
@@ -1794,7 +1747,7 @@ function m10(){
     <p>Gehe die Geschichte Schritt für Schritt durch – genau so musst du sie im Test begründen können.</p>
     <div class="lab">
       <div id="lakStage" style="min-height:150px;display:flex;flex-direction:column;justify-content:center"></div>
-      <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap;align-items:center">
+      <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap">
         <button class="btn btn-sm btn-ghost" id="lakPrev">← Zurück</button>
         <button class="btn btn-sm btn-primary" id="lakNext">Weiter →</button>
         <span class="pill mint" id="lakStep" style="margin-left:auto">Schritt 1 / 6</span>
@@ -1814,7 +1767,6 @@ function m10(){
     <div class="lab" style="font-family:'Space Grotesk Variable',sans-serif;font-size:14px;text-align:center;line-height:2.2">
       <span class="hl-c">URSACHE</span> <span style="color:#33456e">→</span> <span class="hl-a">WO im Verdauungstrakt?</span> <span style="color:#33456e">→</span> <span class="hl-s">WAS fehlt / was geht schief?</span> <span style="color:#33456e">→</span> <span class="hl">SYMPTOM / FOLGE</span>
     </div>
-    <div class="twrap">
     <table>
       <thead><tr><th>Problem</th><th>Ursache</th><th>Ort</th><th>Folge</th></tr></thead>
       <tbody>
@@ -1826,7 +1778,6 @@ function m10(){
         <tr><td>Dunkler Urin</td><td>Flüssigkeitsmangel oder Fieber</td><td>Nieren</td><td>Mehr Wasser wird resorbiert → konzentrierter Urin</td></tr>
       </tbody>
     </table>
-    </div>
   </div>`;
   return shell(MODULES[9], body);
 }
@@ -1869,7 +1820,7 @@ function m10init(){
    CRASH-ZETTEL
    ================================================================ */
 function renderCrash(){
-  const S = (n,t,ic,items)=> '<div class="crashsec" style="border-color:'+ic+'"><h3><span style="color:'+ic+'">'+n+'.</span> '+t+'</h3><ul>'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  const S = (n,t,ic,items)=> '<div class="crashsec" style="border-color:'+ic+'"><h3><span style="color:'+ic+'">'+n+'.</span> '+t+'</h3><ul style="--c:'+ic+'">'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
   return '<div class="view">'+
   '<div class="eyebrow">Für die letzte Nacht</div><h1>⚡ Crash-Zettel</h1>'+
   '<p class="lead">Alles Wichtige auf einen Blick – die reine Essenz der 10 Lernziele. Fettgedrucktes sind die Stichwörter, die im Test Punkte geben.</p>'+
@@ -2009,13 +1960,13 @@ const CARDS = [
 function renderCards(){
   return '<div class="view">'+
   '<div class="eyebrow">Aktives Erinnern</div><h1>🃏 Karteikarten</h1>'+
-  '<p class="lead">'+CARDS.length+' Karten – genau die Fragen, die im Test drankommen. Erst selbst überlegen, dann umdrehen. <strong>Leertaste</strong> = drehen, <strong>←/→</strong> = blättern, <strong>1</strong> = gewusst, <strong>2</strong> = nochmal.</p>'+
+  '<p class="lead">49 Karten – genau die Fragen, die im Test drankommen. Erst selbst überlegen, dann umdrehen. <strong>Leertaste</strong> = drehen, <strong>←/→</strong> = blättern, <strong>1</strong> = gewusst, <strong>2</strong> = nochmal.</p>'+
   '<div style="display:flex;gap:14px;align-items:center;margin:22px 0;flex-wrap:wrap">'+
-    '<div style="flex:1;min-width:180px;height:8px;background:#1b2540;border-radius:99px;overflow:hidden"><i id="cbar" style="display:block;height:100%;width:0;background:linear-gradient(90deg,#a98bff,#5fb2ff);transition:width .4s"></i></div>'+
+    '<div style="flex:1;min-width:200px;height:8px;background:#1b2540;border-radius:99px;overflow:hidden"><i id="cbar" style="display:block;height:100%;width:0;background:linear-gradient(90deg,#a98bff,#5fb2ff);transition:width .4s"></i></div>'+
     '<span style="font-size:13px;color:#94a2c2" id="ccount">Karte 1 / '+CARDS.length+'</span>'+
   '</div>'+
   '<div class="fc-wrap"><div class="fc" id="fc">'+
-    '<div class="fc-face fc-front"><div class="k">FRAGE</div><div class="q" id="fcQ"></div><div class="fc-hint">Tippen oder Leertaste → Antwort</div></div>'+
+    '<div class="fc-face fc-front"><div class="k">FRAGE</div><div class="q" id="fcQ"></div><div class="fc-hint">Klicken oder Leertaste → Antwort</div></div>'+
     '<div class="fc-face fc-back"><div class="k">ANTWORT</div><div class="a" id="fcA"></div><div class="fc-hint">Gewusst? Drücke 1 · Noch nicht? Drücke 2</div></div>'+
   '</div></div>'+
   '<div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">'+
@@ -2068,7 +2019,7 @@ function cardsInit(){
     const unknown = CARDS.map((_,i)=>i).filter(i=>!state.knownCards.has(i));
     if(!unknown.length){ toast('🎉 Alle Karten gemeistert!'); return; }
     state.cardOrder = unknown.sort(()=>Math.random()-.5); state.cardIdx=0; show();
-    toast('↺ '+unknown.length+' Karten zum Üben');
+    toast('↺ '+unknown.length+' Karten zum Übrigen');
   });
   $('#fcReset').addEventListener('click',()=>{
     state.knownCards.clear(); save(); state.cardOrder = CARDS.map((_,i)=>i); state.cardIdx=0; show();
@@ -2155,7 +2106,7 @@ function drawQ(){
         '<span class="pill sky">Frage '+(state.quizIdx+1)+' / '+state.quizOrder.length+'</span>'+
         '<span class="pill mint">✓ '+state.quizScore+' richtig</span>'+
       '</div>'+
-      '<h2 style="font-size:20px;line-height:1.4">'+q.q+'</h2>'+
+      '<h2 style="font-size:21px;line-height:1.4">'+q.q+'</h2>'+
       '<div class="qopts" id="qopts">'+
         q.o.map((o,i)=>'<button class="qopt" data-i="'+i+'"><span class="k">'+'ABCD'[i]+'</span><span>'+o+'</span></button>').join('')+
       '</div>'+
@@ -2189,9 +2140,9 @@ function quizResult(box){
   else if(pct>=60){grade='Genügend';gcol='#f7b955';gmsg='Knapp – wiederhole die Module zu deinen Fehlern.';}
   else {grade='Noch üben';gcol='#ff7d7d';gmsg='Lies den Crash-Zettel und wiederhole die Module gezielt.';}
   box.innerHTML =
-  '<div class="card glow" style="text-align:center;padding:38px 22px">'+
+  '<div class="card glow" style="text-align:center;padding:38px">'+
     '<div style="font-size:56px;margin-bottom:8px">'+(pct>=75?'🏆':pct>=60?'👍':'📚')+'</div>'+
-    '<h2 style="font-size:32px;color:'+gcol+'">'+state.quizScore+' / '+total+' richtig · '+pct+' %</h2>'+
+    '<h2 style="font-size:34px;color:'+gcol+'">'+state.quizScore+' / '+total+' richtig · '+pct+' %</h2>'+
     '<p style="font-size:15px;margin-top:8px"><b style="color:'+gcol+'">'+grade+'</b> — '+gmsg+'</p>'+
     '<div class="grid3" style="margin-top:22px">'+
       '<div class="stat"><div class="v" style="color:#46e39a">'+state.quizScore+'</div><div class="l">richtig</div></div>'+
