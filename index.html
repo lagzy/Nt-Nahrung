@@ -1,3 +1,4 @@
+--- index.html (原始)
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -206,6 +207,2271 @@ td:first-child{color:#fff;font-weight:600}
 .lzbox{background:rgba(70,227,154,.07);border:1px dashed rgba(70,227,154,.35);border-radius:12px;padding:12px 15px;font-size:13.6px;color:#c7ecd8;margin-top:8px}
 .lzbox b{color:var(--mint);display:block;font-size:10.5px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:3px}
 .modnav{display:flex;gap:10px;justify-content:space-between;margin-top:26px;flex-wrap:wrap}
+
+/* Flashcards */
+.fc-wrap{perspective:1800px;margin:0 auto;max-width:620px}
+.fc{position:relative;width:100%;height:330px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,.1,.2,1);cursor:pointer}
+.fc.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:32px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;border:1px solid var(--line2)}
+.fc-front{background:linear-gradient(150deg,#18233e,#111a2e)}
+.fc-back{background:linear-gradient(150deg,#123028,#0e1c22);transform:rotateY(180deg)}
+.fc-face .k{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
+.fc-front .q{font-family:'Space Grotesk Variable',sans-serif;font-size:22px;line-height:1.4;font-weight:600}
+.fc-back .a{font-size:17px;color:#d9f5e7;line-height:1.6}
+.fc-hint{font-size:11.5px;color:var(--dim);margin-top:20px}
+
+/* Quiz */
+.qprog{height:6px;background:#1b2540;border-radius:99px;overflow:hidden;margin-bottom:20px}
+.qprog i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),var(--sky));border-radius:99px;transition:width .45s}
+.qopts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.qopt{background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;cursor:pointer;text-align:left;color:var(--text);font-size:14.6px;transition:.16s;display:flex;gap:12px;align-items:flex-start}
+.qopt:hover:not(:disabled){border-color:var(--sky);background:#1d2a49;transform:translateX(3px)}
+.qopt .k{width:24px;height:24px;flex:0 0 24px;border-radius:7px;background:#233150;display:grid;place-items:center;font-size:11.5px;font-weight:700;font-family:'Space Grotesk Variable',sans-serif;color:var(--muted)}
+.qopt.correct{border-color:var(--mint);background:rgba(70,227,154,.14)}
+.qopt.correct .k{background:var(--mint);color:#04231a}
+.qopt.wrong{border-color:var(--coral);background:rgba(255,125,125,.13)}
+.qopt.wrong .k{background:var(--coral);color:#2a0808}
+.qopt:disabled{cursor:default}
+.qfb{margin-top:16px;padding:15px 17px;border-radius:12px;font-size:14px;display:none}
+.qfb.show{display:block;animation:fadeUp .35s}
+.qfb.ok{background:rgba(70,227,154,.1);border:1px solid rgba(70,227,154,.35);color:#c9f2dd}
+.qfb.no{background:rgba(255,125,125,.1);border:1px solid rgba(255,125,125,.35);color:#f6d3d3}
+
+/* Interactive widgets */
+.bucket{border:2px dashed var(--line2);border-radius:13px;padding:13px;min-height:132px;transition:.2s;background:rgba(255,255,255,.015)}
+.bucket.hover{border-color:var(--sky);background:rgba(95,178,255,.08)}
+.bucket.ok{border-color:var(--mint);background:rgba(70,227,154,.09)}
+.bucket.bad{border-color:var(--coral);animation:shake .4s}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.bucket h4{font-size:13px;margin-bottom:9px;display:flex;align-items:center;gap:7px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#1d2a49;border:1px solid var(--line2);color:#fff;padding:7px 12px;border-radius:99px;font-size:12.6px;font-weight:600;cursor:pointer;transition:.16s;margin:0 6px 8px 0}
+.chip:hover{background:#26375e;transform:translateY(-2px)}
+.chip.sel{background:var(--sky);color:#06131f;border-color:var(--sky);box-shadow:0 0 0 3px rgba(95,178,255,.25)}
+.chip.placed{background:rgba(70,227,154,.14);border-color:rgba(70,227,154,.4);color:#bff2d9;cursor:default;transform:none}
+
+.journey{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.jstep{display:flex;gap:15px;cursor:pointer;padding:2px 0}
+.jrail{display:flex;flex-direction:column;align-items:center;flex:0 0 46px}
+.jdot{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:#18223c;border:1.5px solid var(--line2);transition:.25s;flex:0 0 46px}
+.jline{width:2px;flex:1;min-height:20px;background:linear-gradient(180deg,var(--line2),transparent);margin:4px 0}
+.jstep:last-child .jline{display:none}
+.jbody{flex:1;padding-bottom:16px}
+.jbody h4{font-size:15.5px;margin-bottom:3px;display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.jbody p{font-size:13.4px;color:var(--dim);line-height:1.5}
+.jdetail{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0}
+.jstep.open .jdetail{max-height:520px;opacity:1;margin-top:10px}
+.jstep.open .jdot{background:linear-gradient(150deg,var(--mint),#28b878);border-color:var(--mint);transform:scale(1.06)}
+.jstep.open .jbody h4{color:#fff}
+.jinner{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:13.7px;color:var(--muted)}
+.jinner ul{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.jinner li{position:relative;padding-left:16px}
+.jinner li::before{content:'▸';position:absolute;left:0;color:var(--mint)}
+
+input[type=range]{width:100%;accent-color:var(--mint);height:6px;cursor:pointer}
+.sliderrow{display:flex;align-items:center;gap:15px;margin-top:14px;flex-wrap:wrap}
+.readout{font-family:'Space Grotesk Variable',sans-serif;font-size:34px;font-weight:700;color:var(--mint);line-height:1}
+.readout small{font-size:14px;color:var(--dim);font-weight:500;margin-left:5px}
+
+.flip3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+@media(max-width:900px){.flip3{grid-template-columns:1fr}}
+.flipcard{perspective:1200px;height:190px;cursor:pointer}
+.flipin{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .6s}
+.flipcard.flipped .flipin{transform:rotateY(180deg)}
+.flface{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;padding:18px;border:1px solid var(--line2);display:flex;flex-direction:column;justify-content:center}
+.flfront{background:linear-gradient(150deg,#18233e,#111a2e);align-items:center;text-align:center;gap:8px}
+.flfront .e{font-size:32px}
+.flfront b{font-family:'Space Grotesk Variable',sans-serif;font-size:15px}
+.flfront span{font-size:11.5px;color:var(--dim)}
+.flback{background:linear-gradient(150deg,#152c46,#0f1a2b);transform:rotateY(180deg);font-size:13.3px;color:#cfe2f7;line-height:1.55}
+
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:15px;text-align:center}
+.stat .v{font-family:'Space Grotesk Variable',sans-serif;font-size:27px;font-weight:700;line-height:1.1}
+.stat .l{font-size:11.5px;color:var(--dim);margin-top:4px;letter-spacing:.03em}
+
+svg text{font-family:'Space Grotesk Variable',sans-serif}
+svg .lbl{font-size:11px;fill:var(--muted)}
+svg .lbl-b{font-size:11.5px;fill:#fff;font-weight:600}
+
+.gloss{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:900px){.gloss{grid-template-columns:1fr}}
+.gterm{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;transition:.18s}
+.gterm:hover{border-color:var(--line2);transform:translateY(-2px)}
+.gterm b{display:block;font-size:14px;margin-bottom:3px;color:#fff;font-family:'Space Grotesk Variable',sans-serif}
+.gterm span{font-size:13px;color:var(--muted);line-height:1.5;display:block}
+
+.searchbar{width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:12px;padding:13px 17px;color:#fff;font-size:14.5px;font-family:inherit;margin-bottom:18px;outline:none}
+.searchbar:focus{border-color:var(--sky);box-shadow:0 0 0 3px rgba(95,178,255,.16)}
+.searchbar::placeholder{color:var(--dim)}
+
+.crashsec{border-left:3px solid var(--sky);padding:4px 0 4px 18px;margin-bottom:20px}
+.crashsec h3{font-size:16px;margin-bottom:6px}
+.crashsec ul{list-style:none;display:flex;flex-direction:column;gap:5px}
+.crashsec li{font-size:13.9px;color:var(--muted);position:relative;padding-left:15px}
+.crashsec li::before{content:'·';position:absolute;left:2px;color:var(--sky);font-weight:900}
+
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(90px);background:#132a20;border:1px solid var(--mint);color:#c9f5df;padding:13px 22px;border-radius:99px;font-size:14px;font-weight:600;transition:.4s cubic-bezier(.2,.9,.3,1);z-index:200;box-shadow:0 14px 40px rgba(0,0,0,.5);opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+.menubtn{display:none;position:fixed;top:14px;right:14px;z-index:120;width:46px;height:46px;border-radius:13px;background:var(--card2);border:1px solid var(--line2);color:#fff;font-size:20px;cursor:pointer}
+@media(max-width:1020px){
+  .app{grid-template-columns:1fr}
+  .sidebar{position:fixed;left:0;top:0;width:296px;transform:translateX(-105%);transition:transform .34s cubic-bezier(.3,.9,.3,1);box-shadow:24px 0 60px rgba(0,0,0,.6)}
+  .sidebar.open{transform:none}
+  .menubtn{display:grid;place-items:center}
+  .main{padding:76px 18px 80px}
+  .hero{padding:30px 22px}
+  .card{padding:19px}
+}
+.scrim{display:none;position:fixed;inset:0;background:rgba(4,7,14,.7);z-index:60;backdrop-filter:blur(3px)}
+.scrim.show{display:block}
+@media print{.sidebar,.menubtn,.modnav{display:none}.app{grid-template-columns:1fr}.main{padding:0}}
+</style>
+</head>
+<body>
+<button class="menubtn" id="menuBtn">☰</button>
+<div class="scrim" id="scrim"></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><span>🧬</span></div>
+      <div class="brand-txt">
+        <strong>NutriLab</strong>
+        <small>Ernährung &amp; Verdauung</small>
+      </div>
+    </div>
+
+    <div class="progbox">
+      <div class="ring">
+        <svg width="56" height="56"><circle class="bg" cx="28" cy="28" r="23"/><circle class="fg" id="ringFg" cx="28" cy="28" r="23" stroke-dasharray="144.5" stroke-dashoffset="144.5"/></svg>
+        <b id="ringTxt">0%</b>
+      </div>
+      <p><strong id="progTxt">0 von 10 Modulen</strong>Du schaffst das – ein Modul nach dem anderen.</p>
+    </div>
+
+    <nav id="nav"></nav>
+  </aside>
+
+  <main class="main">
+    <div id="view"></div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+   NUTRILAB — Interaktiver Crashkurs Ernährung & Verdauung
+   ================================================================ */
+
+const MODULES = [
+  {n:1,  id:'m1',  icon:'🥗', title:'Nährstoffe',        sub:'Hauptnährstoffe, Energie, Grundumsatz'},
+  {n:2,  id:'m2',  icon:'🍞', title:'Kohlenhydrate',     sub:'Zuckerarten & Blutzuckerspiegel'},
+  {n:3,  id:'m3',  icon:'🥑', title:'Fette',             sub:'Fettsäuren & Fettgewebe'},
+  {n:4,  id:'m4',  icon:'🧬', title:'Proteine',          sub:'Aminosäuren & 3D-Form'},
+  {n:5,  id:'m5',  icon:'⚗️', title:'Enzyme',            sub:'Katalysatoren, Amylase, Pepsin'},
+  {n:6,  id:'m6',  icon:'🛤️', title:'Verdauungsweg',     sub:'Vom Mund bis zum After'},
+  {n:7,  id:'m7',  icon:'🎾', title:'Dünn- & Dickdarm',  sub:'Resorption & Darmzotten'},
+  {n:8,  id:'m8',  icon:'🏭', title:'Leber',             sub:'Galle, Speicher, Entgiftung'},
+  {n:9,  id:'m9',  icon:'🫘', title:'Nieren',            sub:'Filtration, Resorption, Osmose'},
+  {n:10, id:'m10', icon:'⚠️', title:'Verdauungsprobleme',sub:'Laktoseintoleranz & Co.'}
+];
+
+const LZ = {
+  1:'Du kennst die verschiedenen Nährstoffe und ihre Hauptaufgaben in unserem Körper.',
+  2:'Du weisst, wie Kohlenhydrate aufgebaut sind (Stärke, Glykogen …) und wie sich der Blutzuckerspiegel im Vergleich zu Zucker über die Zeit verändert. Du kennst die verschiedenen Zuckerarten.',
+  3:'Du kennst wichtige Fettsäuren und wie der Körper diese verarbeitet. Du kannst erklären, welche Aufgaben das Fettgewebe hat.',
+  4:'Du kennst den Aufbau von Proteinen und ihre Aufgaben. Du weisst, wie viele Aminosäuren es gibt und was «essentielle» Aminosäuren sind.',
+  5:'Du kannst anhand von Beispielen erklären, was Enzyme sind und wie sie wirken. Du kennst zwei Verdauungsenzyme (Amylase, Pepsin).',
+  6:'Du kannst den Ablauf der Nahrung durch das Verdauungssystem beschreiben.',
+  7:'Du kennst die Aufgabe des Dünn- und Dickdarms und kannst erklären, weshalb der Dünndarm Falten und Zotten hat.',
+  8:'Du kannst drei Aufgaben der Leber beschreiben.',
+  9:'Du kannst erklären, wie die Nieren funktionieren und welche Aufgaben sie übernehmen.',
+  10:'Du kannst Ursachen für vorgegebene Verdauungsprobleme nennen und begründen.'
+};
+
+/* ---------------- STATE ---------------- */
+const state = {
+  done: new Set(),
+  view: 'start',
+  cardIdx: 0,
+  cardFlipped: false,
+  cardOrder: [],
+  quizIdx: 0,
+  quizOrder: [],
+  quizScore: 0,
+  quizAnswered: false,
+  quizWrong: [],
+  quizStart: 0,
+  knownCards: new Set()
+};
+
+function save(){
+  try{
+    localStorage.setItem('nutrilab_v2', JSON.stringify({done:[...state.done], known:[...state.knownCards]}));
+  }catch(e){}
+}
+function load(){
+  try{
+    const raw = localStorage.getItem('nutrilab_v2');
+    if(raw){
+      const d = JSON.parse(raw);
+      (d.done||[]).forEach(x=>state.done.add(x));
+      (d.known||[]).forEach(x=>state.knownCards.add(x));
+    }
+  }catch(e){}
+}
+
+/* ---------------- HELPERS ---------------- */
+const $ = (s,r)=> (r||document).querySelector(s);
+const $$ = (s,r)=> [...(r||document).querySelectorAll(s)];
+function toast(msg){
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function toggleDone(n){
+  if(state.done.has(n)) state.done.delete(n); else { state.done.add(n); toast('✓ Lernziel '+n+' abgehakt – weiter so!'); }
+  save(); updateProgress();
+}
+function updateProgress(){
+  const p = Math.round(state.done.size/MODULES.length*100);
+  const c = 2*Math.PI*23;
+  const fg = $('#ringFg'); if(fg) fg.style.strokeDashoffset = c - c*p/100;
+  const rt = $('#ringTxt'); if(rt) rt.textContent = p+'%';
+  const pt = $('#progTxt'); if(pt) pt.textContent = state.done.size+' von 10 Modulen';
+  $$('.navbtn').forEach(b=>{
+    const n = b.dataset.mod;
+    if(n) b.classList.toggle('done', state.done.has(+n));
+  });
+  $$('.modtile').forEach(b=>{
+    const n = b.dataset.mod;
+    if(n) b.classList.toggle('isdone', state.done.has(+n));
+  });
+}
+function go(v){
+  state.view = v;
+  const V = VIEWS[v];
+  $('#view').innerHTML = V.render();
+  if(V.init) V.init();
+  $$('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.view===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+  $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show');
+}
+
+/* ---------------- NAV ---------------- */
+function buildNav(){
+  let h = '<div class="navgroup"><span>Übersicht</span>';
+  h += navItem('start','🏠','Start & Lernplan');
+  h += navItem('crash','⚡','Crash-Zettel');
+  h += '</div>';
+  h += '<div class="navgroup"><span>Die 10 Lernziele</span>';
+  MODULES.forEach(m=>{
+    h += '<button class="navbtn'+(state.done.has(m.n)?' done':'')+'" data-view="'+m.id+'" data-mod="'+m.n+'">'+
+      '<span class="num"><i>'+m.n+'</i></span><span class="lbl">'+m.icon+' '+m.title+'</span></button>';
+  });
+  h += '</div>';
+  h += '<div class="navgroup"><span>Trainieren</span>';
+  h += navItem('cards','🃏','Karteikarten');
+  h += navItem('quiz','🎯','Prüfungssimulator');
+  h += navItem('glossar','📖','Fachbegriffe');
+  h += '</div>';
+  $('#nav').innerHTML = h;
+  $$('.navbtn').forEach(b=> b.addEventListener('click', ()=> go(b.dataset.view)));
+  function navItem(v,ic,lb){
+    return '<button class="navbtn" data-view="'+v+'"><span class="num">'+ic+'</span><span class="lbl">'+lb+'</span></button>';
+  }
+}
+
+/* ---------------- SHARED MODULE SHELL ---------------- */
+function shell(m, body){
+  const prev = m.n>1 ? MODULES[m.n-2] : null;
+  const next = m.n<10 ? MODULES[m.n] : null;
+  return '<div class="view">'+
+    '<div class="modhead">'+
+      '<div class="big">'+m.icon+'</div>'+
+      '<div style="flex:1;min-width:260px">'+
+        '<div class="eyebrow">Lernziel '+m.n+' von 10</div>'+
+        '<h1>'+m.title+'</h1>'+
+        '<p class="lead">'+m.sub+'</p>'+
+        '<div class="lzbox"><b>🎯 Das musst du können</b>'+LZ[m.n]+'</div>'+
+      '</div>'+
+    '</div>'+
+    body+
+    '<div class="card" style="display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap">'+
+      '<div><h3 style="margin-bottom:2px">Verstanden?</h3><p style="font-size:13px">Hake das Lernziel ab, sobald du es sicher erklären kannst.</p></div>'+
+      '<button class="btn '+(state.done.has(m.n)?'btn-ghost':'btn-primary')+'" id="markBtn">'+(state.done.has(m.n)?'✓ Erledigt – zurücknehmen':'Als gelernt markieren')+'</button>'+
+    '</div>'+
+    '<div class="modnav">'+
+      (prev?'<button class="btn btn-ghost" id="prevBtn">← '+prev.icon+' '+prev.title+'</button>':'<button class="btn btn-ghost" id="prevBtn">← Übersicht</button>')+
+      (next?'<button class="btn btn-primary" id="nextBtn">'+next.icon+' '+next.title+' →</button>':'<button class="btn btn-amber" id="nextBtn">🎯 Zum Prüfungssimulator →</button>')+
+    '</div>'+
+  '</div>';
+}
+function shellInit(m){
+  const mb = $('#markBtn');
+  if(mb) mb.addEventListener('click', ()=>{ toggleDone(m.n); go(m.id); });
+  const pb = $('#prevBtn');
+  if(pb) pb.addEventListener('click', ()=> go(m.n>1?MODULES[m.n-2].id:'start'));
+  const nb = $('#nextBtn');
+  if(nb) nb.addEventListener('click', ()=> go(m.n<10?MODULES[m.n].id:'quiz'));
+}
+
+/* ================================================================
+   VIEW: START
+   ================================================================ */
+function renderStart(){
+  const p = Math.round(state.done.size/10*100);
+  let h = '<div class="view">';
+  h += '<div class="hero">'+
+      '<div class="eyebrow">Interaktiver Crashkurs · NT Ernährung</div>'+
+      '<h1>Verdauung &amp; Nährstoffe<br>in 10 klaren Schritten</h1>'+
+      '<p class="lead">Jedes Lernziel deines Dossiers als eigenes Modul: kurze Erklärung, interaktives Experiment zum Anfassen und Prüfungs-Tipp. Am Ende testest du dich im Prüfungssimulator.</p>'+
+      '<div style="display:flex;gap:10px;margin-top:22px;flex-wrap:wrap">'+
+        '<button class="btn btn-primary" data-go="m1">🚀 Jetzt starten bei Lernziel 1</button>'+
+        '<button class="btn btn-amber" data-go="crash">⚡ Nur der Crash-Zettel</button>'+
+        '<button class="btn" data-go="quiz">🎯 Direkt ins Quiz</button>'+
+      '</div>'+
+      '<div class="steps">'+
+        stepBox('1','📗','Module lesen','10 Lernziele – je 3–5 Minuten', '#46e39a')+
+        stepBox('2','🔬','Labore testen','Klicken, schieben, beobachten', '#5fb2ff')+
+        stepBox('3','🃏','Karten wiederholen','45 Karteikarten mit Selbsttest', '#a98bff')+
+        stepBox('4','🎯','Quiz bestehen','30 Fragen wie im echten Test', '#f7b955')+
+      '</div>'+
+    '</div>';
+
+  h += '<div class="card"><h2>Dein Fortschritt</h2><p>Der Balken füllt sich, sobald du ein Lernziel als gelernt markierst.</p>'+
+       '<div style="height:10px;background:#1b2540;border-radius:99px;overflow:hidden;margin-top:14px">'+
+       '<i style="display:block;height:100%;width:'+p+'%;background:linear-gradient(90deg,#46e39a,#5fb2ff);border-radius:99px;transition:width .6s"></i></div>'+
+       '<p style="margin-top:9px;font-size:13px"><span class="hl">'+state.done.size+'/10</span> Lernziele erledigt · <span class="hl-a">'+state.knownCards.size+'/45</span> Karteikarten gemeistert</p></div>';
+
+  h += '<div class="card"><h2>Alle Module</h2><p style="margin-bottom:16px">Klicke ein Lernziel an – die Reihenfolge folgt deinem Dossier.</p><div class="modgrid">';
+  MODULES.forEach(m=>{
+    h += '<button class="modtile'+(state.done.has(m.n)?' isdone':'')+'" data-go="'+m.id+'" data-mod="'+m.n+'">'+
+      '<span class="mt-n">LERNZIEL '+m.n+'</span><span class="mt-i">'+m.icon+'</span>'+
+      '<span class="mt-t">'+m.title+'</span><span class="mt-s">'+m.sub+'</span></button>';
+  });
+  h += '</div></div>';
+
+  h += '<div class="card glow"><h2>🧭 Die grosse Zusammenhänge-Karte</h2>'+
+    '<p>Alles im Dossier hängt an einer Kette. Verstehe diese Linie – und du verstehst das ganze Thema:</p>'+
+    '<div class="lab" style="text-align:center;font-family:\'Space Grotesk Variable\',sans-serif;font-size:13.5px;line-height:2.4;color:#cfe0f7">'+
+    'NAHRUNG <span style="color:#46e39a">→</span> MUND <span style="color:#46e39a">(Amylase)</span> <span style="color:#46e39a">→</span> SPEISERÖHRE <span style="color:#46e39a">→</span> MAGEN <span style="color:#46e39a">(Pepsin + HCl)</span> <span style="color:#46e39a">→</span> ZWÖLFFINGERDARM <span style="color:#46e39a">(Galle aus der LEBER)</span> <span style="color:#46e39a">→</span> DÜNNDARM <span style="color:#46e39a">(Resorption → Blut)</span> <span style="color:#46e39a">→</span> DICKDARM <span style="color:#46e39a">(Wasserentzug)</span> <span style="color:#46e39a">→</span> AFTER'+
+    '<div style="margin-top:10px;font-size:12.5px;color:#94a2c2">Parallel: Blut <span style="color:#5fb2ff">→</span> LEBER (Umbau/Speicher/Entgiftung) &nbsp;·&nbsp; Blut <span style="color:#5fb2ff">→</span> NIEREN (Filtration → Primärharn → Resorption → Urin)</div>'+
+    '</div></div>';
+
+  h += '</div>';
+  return h;
+  function stepBox(n,ic,t,d,col){
+    return '<div class="step"><b><span class="ic" style="background:'+col+'22;color:'+col+'">'+ic+'</span> Schritt '+n+' · '+t+'</b><p>'+d+'</p></div>';
+  }
+}
+
+/* ================================================================
+   MODULE 1 — NÄHRSTOFFE
+   ================================================================ */
+function m1(){
+  const body = `
+  <div class="card glow">
+    <span class="pill mint">GRUNDLAGEN</span>
+    <h2 style="margin-top:12px">Was ist Stoffwechsel?</h2>
+    <p>Wir atmen, essen und trinken und nehmen dabei <strong>Sauerstoff, Nährstoffe und Wasser</strong> auf. Diese Stoffe werden transportiert und in chemischen Reaktionen umgewandelt. Es entstehen auch Stoffe, die der Körper nicht verwerten kann – die <strong>Abfallstoffe</strong>. Sie werden an die Umgebung abgegeben.</p>
+    <div class="note"><b>Merksatz:</b> Aufnahme + Transport + Umwandlung + Abgabe von Stoffen = <b>Stoffwechsel</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Die Hauptnährstoffe</h2>
+    <p>Drei Nährstoffgruppen machen den grössten Anteil unserer Nahrung aus – deshalb heissen sie <strong>Hauptnährstoffe</strong>. Dazu kommen Vitamine, Mineralstoffe und Ballaststoffe.</p>
+    <div class="grid3" style="margin-top:16px">
+      <div class="stat" style="text-align:left;padding:18px;border-top:3px solid #f7b955">
+        <div style="font-size:26px">🍚</div>
+        <b style="font-size:15px;display:block;margin:7px 0 4px">Kohlenhydrate</b>
+        <span style="font-size:12.8px;color:#94a2c2">Wichtigste <b style="color:#f7b955">Energielieferanten</b> für Muskeln, Temperatur und Reaktionen.</span>
+      </div>
+      <div class="stat" style="text-align:left;padding:18px;border-top:3px solid #ff8fd0">
+        <div style="font-size:26px">🥑</div>
+        <b style="font-size:15px;display:block;margin:7px 0 4px">Fette</b>
+        <span style="font-size:12.8px;color:#94a2c2">Energiereichster Nährstoff, <b style="color:#ff8fd0">Speicher</b>, Baustoff, Vitamin-Taxi.</span>
+      </div>
+      <div class="stat" style="text-align:left;padding:18px;border-top:3px solid #5fb2ff">
+        <div style="font-size:26px">🥚</div>
+        <b style="font-size:15px;display:block;margin:7px 0 4px">Proteine</b>
+        <span style="font-size:12.8px;color:#94a2c2">Lebenswichtige <b style="color:#5fb2ff">Baustoffe</b>, Enzyme, Hormone, Antikörper.</span>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:16px">
+      <div class="lab" style="margin:0">
+        <div class="lab-head"><span class="pill sky">FUNKTION 1</span><span class="lab-title">Baustoffe</span></div>
+        <p style="font-size:13.6px">Ein Teil der Nährstoffe wird in chemischen Reaktionen umgewandelt und für die <strong style="color:#fff">Bildung neuer Zellen</strong> genutzt – Wachstum, Reparatur, Muskeln, Haut.</p>
+      </div>
+      <div class="lab" style="margin:0">
+        <div class="lab-head"><span class="pill amber">FUNKTION 2</span><span class="lab-title">Energielieferanten</span></div>
+        <p style="font-size:13.6px">Bei der Umwandlung wird Energie frei. Sie wird genutzt für: <strong style="color:#fff">Muskelbewegung · Körpertemperatur · Stofftransport · chemische Reaktionen</strong>.</p>
+      </div>
+    </div>
+    <div class="examtip"><b>Prüfungs-Tipp:</b> «Nenne vier Vorgänge, die zum Stoffwechsel gehören» → Atmen (Sauerstoffaufnahme), Essen/Trinken (Nährstoffaufnahme), Transport im Körper, Umwandlung in Zellen, Abgabe von Abfallstoffen.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 1 · Energiegehalt vergleichen</h2>
+    <p>Wie viel Energie steckt in 1 g eines Nährstoffs? Klicke die Balken an.</p>
+    <div class="lab">
+      <div id="ebar"></div>
+      <div style="display:flex;gap:9px;margin-top:15px;flex-wrap:wrap">
+        <button class="btn btn-sm" data-e="kh">Kohlenhydrate</button>
+        <button class="btn btn-sm" data-e="pr">Proteine</button>
+        <button class="btn btn-sm" data-e="fe">Fette</button>
+        <button class="btn btn-sm btn-ghost" data-e="all">Alle anzeigen</button>
+      </div>
+      <p style="font-size:13px;margin-top:14px;color:#94a2c2" id="etxt">Wähle einen Nährstoff …</p>
+    </div>
+    <p style="font-size:13.6px">Einheit der Energie ist <strong>Kilojoule (kJ)</strong> oder Joule (J), früher Kilokalorie (kcal). <em>1 Joule ≈ die Energie, um eine Tafel Schokolade (100 g) einen Meter anzuheben.</em></p>
+  </div>
+
+  <div class="card">
+    <h2>Grundumsatz &amp; Leistungsumsatz</h2>
+    <div class="grid2" style="margin-top:12px">
+      <div class="lab" style="margin:0">
+        <div class="lab-head"><span class="pill violet">RUHE</span><span class="lab-title">Grundumsatz</span></div>
+        <p style="font-size:13.6px">Energiebedarf im <strong style="color:#fff">Ruhezustand</strong>. Auch im Schlaf arbeitet der Körper: Herz schlägt, Verdauungsorgane arbeiten, wir atmen, in den Zellen laufen unzählige Reaktionen ab.</p>
+        <p style="font-size:12.6px;margin-top:9px;color:#6c7a99">Abhängig von <b style="color:#a98bff">Alter, Geschlecht und Gewicht</b>.</p>
+      </div>
+      <div class="lab" style="margin:0">
+        <div class="lab-head"><span class="pill coral">AKTIV</span><span class="lab-title">Leistungsumsatz</span></div>
+        <p style="font-size:13.6px">Zusätzliche Energie, sobald wir uns <strong style="color:#fff">bewegen, arbeiten oder Sport treiben</strong>. Dadurch erhöht sich der Energiebedarf erheblich.</p>
+        <p style="font-size:12.6px;margin-top:9px;color:#6c7a99">Gesamtbedarf = Grundumsatz + Leistungsumsatz.</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px"><b>Energie im Gleichgewicht:</b> Ist die Zufuhr grösser als die Nutzung, wird der Überschuss gespeichert – als <b>Fette oder Kohlenhydrate</b>. Energiespeicher sind <b>Leber, Muskulatur und Fettgewebe</b>. Sie versorgen uns zwischen den Mahlzeiten und beim Fasten.</div>
+  </div>`;
+  return shell(MODULES[0], body);
+}
+function m1init(){
+  shellInit(MODULES[0]);
+  const data = {kh:{n:'Kohlenhydrate',v:17,c:'#f7b955',t:'17 kJ pro Gramm – die schnell verfügbare Energie.'},
+                pr:{n:'Proteine',v:17,c:'#5fb2ff',t:'17 kJ pro Gramm – Proteine werden primär als Baustoff genutzt, nicht als Energie.'},
+                fe:{n:'Fette',v:39,c:'#ff8fd0',t:'39 kJ pro Gramm – mehr als DOPPELT so viel wie Kohlenhydrate oder Proteine! Fette sind die energiereichsten Nährstoffe.'}};
+  function draw(keys){
+    const max = 42;
+    $('#ebar').innerHTML = keys.map(k=>{
+      const d = data[k];
+      return '<div style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:5px">'+
+        '<span style="font-weight:600;color:#fff">'+d.n+'</span><span style="color:'+d.c+';font-weight:700;font-family:\'Space Grotesk Variable\',sans-serif">'+d.v+' kJ/g</span></div>'+
+        '<div style="height:14px;background:#1b2540;border-radius:99px;overflow:hidden"><i style="display:block;height:100%;width:0;background:'+d.c+';border-radius:99px;transition:width 1s cubic-bezier(.2,.9,.3,1)" data-w="'+(d.v/max*100)+'"></i></div></div>';
+    }).join('');
+    requestAnimationFrame(()=> $$('#ebar i').forEach(i=> i.style.width = i.dataset.w+'%'));
+    $('#etxt').innerHTML = '<span class="hl">'+data[keys[keys.length-1]].t+'</span>';
+  }
+  $$('[data-e]').forEach(b=> b.addEventListener('click',()=>{
+    const v = b.dataset.e;
+    draw(v==='all' ? ['kh','pr','fe'] : [v]);
+  }));
+  draw(['kh','pr','fe']);
+}
+
+/* ================================================================
+   MODULE 2 — KOHLENHYDRATE
+   ================================================================ */
+function m2(){
+  const body = `
+  <div class="card glow">
+    <span class="pill amber">AUFBAU</span>
+    <h2 style="margin-top:12px">Einfach – zweifach – vielfach</h2>
+    <p>Kohlenhydrate werden nach der Anzahl ihrer Bausteine in drei Gruppen unterteilt. Alle bestehen letztlich aus <strong>Einfachzucker-Bausteinen</strong>.</p>
+    <table>
+      <thead><tr><th>Gruppe</th><th>Beispiele</th><th>Besonderheit</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-c">Einfachzucker</span></td><td>Traubenzucker (Glukose), Fruchtzucker (Fruktose)</td><td>Kleinstes Teil – geht sofort ins Blut</td></tr>
+        <tr><td><span class="hl-a">Zweifachzucker</span></td><td>Kristallzucker (Saccharose), Malzzucker</td><td>Zwei Bausteine verbunden</td></tr>
+        <tr><td><span class="hl-s">Vielfachzucker</span></td><td>Stärke (pflanzlich), Glykogen (tierisch/Mensch), Cellulose</td><td>Lange Ketten aus vielen Einfachzuckern</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><b>Nicht verwechseln:</b> <b>Stärke</b> = pflanzlicher Speicher · <b>Glykogen</b> = menschlicher/tierischer Speicher (Leber + Muskeln) · <b>Cellulose</b> = Pflanzen-Baustoff, für uns unverdaulich → <b>Ballaststoff</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 2 · Zucker-Sortiermaschine</h2>
+    <p>Klicke einen Begriff an und dann die richtige Schublade. So prägt sich die Einteilung ein.</p>
+    <div class="lab">
+      <div id="pool" style="margin-bottom:16px"></div>
+      <div class="grid3">
+        <div class="bucket" data-g="einfach"><h4><span class="pill coral">1</span> Einfachzucker</h4><div class="drop"></div></div>
+        <div class="bucket" data-g="zwei"><h4><span class="pill amber">2</span> Zweifachzucker</h4><div class="drop"></div></div>
+        <div class="bucket" data-g="viel"><h4><span class="pill sky">V</span> Vielfachzucker</h4><div class="drop"></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:10px">
+        <p style="font-size:13px" id="sortmsg">Noch nichts sortiert.</p>
+        <button class="btn btn-sm btn-ghost" id="sortReset">↺ Neu mischen</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 3 · Der Blutzuckerspiegel</h2>
+    <p>Starte die Simulation: Was passiert nach <span class="hl-c">Gummibärchen</span> und nach <span class="hl-s">Vollkornbrot</span>?</p>
+    <div class="lab">
+      <svg viewBox="0 0 660 280" width="100%" style="display:block">
+        <defs>
+          <linearGradient id="gg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff7d7d" stop-opacity=".28"/><stop offset="100%" stop-color="#ff7d7d" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <line x1="56" y1="20" x2="56" y2="232" stroke="#33456e" stroke-width="1.5"/>
+        <line x1="56" y1="232" x2="640" y2="232" stroke="#33456e" stroke-width="1.5"/>
+        <line x1="56" y1="150" x2="640" y2="150" stroke="#25314f" stroke-width="1" stroke-dasharray="4 5"/>
+        <text x="14" y="120" class="lbl" transform="rotate(-90 14 120)" text-anchor="middle">Blutzuckerspiegel</text>
+        <text x="350" y="258" class="lbl" text-anchor="middle">Zeit nach der Mahlzeit (Minuten) →</text>
+        <text x="60" y="248" class="lbl" font-size="10">0</text>
+        <text x="196" y="248" class="lbl" font-size="10">30</text>
+        <text x="332" y="248" class="lbl" font-size="10">60</text>
+        <text x="468" y="248" class="lbl" font-size="10">120</text>
+        <text x="600" y="248" class="lbl" font-size="10">180</text>
+        <text x="34" y="154" class="lbl" font-size="10">normal</text>
+        <path id="curveA" d="M56,150 C 90,150 100,44 140,42 C 185,40 190,150 225,168 C 265,190 300,205 340,190 C 400,168 470,152 640,150"
+          fill="none" stroke="#ff7d7d" stroke-width="3.5" stroke-linecap="round"/>
+        <path id="curveB" d="M56,150 C 110,150 150,128 205,112 C 265,95 320,98 380,118 C 450,140 540,150 640,150"
+          fill="none" stroke="#5fb2ff" stroke-width="3.5" stroke-linecap="round"/>
+        <circle id="dotA" r="7" fill="#ff7d7d" cx="56" cy="150"/>
+        <circle id="dotB" r="7" fill="#5fb2ff" cx="56" cy="150"/>
+        <text x="150" y="30" font-size="12" fill="#ff7d7d" font-weight="700">Gummibärchen (Einfachzucker)</text>
+        <text x="392" y="92" font-size="12" fill="#5fb2ff" font-weight="700">Vollkornbrot (Stärke)</text>
+        <text x="288" y="216" font-size="11" fill="#ff9d9d">Unterzucker → Heisshunger</text>
+      </svg>
+      <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" id="bzPlay">▶ Kurven abspielen</button>
+        <button class="btn btn-sm btn-ghost" id="bzReset">↺ Zurücksetzen</button>
+      </div>
+      <div style="margin-top:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div class="readout" id="bzVal">–<small>relativer Blutzucker</small></div>
+        <p style="font-size:13.2px;flex:1;min-width:220px;color:#94a2c2" id="bzTxt">Drücke «abspielen» und beobachte den roten Punkt.</p>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:6px">
+      <div class="lab" style="margin:0;border-color:rgba(255,125,125,.35)">
+        <div class="lab-head"><span class="pill coral">EINFACHZUCKER</span><span class="lab-title">Gummibärchen</span></div>
+        <ul class="dot">
+          <li>Zucker geht <strong>sofort ins Blut</strong> → Spiegel schiesst steil hoch.</li>
+          <li>Energie ist <strong>sehr schnell wieder aufgebraucht</strong>.</li>
+          <li>Der Spiegel fällt <strong>unter den Normalwert</strong> → Heisshunger, Müdigkeit.</li>
+          <li>Für längere Anstrengung <strong>nicht geeignet</strong>.</li>
+        </ul>
+      </div>
+      <div class="lab" style="margin:0;border-color:rgba(95,178,255,.35)">
+        <div class="lab-head"><span class="pill sky">VIELFACHZUCKER</span><span class="lab-title">Brot / Teigwaren</span></div>
+        <ul class="dot">
+          <li>Lange Stärke-Ketten müssen erst von <strong>Amylase</strong> zerlegt werden.</li>
+          <li>Zucker gelangt <strong>langsam und stetig</strong> ins Blut.</li>
+          <li>Kein steiler Abfall → <strong>lange Energie</strong>, kein Heisshunger.</li>
+          <li>Deshalb essen Sportler vor dem Wettkampf <strong>Teigwaren, Kartoffeln oder Reis</strong>.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="examtip"><b>Prüfungs-Tipp:</b> «Warum versorgt Brot unseren Körper länger mit Energie als Gummibärchen?» → <b>Brot enthält Stärke (Vielfachzucker).</b> Die langen Ketten müssen erst in Einfachzucker zerlegt werden, deshalb steigt der Blutzuckerspiegel langsam und bleibt lange erhöht. Gummibärchen bestehen aus Einfachzucker, der sofort aufgenommen wird: kurzer Peak, schneller Abfall.</div>
+  </div>`;
+  return shell(MODULES[1], body);
+}
+function m2init(){
+  shellInit(MODULES[1]);
+  /* --- Sortiermaschine --- */
+  const ITEMS = [
+    {t:'Traubenzucker (Glukose)',g:'einfach'},{t:'Fruchtzucker (Fruktose)',g:'einfach'},
+    {t:'Kristallzucker (Saccharose)',g:'zwei'},{t:'Malzzucker',g:'zwei'},
+    {t:'Stärke',g:'viel'},{t:'Glykogen',g:'viel'},{t:'Cellulose',g:'viel'}
+  ];
+  let sel = null, placed = 0;
+  function renderPool(){
+    const order = [...ITEMS].sort(()=>Math.random()-.5);
+    $('#pool').innerHTML = order.map((it,i)=>'<button class="chip" data-i="'+ITEMS.indexOf(it)+'">'+it.t+'</button>').join('');
+    $$('#pool .chip').forEach(c=> c.addEventListener('click',()=>{
+      if(c.classList.contains('placed')) return;
+      $$('#pool .chip').forEach(x=>x.classList.remove('sel'));
+      c.classList.add('sel'); sel = c;
+    }));
+    $$('.bucket').forEach(b=>{
+      b.addEventListener('click',()=>{
+        if(!sel) return;
+        const it = ITEMS[+sel.dataset.i];
+        if(it.g===b.dataset.g){
+          b.classList.add('ok'); setTimeout(()=>b.classList.remove('ok'),600);
+          sel.classList.remove('sel'); sel.classList.add('placed'); sel.disabled=true;
+          b.querySelector('.drop').innerHTML += '<span class="chip placed" style="margin:0 4px 6px 0">'+it.t+' ✓</span>';
+          sel=null; placed++;
+          $('#sortmsg').innerHTML = placed+'/'+ITEMS.length+' korrekt sortiert'+(placed===ITEMS.length?' – <span class="hl">perfekt!</span>':' …');
+          if(placed===ITEMS.length) toast('🎉 Alle Zuckerarten richtig sortiert!');
+        } else {
+          b.classList.add('bad'); setTimeout(()=>b.classList.remove('bad'),450);
+          sel.classList.remove('sel'); sel=null;
+          $('#sortmsg').innerHTML = '<span class="hl-c">Falsch – Versuch es erneut.</span>';
+        }
+      });
+    });
+    sel=null; placed=0;
+    $('#sortmsg').textContent = 'Klicke einen Begriff an, dann die passende Schublade.';
+  }
+  renderPool();
+  $('#sortReset').addEventListener('click',()=>{ $$('.bucket .drop').forEach(d=>d.innerHTML=''); renderPool(); });
+
+  /* --- Blutzucker-Animation --- */
+  const A = $('#curveA'), B = $('#curveB'), dA = $('#dotA'), dB = $('#dotB');
+  let raf=null;
+  function prep(p){
+    const L = p.getTotalLength();
+    p.style.transition='none'; p.style.strokeDasharray=L; p.style.strokeDashoffset=L;
+    p.getBoundingClientRect();
+    p.style.transition='stroke-dashoffset 3.6s ease-in-out'; p.style.strokeDashoffset='0';
+    return L;
+  }
+  function resetCurves(){
+    if(raf) cancelAnimationFrame(raf);
+    [A,B].forEach(p=>{ p.style.transition='none'; p.style.strokeDasharray='none'; p.style.strokeDashoffset='0'; });
+    dA.setAttribute('cx',56); dA.setAttribute('cy',150);
+    dB.setAttribute('cx',56); dB.setAttribute('cy',150);
+    $('#bzVal').innerHTML='–<small>relativer Blutzucker</small>';
+    $('#bzTxt').textContent='Drücke «abspielen» und beobachte den roten Punkt.';
+  }
+  resetCurves(); A.style.strokeDasharray='none'; B.style.strokeDasharray='none';
+  $('#bzPlay').addEventListener('click',()=>{
+    resetCurves();
+    const LA = A.getTotalLength(), LB = B.getTotalLength();
+    prep(A); prep(B);
+    const t0 = performance.now(), dur = 3600;
+    const msgs = [
+      [0.06,'Nach dem Essen: Der Einfachzucker flutet das Blut …'],
+      [0.16,'⚡ Peak! Der Spiegel schiesst weit über den Normalwert.'],
+      [0.34,'Der Körper schüttet Insulin aus – der Zucker wird schnell abgebaut.'],
+      [0.55,'📉 Absturz: Der Spiegel fällt UNTER die Normallinie.'],
+      [0.72,'Folge: Heisshunger, Müdigkeit, Konzentrationsproblem.'],
+      [0.9,'Die Stärke-Kurve verläuft flach – Energie über Stunden.']
+    ];
+    let mi=0;
+    function frame(now){
+      const t = Math.min((now-t0)/dur,1);
+      const pa = A.getPointAtLength(LA*t), pb = B.getPointAtLength(LB*t);
+      dA.setAttribute('cx',pa.x); dA.setAttribute('cy',pa.y);
+      dB.setAttribute('cx',pb.x); dB.setAttribute('cy',pb.y);
+      const val = Math.round((150-pa.y)/150*100);
+      $('#bzVal').innerHTML = val+'<small>% (Einfachzucker)</small>';
+      while(mi<msgs.length && t>=msgs[mi][0]){ $('#bzTxt').textContent = msgs[mi][1]; mi++; }
+      if(t<1) raf=requestAnimationFrame(frame);
+      else $('#bzTxt').textContent='Fertig: Rot = schneller Peak + Absturz. Blau = flache, lang anhaltende Kurve.';
+    }
+    raf=requestAnimationFrame(frame);
+  });
+  $('#bzReset').addEventListener('click', resetCurves);
+}
+
+/* ================================================================
+   MODULE 3 — FETTE
+   ================================================================ */
+function m3(){
+  const body = `
+  <div class="card glow">
+    <span class="pill pink">AUFBAU</span>
+    <h2 style="margin-top:12px">Woraus besteht ein Fett?</h2>
+    <p>Chemisch gesehen bestehen Fette aus den Grundbausteinen <strong>Glycerin</strong> und <strong>drei Fettsäuren</strong>. Es gibt viele verschiedene Fette – sie unterscheiden sich in der <strong>Länge der Fettsäuren</strong>. Fette können fest, halbfest oder flüssig sein, tierisch oder pflanzlich.</p>
+    <div class="lab" style="text-align:center">
+      <svg viewBox="0 0 460 210" width="100%" style="max-width:460px">
+        <rect x="196" y="20" width="66" height="170" rx="14" fill="#f7b95522" stroke="#f7b955" stroke-width="2"/>
+        <text x="229" y="112" class="lbl-b" text-anchor="middle" transform="rotate(-90 229 112)">GLYCERIN</text>
+        ${[40,105,170].map((y,i)=>{
+          const cols=['#ff8fd0','#5fb2ff','#46e39a'];
+          return '<path d="M262,'+y+' q 22,-16 44,0 t 44,0 t 44,0" fill="none" stroke="'+cols[i]+'" stroke-width="5" stroke-linecap="round"/>'+
+                 '<circle cx="196" cy="'+y+'" r="7" fill="'+cols[i]+'"/>'+
+                 '<text x="352" y="'+(y+4)+'" font-size="11" fill="'+cols[i]+'" font-weight="700">Fettsäure '+(i+1)+'</text>';
+        }).join('')}
+        <text x="229" y="205" class="lbl" text-anchor="middle" font-size="10.5">1 Glycerin + 3 Fettsäuren = 1 Fett-Molekül</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Essenzielle Fettsäuren</h2>
+    <p>Gewisse Fettsäuren sind <strong>lebensnotwendig</strong> – man nennt sie <span class="hl">essenziell</span>. Der menschliche Körper kann sie <strong>nicht selbst herstellen</strong>, deshalb müssen wir sie mit der Nahrung aufnehmen.</p>
+    <div class="grid2" style="margin-top:14px">
+      <div class="stat" style="text-align:left;padding:18px;border-left:3px solid #46e39a">
+        <b style="font-size:16px">Omega-3-Fettsäuren</b>
+        <p style="font-size:13px;margin-top:5px">Essenziell · wichtige <strong>Baustoffe für unsere Zellen</strong> (z. B. in Fisch, Leinöl, Walnüssen).</p>
+      </div>
+      <div class="stat" style="text-align:left;padding:18px;border-left:3px solid #f7b955">
+        <b style="font-size:16px">Omega-6-Fettsäuren</b>
+        <p style="font-size:13px;margin-top:5px">Essenziell · ebenfalls Baustoffe für Zellen (z. B. in Pflanzenölen).</p>
+      </div>
+    </div>
+    <div class="note"><b>Das Wort «essenziell» gilt auch bei Aminosäuren:</b> essenziell = <b>muss über die Nahrung aufgenommen werden</b>, weil der Körper es nicht selbst bauen kann.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 4 · Fette als Vitamin-Taxi</h2>
+    <p>Die Vitamine <strong>A, D, E und K</strong> sind <span class="hl-a">fettlöslich</span>. Schalte das Fett in der Mahlzeit aus – und beobachte, was mit den Vitaminen passiert.</p>
+    <div class="lab">
+      <svg viewBox="0 0 620 210" width="100%" id="taxiSvg">
+        <rect x="0" y="150" width="620" height="60" rx="10" fill="#101a2e" stroke="#25314f"/>
+        <text x="18" y="185" class="lbl" font-size="10.5">Darmwand → Blut</text>
+        <g id="taxiFat">
+          <ellipse cx="120" cy="80" rx="52" ry="34" fill="#f7b95533" stroke="#f7b955" stroke-width="2.5"/>
+          <text x="120" y="86" text-anchor="middle" font-size="12" fill="#f7b955" font-weight="700">FETT</text>
+        </g>
+        <g id="vitamins">
+          ${[['A',150,42,'#46e39a'],['D',186,66,'#5fb2ff'],['E',150,104,'#a98bff'],['K',110,52,'#ff8fd0']].map(v=>
+            '<g class="vit" data-x="'+v[1]+'" data-y="'+v[2]+'"><circle cx="'+v[1]+'" cy="'+v[2]+'" r="15" fill="'+v[3]+'22" stroke="'+v[3]+'" stroke-width="2"/>'+
+            '<text x="'+v[1]+'" y="'+(v[2]+5)+'" text-anchor="middle" font-size="13" fill="'+v[3]+'" font-weight="700">'+v[0]+'</text></g>').join('')}
+        </g>
+        <path id="taxiPath" d="M170,90 C 280,90 340,150 430,175 C 500,192 560,190 610,188" fill="none" stroke="#25314f" stroke-width="2" stroke-dasharray="6 6"/>
+        <text x="330" y="42" class="lbl-b" font-size="12">Mit Fett: Vitamine A · D · E · K werden aufgenommen ✓</text>
+        <text x="330" y="62" class="lbl" font-size="11">Das Fett transportiert die fettlöslichen Vitamine ins Blut.</text>
+      </svg>
+      <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-amber" id="fatOn">🥑 Mahlzeit MIT Fett</button>
+        <button class="btn btn-sm btn-ghost" id="fatOff">🚫 Mahlzeit OHNE Fett</button>
+      </div>
+      <p style="font-size:13.3px;margin-top:13px;color:#94a2c2" id="taxiTxt">Wähle eine Variante …</p>
+    </div>
+    <div class="examtip"><b>Prüfungsfrage:</b> «Warum ist eine fettfreie Ernährung gefährlich?» → <b>1)</b> Essentielle Fettsäuren (Omega-3, Omega-6) fehlen: Sie sind lebenswichtige Baustoffe für Zellen und können nicht selbst hergestellt werden. <b>2)</b> Die fettlöslichen Vitamine A, D, E und K können ohne Fett nicht aufgenommen werden → Mangelerscheinungen.</div>
+  </div>
+
+  <div class="card">
+    <h2>Aufgaben des Fettgewebes</h2>
+    <p>Der Körper speichert Fette in <strong>Fettzellen</strong>, die sich zu <strong>Fettgewebe</strong> zusammenschliessen. Klicke jede Aufgabe an:</p>
+    <div class="grid2" style="margin-top:14px" id="fatTasks"></div>
+    <div class="note"><b>Zusätzlich wichtig:</b> Aus 1 g Fett gewinnt der Körper <b>mehr als doppelt so viel Energie</b> wie aus 1 g Proteinen oder 1 g Kohlenhydraten (39 kJ statt 17 kJ). Fette sind die <b>energiereichsten Nährstoffe</b>.</div>
+  </div>`;
+  return shell(MODULES[2], body);
+}
+function m3init(){
+  shellInit(MODULES[2]);
+  const TASKS = [
+    {e:'🔋',t:'Energiespeicher',d:'Fettreserven werden bei Bedarf aus den Fettzellen abgebaut, um den Körper mit Energie zu versorgen – z. B. zwischen Mahlzeiten oder beim Fasten.'},
+    {e:'🧣',t:'Kälteschutz',d:'Das Fettgewebe schützt unseren Körper vor Kälte – wie eine isolierende Schicht unter der Haut.'},
+    {e:'🛡️',t:'Polster für Organe',d:'Das Fettgewebe polstert unsere inneren Organe und schützt sie so vor Stössen und Druck.'},
+    {e:'🚕',t:'Vitamin-Transport',d:'Fette dienen als «Taxi» für die fettlöslichen Vitamine A, D, E und K und sorgen dafür, dass diese aufgenommen werden können.'}
+  ];
+  $('#fatTasks').innerHTML = TASKS.map((x,i)=>
+    '<div class="lab" style="margin:0;cursor:pointer" data-f="'+i+'">'+
+    '<div class="lab-head" style="margin-bottom:6px"><span style="font-size:22px">'+x.e+'</span><span class="lab-title">'+x.t+'</span><span class="lab-sub" style="color:#46e39a">+ antippen</span></div>'+
+    '<p class="fd" style="font-size:13.4px;display:none">'+x.d+'</p></div>').join('');
+  $$('[data-f]').forEach(el=> el.addEventListener('click',()=>{
+    const p = el.querySelector('.fd'); const on = p.style.display==='block';
+    $$('[data-f] .fd').forEach(x=>x.style.display='none');
+    $$('[data-f]').forEach(x=>x.style.borderColor='');
+    if(!on){ p.style.display='block'; el.style.borderColor='rgba(70,227,154,.5)'; }
+  }));
+
+  const vits = $$('#vitamins .vit');
+  let raf=null;
+  function withFat(){
+    if(raf) cancelAnimationFrame(raf);
+    const path = $('#taxiPath'); const L = path.getTotalLength();
+    path.setAttribute('stroke','#46e39a'); path.setAttribute('stroke-dasharray','none');
+    $('#taxiFat').style.transition='.4s'; $('#taxiFat').style.opacity='1';
+    vits.forEach(v=>{ v.style.transition='opacity .3s'; v.style.opacity='1'; });
+    const t0=performance.now();
+    function f(now){
+      const t=Math.min((now-t0)/2400,1);
+      vits.forEach((v,i)=>{
+        const tt = Math.max(0, Math.min(1, t*1.15 - i*0.03));
+        const p2 = path.getPointAtLength(L*tt);
+        const c = v.querySelector('circle'), tx = v.querySelector('text');
+        c.setAttribute('cx',p2.x); c.setAttribute('cy',p2.y);
+        tx.setAttribute('x',p2.x); tx.setAttribute('y',p2.y+5);
+        v.style.opacity = t>0.93 ? String(1-(t-0.93)/0.07) : '1';
+      });
+      if(t<1) raf=requestAnimationFrame(f);
+      else setTimeout(withFat, 900);
+    }
+    raf=requestAnimationFrame(f);
+    $('#taxiTxt').innerHTML='<span class="hl">Mit Fett:</span> Die Vitamine A, D, E und K steigen ins «Taxi» und gelangen durch die Darmwand ins Blut. Der Körper ist versorgt.';
+  }
+  function noFat(){
+    if(raf) cancelAnimationFrame(raf);
+    const path = $('#taxiPath'); path.setAttribute('stroke','#ff7d7d'); path.setAttribute('stroke-dasharray','4 8');
+    $('#taxiFat').style.opacity='.15';
+    vits.forEach((v,i)=>{
+      const x=+v.dataset.x, y=+v.dataset.y;
+      const c=v.querySelector('circle'), tx=v.querySelector('text');
+      c.style.transition='transform .8s cubic-bezier(.4,0,.2,1) '+(i*0.08)+'s';
+      tx.style.transition='transform .8s cubic-bezier(.4,0,.2,1) '+(i*0.08)+'s';
+      c.style.transform='translateY(56px)'; tx.style.transform='translateY(56px)';
+      v.style.opacity='.55';
+    });
+    $('#taxiTxt').innerHTML='<span class="hl-c">Ohne Fett:</span> Die fettlöslichen Vitamine können nicht aufgenommen werden – sie werden ungenutzt ausgeschieden. Langfristig drohen Mangelerscheinungen.';
+  }
+  $('#fatOn').addEventListener('click',()=>{ vits.forEach(v=>{const c=v.querySelector('circle'),t=v.querySelector('text');c.style.transition='none';t.style.transition='none';c.style.transform='none';t.style.transform='none';}); setTimeout(withFat,60); });
+  $('#fatOff').addEventListener('click', noFat);
+  withFat();
+}
+
+/* ================================================================
+   MODULE 4 — PROTEINE
+   ================================================================ */
+function m4(){
+  const body = `
+  <div class="card glow">
+    <span class="pill sky">AUFBAU</span>
+    <h2 style="margin-top:12px">Proteine sind wie Perlenketten</h2>
+    <p>Unser Körper besteht zu grossen Teilen aus Proteinen (Eiweissen). Jedes Protein ähnelt im Bau einer <strong>Perlenkette</strong>. Die «Perlen» heissen <span class="hl-s">Aminosäuren</span> – sie sind die <strong>Grundbausteine der Proteine</strong>.</p>
+    <div class="grid4" style="margin-top:16px">
+      <div class="stat"><div class="v" style="color:#5fb2ff">20</div><div class="l">verschiedene Aminosäuren</div></div>
+      <div class="stat"><div class="v" style="color:#46e39a">8</div><div class="l">davon essenziell</div></div>
+      <div class="stat"><div class="v" style="color:#f7b955">3D</div><div class="l">gefaltete Form</div></div>
+      <div class="stat"><div class="v" style="color:#ff8fd0">∞</div><div class="l">mögliche Kombinationen</div></div>
+    </div>
+    <div class="note"><b>Essenzielle Aminosäuren:</b> 8 der 20 Aminosäuren sind lebenswichtig und können <b>nicht im Körper gebildet werden</b>. Wie die essenziellen Fettsäuren müssen wir sie <b>mit der Nahrung aufnehmen</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 5 · Protein-Fabrik</h2>
+    <p>Ein Protein besteht aus einer unterschiedlich langen Kette von aneinandergereihten Aminosäuren – und es ist <strong>gefaltet</strong>. Nur in dieser dreidimensionalen Form kann es seine Aufgabe übernehmen. Baue dein eigenes Protein:</p>
+    <div class="lab">
+      <svg viewBox="0 0 640 190" width="100%" id="pSvg">
+        <g id="pChain"></g>
+      </svg>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:10px">
+        <button class="btn btn-sm btn-primary" id="pBuild">🎲 Neues Protein bauen</button>
+        <button class="btn btn-sm" id="pFold">🌀 Kette falten (3D-Form)</button>
+      </div>
+      <div id="pOut" style="margin-top:14px;font-size:13.6px;color:#94a2c2">Klicke auf «bauen» …</div>
+    </div>
+    <div class="examtip"><b>Prüfungsfrage:</b> «Antikörper (Abwehrstoffe) und Keratine (Haarproteine) sind beides Proteine – warum haben sie unterschiedliche Aufgaben?» → Weil sie aus <b>unterschiedlichen Aminosäure-Ketten</b> bestehen und sich <b>unterschiedlich falten</b>. Die dreidimensionale Form bestimmt die Aufgabe – wie bei Werkzeugen: gleiche Bausteine, andere Form, andere Funktion.</div>
+  </div>
+
+  <div class="card">
+    <h2>Aufgaben der Proteine im Körper</h2>
+    <p>Proteine übernehmen ganz unterschiedliche Aufgaben:</p>
+    <ul class="tick" style="margin-top:14px">
+      <li><strong>Baustoff / Gerüst:</strong> Haut, Sehnen und Bänder</li>
+      <li><strong>Bewegung:</strong> verantwortlich für die Bewegung der Muskeln</li>
+      <li><strong>Transport:</strong> Sauerstofftransport im Blut</li>
+      <li><strong>Botenstoffe:</strong> Hormone</li>
+      <li><strong>Abwehr:</strong> Antikörper (Abwehrstoffe)</li>
+      <li><strong>Blutgerinnung:</strong> verschliessen Wunden</li>
+      <li><strong>Enzyme:</strong> steuern und beschleunigen die Stoffumwandlungen in den Zellen</li>
+    </ul>
+    <div class="note"><b>Wichtig:</b> <b>Enzyme sind Proteine!</b> Sie sind z. B. an der chemischen Umwandlung von Traubenzucker und am Abbau von Alkohol beteiligt.</div>
+  </div>`;
+  return shell(MODULES[3], body);
+}
+function m4init(){
+  shellInit(MODULES[3]);
+  const COLS = ['#5fb2ff','#46e39a','#f7b955','#ff8fd0','#a98bff','#ff7d7d'];
+  const ROLES = [
+    {n:'Antikörper',d:'Abwehrstoff – erkennt und bekämpft Krankheitserreger.',e:'🛡️'},
+    {n:'Keratin',d:'Haarprotein – bildet Haare, Nägel und die oberste Hautschicht.',e:'💇'},
+    {n:'Hämoglobin',d:'Transportprotein – befördert Sauerstoff im Blut.',e:'🩸'},
+    {n:'Enzym',d:'Biologischer Katalysator – beschleunigt Stoffumwandlungen.',e:'⚗️'},
+    {n:'Hormon',d:'Botenstoff – überträgt Signale im Körper.',e:'📨'},
+    {n:'Muskelprotein',d:'Baustoff – sorgt für die Bewegung der Muskeln.',e:'💪'}
+  ];
+  let chain=[], folded=false, role=null;
+  function draw(){
+    const g = $('#pChain');
+    if(!chain.length){ g.innerHTML=''; return; }
+    let inner='';
+    if(!folded){
+      const step = Math.min(34, 600/(chain.length+1));
+      const x0 = 20;
+      chain.forEach((c,i)=>{
+        const x=x0+step*(i+0.6);
+        if(i>0) inner+='<line x1="'+(x-step)+'" y1="95" x2="'+x+'" y2="95" stroke="#33456e" stroke-width="3"/>';
+        inner+='<circle cx="'+x+'" cy="95" r="12" fill="'+c+'33" stroke="'+c+'" stroke-width="2.5"><animate attributeName="r" from="0" to="12" dur=".35s" begin="'+(i*0.05)+'s" fill="freeze"/></circle>';
+        inner+='<circle cx="'+x+'" cy="95" r="3.5" fill="'+c+'"/>';
+      });
+      inner+='<text x="320" y="150" class="lbl" text-anchor="middle" font-size="11.5">gerade Aminosäure-Kette ('+chain.length+' Perlen = '+chain.length+' Aminosäuren)</text>';
+      inner+='<text x="320" y="170" class="lbl" text-anchor="middle" font-size="11" fill="#6c7a99">So liegt sie noch nicht in der Zelle vor – erst falten!</text>';
+    } else {
+      let pts=[];
+      const cx=320, cy=90;
+      chain.forEach((c,i)=>{
+        const a = i*0.85;
+        const r = 12 + i*3.1;
+        pts.push([cx+Math.cos(a)*r, cy+Math.sin(a)*r*0.72]);
+      });
+      pts.forEach((p,i)=>{
+        if(i>0) inner+='<line x1="'+pts[i-1][0]+'" y1="'+pts[i-1][1]+'" x2="'+p[0]+'" y2="'+p[1]+'" stroke="#33456e" stroke-width="2.5"/>';
+      });
+      pts.forEach((p,i)=>{
+        inner+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="10" fill="'+chain[i]+'33" stroke="'+chain[i]+'" stroke-width="2.5"/>';
+        inner+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="'+chain[i]+'"/>';
+      });
+      inner+='<text x="320" y="178" class="lbl-b" text-anchor="middle" font-size="12" fill="#46e39a">✓ Gefaltete, dreidimensionale Form – das Protein kann seine Aufgabe übernehmen</text>';
+    }
+    g.innerHTML = inner;
+  }
+  $('#pBuild').addEventListener('click',()=>{
+    folded=false;
+    const len = 6+Math.floor(Math.random()*7);
+    chain = Array.from({length:len},()=>COLS[Math.floor(Math.random()*COLS.length)]);
+    role = ROLES[Math.floor(Math.random()*ROLES.length)];
+    draw();
+    $('#pOut').innerHTML='Neue Kette aus <b style="color:#5fb2ff">'+len+' Aminosäuren</b> gebaut. Noch ist sie gerade – <b>falte sie</b>, damit sie funktionsfähig wird.';
+  });
+  $('#pFold').addEventListener('click',()=>{
+    if(!chain.length){ toast('Baue zuerst ein Protein!'); return; }
+    folded=true; draw();
+    $('#pOut').innerHTML='<span class="hl">'+role.e+' Ergebnis: '+role.n+'</span><br>'+role.d+
+      '<br><span style="color:#6c7a99;font-size:12.6px">Die Faltung (= 3D-Form) entscheidet, welche Aufgabe das Protein übernimmt.</span>';
+  });
+  $('#pBuild').click();
+}
+
+/* ================================================================
+   MODULE 5 — ENZYME
+   ================================================================ */
+function m5(){
+  const body = `
+  <div class="card glow">
+    <span class="pill mint">DEFINITION</span>
+    <h2 style="margin-top:12px">Enzyme = biologische Katalysatoren</h2>
+    <p>Enzyme sind <strong>besondere Proteine</strong>. Sie steuern und <strong>beschleunigen die Stoffumwandlungen</strong> in unseren Zellen. Eine Gemeinsamkeit aller Enzyme: sie <span class="hl">senken die Aktivierungsenergie</span> von chemischen Reaktionen – es braucht also weniger Energie, um eine Reaktion in Gang zu setzen.</p>
+    <div class="grid3" style="margin-top:16px">
+      <div class="stat" style="text-align:left;padding:17px"><b style="font-size:14px;color:#46e39a">① Senken die Aktivierungsenergie</b><p style="font-size:12.9px;margin-top:5px">So reicht die <strong>Körpertemperatur</strong> aus, um Reaktionen zu aktivieren.</p></div>
+      <div class="stat" style="text-align:left;padding:17px"><b style="font-size:14px;color:#5fb2ff">② Werden nicht verbraucht</b><p style="font-size:12.9px;margin-top:5px">Sie liegen nach der Reaktion <strong>unverändert</strong> wieder vor und können erneut arbeiten.</p></div>
+      <div class="stat" style="text-align:left;padding:17px"><b style="font-size:14px;color:#f7b955">③ Schlüssel-Schloss-Prinzip</b><p style="font-size:12.9px;margin-top:5px">Jedes Enzym zerlegt <strong>nur einen bestimmten Nährstoff</strong>.</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 6 · Energiemodell – der Berg wird kleiner</h2>
+    <p>Die Wirkung von Katalysatoren lässt sich mit einem Energiemodell zeigen: Mit Enzym muss die Kugel einen <strong>weniger grossen Berg</strong> hinaufgerollt werden.</p>
+    <div class="lab">
+      <svg viewBox="0 0 640 240" width="100%">
+        <line x1="20" y1="200" x2="620" y2="200" stroke="#33456e" stroke-width="1.5"/>
+        <path id="hillNo" d="M20,200 C 140,200 180,40 320,40 C 460,40 500,200 620,200" fill="none" stroke="#ff7d7d" stroke-width="3" stroke-dasharray="7 6" opacity=".9"/>
+        <path id="hillEnz" d="M20,200 C 160,200 210,130 320,130 C 430,130 480,200 620,200" fill="none" stroke="#46e39a" stroke-width="3.5"/>
+        <circle id="ball" r="11" fill="#f7b955" cx="20" cy="200"/>
+        <text x="320" y="28" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#ff7d7d">OHNE Enzym: hoher Energieberg</text>
+        <text x="320" y="118" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#46e39a">MIT Enzym: kleinerer Berg</text>
+        <text x="30" y="224" class="lbl" font-size="10.5">Ausgangsstoff (z. B. Stärke)</text>
+        <text x="612" y="224" class="lbl" font-size="10.5" text-anchor="end">Endstoff (z. B. Malzzucker)</text>
+      </svg>
+      <div style="display:flex;gap:9px;margin-top:12px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-ghost" id="ballNo">🔴 Ohne Enzym rollen</button>
+        <button class="btn btn-sm btn-primary" id="ballEnz">🟢 Mit Enzym rollen</button>
+      </div>
+      <p style="font-size:13.3px;margin-top:12px;color:#94a2c2" id="ballTxt">Ohne Enzym braucht es sehr viel Energie (der Berg ist hoch) – unsere Körpertemperatur reicht dafür nicht. Mit Enzym wird der Berg kleiner: die Reaktion läuft bei 37 °C ab.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 7 · Schlüssel-Schloss-Prinzip</h2>
+    <p>So wie ein Schlüssel nur ein bestimmtes Schloss öffnet, zerlegt ein Enzym nur einen bestimmten Nährstoff. Wähle ein Enzym und starte die Reaktion:</p>
+    <div class="lab">
+      <div style="display:flex;gap:9px;margin-bottom:18px;flex-wrap:wrap">
+        <button class="btn btn-sm" data-enz="amylase">Amylase (Speichel)</button>
+        <button class="btn btn-sm" data-enz="pepsin">Pepsin (Magen)</button>
+      </div>
+      <svg viewBox="0 0 640 180" width="100%">
+        <g id="lkSub"></g>
+        <g id="lkEnz"></g>
+        <g id="lkProd"></g>
+      </svg>
+      <div style="display:flex;gap:9px;margin-top:10px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" id="lkRun">▶ Reaktion starten</button>
+        <button class="btn btn-sm btn-ghost" id="lkWrong">🚫 Falsches Enzym zeigen</button>
+      </div>
+      <div id="lkTxt" style="margin-top:13px;font-size:13.5px;color:#94a2c2"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Die zwei wichtigsten Verdauungsenzyme</h2>
+    <div class="grid2" style="margin-top:14px">
+      <div class="lab" style="margin:0;border-color:rgba(247,185,85,.35)">
+        <div class="lab-head"><span class="pill amber">MUND</span><span class="lab-title">Amylase</span></div>
+        <ul class="dot">
+          <li>Wird von den <strong>Speicheldrüsen</strong> produziert und mit dem Speichel abgegeben.</li>
+          <li>Zerlegt den Vielfachzucker <strong>Stärke</strong> zum Zweifachzucker <strong>Malzzucker</strong>.</li>
+          <li>Wirkt schon beim Kauen im Mund.</li>
+        </ul>
+      </div>
+      <div class="lab" style="margin:0;border-color:rgba(95,178,255,.35)">
+        <div class="lab-head"><span class="pill sky">MAGEN</span><span class="lab-title">Pepsin</span></div>
+        <ul class="dot">
+          <li>Bestandteil des <strong>Magensafts</strong> (neben Salzsäure und Schleim), gebildet von den Zellen der Magenschleimhaut.</li>
+          <li>Sorgt zusammen mit der <strong>Salzsäure</strong> für die chemische Zerlegung der <strong>Proteine</strong>.</li>
+          <li>Der <strong>Schleim schützt</strong> die körpereigenen Proteine des Magens vor Zerstörung durch Salzsäure und Pepsin.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="examtip"><b>Prüfungsfrage:</b> «Ohne Verdauungsenzyme könnten wir essen, würden aber trotzdem hungern.» → Ohne Enzyme werden Kohlenhydrate, Fette und Proteine <b>nicht in ihre Grundbausteine zerlegt</b> (Einfachzucker, Aminosäuren, Fettsäuren, Glycerin). Nur diese kleinen Bausteine können durch die Dünndarmwand ins Blut gelangen (<b>Resorption</b>). Grosse Moleküle bleiben unverdaut und werden ausgeschieden – der Körper bekommt also weder Baustoffe noch Energie.</div>
+  </div>`;
+  return shell(MODULES[4], body);
+}
+function m5init(){
+  shellInit(MODULES[4]);
+  /* --- Energiemodell --- */
+  let raf=null;
+  function roll(withEnz){
+    if(raf) cancelAnimationFrame(raf);
+    const path = withEnz ? $('#hillEnz') : $('#hillNo');
+    const ball = $('#ball');
+    const L = path.getTotalLength();
+    const dur = withEnz ? 1800 : 3600;
+    const t0 = performance.now();
+    $('#ballTxt').innerHTML = withEnz
+      ? '<span class="hl">Mit Enzym:</span> Die Aktivierungsenergie ist gesenkt – die Kugel rollt schnell und mühelos über den kleinen Berg. Die Körpertemperatur reicht aus.'
+      : '<span class="hl-c">Ohne Enzym:</span> Die Kugel muss den hohen Berg hinauf – das dauert lange und braucht viel Energie, die der Körper bei 37 °C nicht aufbringen kann.';
+    function f(now){
+      const t = Math.min((now-t0)/dur,1);
+      const e = t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+      const p = path.getPointAtLength(L*e);
+      ball.setAttribute('cx',p.x); ball.setAttribute('cy',p.y-11);
+      ball.setAttribute('fill', withEnz?'#46e39a':'#ff7d7d');
+      if(t<1) raf=requestAnimationFrame(f);
+    }
+    raf=requestAnimationFrame(f);
+  }
+  $('#ballNo').addEventListener('click',()=>roll(false));
+  $('#ballEnz').addEventListener('click',()=>roll(true));
+
+  /* --- Schlüssel-Schloss --- */
+  const ENZ = {
+    amylase:{
+      name:'Amylase', place:'Speichel / Mund',
+      sub:{label:'Stärke (Vielfachzucker)', blocks:5, col:'#f7b955'},
+      prod:{label:'Malzzucker (Zweifachzucker)', parts:[2,3], col:'#46e39a'},
+      txt:'<span class="hl">Amylase passt exakt zur Stärke.</span> Die lange Kette aus Einfachzuckern wird zerlegt – es entstehen Zweifachzucker (Malzzucker). Das Enzym bleibt dabei unverändert und kann sofort weiterarbeiten.'
+    },
+    pepsin:{
+      name:'Pepsin', place:'Magen (mit Salzsäure)',
+      sub:{label:'Protein (Aminosäure-Kette)', blocks:6, col:'#5fb2ff'},
+      prod:{label:'Aminosäuren', parts:[1,1,1,1,1,1], col:'#a98bff'},
+      txt:'<span class="hl">Pepsin passt zu Proteinen.</span> Zusammen mit der Salzsäure zerlegt es die Aminosäure-Ketten in einzelne Aminosäuren – die Grundbausteine.'
+    }
+  };
+  let cur = 'amylase';
+  function drawLock(){
+    const e = ENZ[cur];
+    const n = e.sub.blocks;
+    const w = 42, gap=4;
+    const totalW = n*(w+gap)-gap;
+    const x0 = 90;
+    let sub='';
+    for(let i=0;i<n;i++){
+      const x = x0+i*(w+gap);
+      sub+='<rect x="'+x+'" y="66" width="'+w+'" height="40" rx="9" fill="'+e.sub.col+'22" stroke="'+e.sub.col+'" stroke-width="2"/>';
+    }
+    sub+='<text x="'+(x0+totalW/2)+'" y="52" class="lbl-b" text-anchor="middle" font-size="12">'+e.sub.label+'</text>';
+    $('#lkSub').innerHTML = sub;
+    $('#lkEnz').innerHTML =
+      '<g id="lkEnzG">'+
+      '<path d="M360,14 l34,0 l0,20 l-12,10 l0,26 l-20,0 l0,-26 l-14,-10 z" fill="#46e39a22" stroke="#46e39a" stroke-width="2.5"/>'+
+      '<text x="377" y="86" text-anchor="middle" font-size="11.5" fill="#46e39a" font-weight="700">'+e.name+'</text></g>';
+    $('#lkProd').innerHTML='';
+    $('#lkTxt').innerHTML='<b style="color:#fff">'+e.name+'</b> · Ort: '+e.place+'. Drücke «Reaktion starten».';
+  }
+  $$('[data-enz]').forEach(b=> b.addEventListener('click',()=>{ cur=b.dataset.enz; drawLock(); }));
+  $('#lkRun').addEventListener('click',()=>{
+    const e = ENZ[cur];
+    const g = $('#lkEnzG');
+    g.style.transition='transform .8s cubic-bezier(.4,0,.2,1)';
+    g.style.transform='translate(-190px,0)';
+    setTimeout(()=>{
+      $('#lkSub').style.transition='opacity .4s'; $('#lkSub').style.opacity='0';
+      const parts = e.prod.parts;
+      const w=42, gap=6;
+      const totalW = parts.reduce((a,b)=>a+b,0)*(w+gap)-gap;
+      let x = 90, out='';
+      parts.forEach((cnt,pi)=>{
+        for(let i=0;i<cnt;i++){
+          out+='<rect x="'+x+'" y="66" width="'+w+'" height="40" rx="9" fill="'+e.prod.col+'22" stroke="'+e.prod.col+'" stroke-width="2"><animate attributeName="opacity" from="0" to="1" dur=".4s" fill="freeze"/></rect>';
+          x+=w+gap;
+        }
+        x+=8;
+      });
+      out+='<text x="'+(90+totalW/2)+'" y="52" class="lbl-b" text-anchor="middle" font-size="12" fill="'+e.prod.col+'">'+e.prod.label+'</text>';
+      setTimeout(()=>{ $('#lkProd').innerHTML=out; $('#lkSub').style.opacity='.12'; },150);
+      g.style.transform='translate(0,0)';
+      $('#lkTxt').innerHTML = e.txt;
+      toast('⚗️ '+e.name+' hat zerlegt – Enzym bleibt unverändert!');
+    },800);
+  });
+  $('#lkWrong').addEventListener('click',()=>{
+    const g = $('#lkEnzG');
+    g.style.transition='transform .5s cubic-bezier(.4,0,.2,1)';
+    g.style.transform='translate(-190px,0)';
+    setTimeout(()=>{
+      g.style.transform='translate(-190px,-16px) rotate(-14deg)';
+      $('#lkTxt').innerHTML='<span class="hl-c">Passt nicht!</span> Das aktive Zentrum des Enzyms hat keine passende Form für diesen Nährstoff – wie ein falscher Schlüssel vor dem Schloss. Es findet <b>keine Reaktion</b> statt. Das Enzym zieht weiter zum passenden Partner.';
+      setTimeout(()=>{ g.style.transform='translate(0,0) rotate(0deg)'; },1400);
+    },500);
+  });
+  drawLock();
+}
+
+/* ================================================================
+   MODULE 6 — VERDAUUNGSWEG
+   ================================================================ */
+function m6(){
+  const S = [
+    {i:'👄',n:'Mund',t:'Mechanische + chemische Zerlegung',
+     d:['Die Verdauung beginnt im Mund: Die Nahrung wird durch <b>Kauen mechanisch zerkleinert</b> und von der Zunge hin und her bewegt.','Mit <b>Speichel</b> vermischt → der Brei wird für die Verdauung vorbereitet.','Der Speichel enthält das Verdauungsenzym <b>Amylase</b>: zerlegt Stärke (Vielfachzucker) zu Malzzucker (Zweifachzucker).','<b>Gut gekaut ist halb verdaut.</b>']},
+    {i:'🫁',n:'Rachen & Kehldeckel',t:'Schlucken ohne Verschlucken',
+     d:['Beim Schlucken wird die <b>Luftröhre durch den Kehldeckel verschlossen</b>.','So wird verhindert, dass man sich verschluckt und Nahrung in die Atemwege gelangt.']},
+    {i:'⬇️',n:'Speiseröhre',t:'Förderband zum Magen',
+     d:['Die gekaute Nahrung gelangt über die Speiseröhre in den Magen.','<b>Muskelwände</b> drücken den Brei wellenförmig weiter – deshalb funktioniert Schlucken auch im Handstand!']},
+    {i:'🧪',n:'Magen',t:'Durchmischen, desinfizieren, Proteine spalten',
+     d:['Der Nahrungsbrei wird <b>durchmischt und geknetet</b> (mechanische Verdauung).','Die Innenwand ist von der <b>Magenschleimhaut</b> bedeckt; ihre Zellen bilden den <b>Magensaft</b> aus: <b>Salzsäure + Schleim + Pepsin</b>.','<b>Salzsäure</b> vernichtet schädliche Bakterien aus der Nahrung.','<b>Pepsin</b> sorgt zusammen mit der Salzsäure für die chemische Zerlegung der <b>Proteine</b>.','<b>Schleim schützt</b> die körpereigenen Proteine des Magens vor Zerstörung.','Am <b>Pförtner</b> wird der Mageninhalt in kleinen Portionen an den Dünndarm abgegeben.','<b>Verweildauer:</b> bis zu 8 Stunden – <b>fettreiche Nahrung verzögert die Entleerung</b> (der Magen liegt «schwer»).']},
+    {i:'🟢',n:'Zwölffingerdarm',t:'Galle trifft Fett',
+     d:['Der erste Abschnitt des vier bis sechs Meter langen Dünndarms.','Hier hilft die <b>Gallenflüssigkeit (Galle)</b> bei der Verdauung der Fette.','Galle wird in der <b>Leber gebildet</b> → fliesst über den Gallengang in die <b>Gallenblase</b> → wird dort gesammelt → bei Bedarf in den Zwölffingerdarm ausgeschüttet.','Sie <b>zerteilt grosse Fetttropfen in kleinere Tröpfchen</b>, damit Verdauungsenzyme die Fette leichter in Grundbausteine zerlegen können.','Auch die <b>Bauchspeicheldrüse</b> gibt hier ihre Enzyme dazu.']},
+    {i:'🌀',n:'Dünndarm',t:'Chemische Zerlegung fertig + Resorption',
+     d:['Hier wird die <b>chemische Zerlegung abgeschlossen</b> – durch Enzyme der Bauchspeicheldrüse und spezialisierter Dünndarm-Zellen.','Zerlegt wird bis zu den <b>Grundbausteinen</b>: Einfachzucker · Aminosäuren · Fettsäuren + Glycerin.','Diese sind so klein, dass sie durch die Zellen der Dünndarmwand <b>ins Blut</b> gelangen = <b>Resorption</b>.','Auch <b>Wasser, Mineralstoffe und Vitamine</b> werden ins Blut aufgenommen.','<b>Muskeln in der Dünndarmwand</b> sorgen für den Transport des Nahrungsbreis.']},
+    {i:'💧',n:'Dickdarm',t:'Wasserentzug & Darmbakterien',
+     d:['1,5 Meter lang. Der Nahrungsbrei enthält fast nur noch <b>unverdauliche Bestandteile (Ballaststoffe)</b>.','Dem Brei wird <b>noch mehr Wasser entzogen</b> → die Reste werden eingedickt.','Im Dünndarm und Dickdarm leben <b>Milliarden Darmbakterien</b>: Sie produzieren lebenswichtige Stoffe, die bei der <b>Abwehr von Krankheitserregern</b> helfen.','Die eingedickten Reste werden in den Mastdarm transportiert.']},
+    {i:'🚪',n:'Mastdarm & After',t:'Ausscheidung',
+     d:['Die Reste werden über den <b>After ausgeschieden</b>.','Man nennt sie <b>Stuhl oder Kot</b>.']}
+  ];
+  let h = S.map((s,i)=>
+    '<div class="jstep" data-j="'+i+'">'+
+      '<div class="jrail"><div class="jdot">'+s.i+'</div><div class="jline"></div></div>'+
+      '<div class="jbody"><h4>'+s.n+' <span class="pill mint" style="font-weight:600">'+s.t+'</span></h4>'+
+      '<p>Station '+(i+1)+' von '+S.length+' – klicken für Details</p>'+
+      '<div class="jdetail"><div class="jinner"><ul>'+s.d.map(x=>'<li>'+x+'</li>').join('')+'</ul></div></div>'+
+      '</div></div>').join('');
+
+  const body = `
+  <div class="card glow">
+    <span class="pill sky">DER WEG DER NAHRUNG</span>
+    <h2 style="margin-top:12px">Vom Mund bis zum After</h2>
+    <p>Klicke jede Station an – oder lass die Reise automatisch abspielen. Merke dir die <strong>Reihenfolge</strong> und was an jedem Ort passiert.</p>
+    <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+      <button class="btn btn-sm btn-primary" id="jPlay">▶ Reise automatisch abspielen</button>
+      <button class="btn btn-sm btn-ghost" id="jStop">■ Stopp</button>
+      <button class="btn btn-sm btn-ghost" id="jAll">Alle öffnen</button>
+    </div>
+  </div>
+  <div class="card"><div class="journey">${h}</div></div>
+  <div class="card">
+    <h2>Die drei Zerlegungs-Stufen</h2>
+    <div class="grid3" style="margin-top:12px">
+      <div class="stat" style="text-align:left;padding:17px"><b style="color:#f7b955">Mechanisch</b><p style="font-size:12.9px;margin-top:5px">Kauen im Mund · Durchmischen und Kneten im Magen · Muskelbewegungen in Speiseröhre und Darm</p></div>
+      <div class="stat" style="text-align:left;padding:17px"><b style="color:#46e39a">Chemisch</b><p style="font-size:12.9px;margin-top:5px">Enzyme: Amylase (Mund) · Pepsin (Magen) · Enzyme von Bauchspeicheldrüse und Dünndarmzellen</p></div>
+      <div class="stat" style="text-align:left;padding:17px"><b style="color:#5fb2ff">Aufnahme</b><p style="font-size:12.9px;margin-top:5px">Resorption im Dünndarm: Grundbausteine, Wasser, Mineralstoffe und Vitamine gelangen ins Blut</p></div>
+    </div>
+    <div class="examtip"><b>Prüfungs-Tipp:</b> Warum brauchen Speiseröhre und Magen Muskeln? → Die Muskeln <b>transportieren den Nahrungsbrei</b> (Speiseröhre: wellenförmig in den Magen) und <b>durchmischen bzw. kneten ihn</b> (Magen), damit Salzsäure und Enzyme überall wirken können.</div>
+  </div>`;
+  return shell(MODULES[5], body);
+}
+function m6init(){
+  shellInit(MODULES[5]);
+  const steps = $$('.jstep');
+  steps.forEach(s=> s.addEventListener('click',()=>{
+    const was = s.classList.contains('open');
+    steps.forEach(x=>x.classList.remove('open'));
+    if(!was) s.classList.add('open');
+  }));
+  $('#jAll').addEventListener('click',()=> steps.forEach(s=>s.classList.add('open')));
+  let timer=null;
+  $('#jStop').addEventListener('click',()=>clearInterval(timer));
+  $('#jPlay').addEventListener('click',()=>{
+    clearInterval(timer); let i=0;
+    steps.forEach(s=>s.classList.remove('open'));
+    timer = setInterval(()=>{
+      if(i>=steps.length){ clearInterval(timer); toast('🏁 Verdauung abgeschlossen!'); return; }
+      steps.forEach(s=>s.classList.remove('open'));
+      steps[i].classList.add('open');
+      steps[i].scrollIntoView({behavior:'smooth',block:'center'});
+      i++;
+    },2600);
+  });
+}
+
+/* ================================================================
+   MODULE 7 — DÜNN- & DICKDARM
+   ================================================================ */
+function m7(){
+  const body = `
+  <div class="card glow">
+    <span class="pill mint">AUFTEILUNG</span>
+    <h2 style="margin-top:12px">Dünndarm vs. Dickdarm</h2>
+    <div class="grid2" style="margin-top:14px">
+      <div class="lab" style="margin:0;border-color:rgba(70,227,154,.35)">
+        <div class="lab-head"><span class="pill mint">4–6 METER</span><span class="lab-title">Dünndarm</span></div>
+        <ul class="dot">
+          <li><strong>Chemische Zerlegung wird abgeschlossen</strong> (Enzyme aus Bauchspeicheldrüse + Dünndarmzellen).</li>
+          <li><strong>Resorption:</strong> Grundbausteine gelangen durch die Darmwand ins Blut.</li>
+          <li>Auch Wasser, Mineralstoffe und Vitamine werden aufgenommen.</li>
+          <li>Muskeln in der Wand transportieren den Brei weiter.</li>
+        </ul>
+      </div>
+      <div class="lab" style="margin:0;border-color:rgba(95,178,255,.35)">
+        <div class="lab-head"><span class="pill sky">1,5 METER</span><span class="lab-title">Dickdarm</span></div>
+        <ul class="dot">
+          <li>Enthält fast nur noch <strong>unverdauliche Bestandteile (Ballaststoffe)</strong>.</li>
+          <li><strong>Wasser wird entzogen</strong> → Reste werden eingedickt.</li>
+          <li>Weitertransport in den Mastdarm → Ausscheidung über den After als <strong>Stuhl/Kot</strong>.</li>
+          <li>Heimat von <strong>Milliarden Darmbakterien</strong>, die Stoffe zur Abwehr von Krankheitserregern produzieren.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="note"><b>Resorption</b> = die <b>Aufnahme der Nährstoffe ins Blut</b>. Dieser Begriff kommt im Test garantiert – auch bei den Nieren (Rückholung aus dem Primärharn).</div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 8 · Warum Falten und Zotten?</h2>
+    <p>Die Innenwand des Dünndarms ist <strong>stark gefaltet</strong>, und auf den Darmfalten gibt es unzählige winzige Ausstülpungen: die <span class="hl">Darmzotten</span>. Schiebe den Regler und beobachte die Oberfläche.</p>
+    <div class="lab">
+      <svg viewBox="0 0 640 200" width="100%">
+        <rect x="0" y="150" width="640" height="50" fill="#101a2e"/>
+        <g id="villi"></g>
+        <line x1="0" y1="150" x2="640" y2="150" stroke="#33456e" stroke-width="2"/>
+        <text x="12" y="176" class="lbl" font-size="11">Darmwand-Innenfläche</text>
+        <text x="628" y="30" class="lbl-b" font-size="12" text-anchor="end" id="areaLbl">Oberfläche: 1 m²</text>
+      </svg>
+      <div class="sliderrow">
+        <span style="font-size:12.5px;color:#94a2c2">glatt</span>
+        <input type="range" id="villiR" min="0" max="4" step="1" value="0" style="flex:1">
+        <span style="font-size:12.5px;color:#94a2c2">viele Zotten</span>
+      </div>
+      <div style="display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap">
+        <div class="readout" id="areaVal">1<small>m² Oberfläche</small></div>
+        <p style="flex:1;min-width:240px;font-size:13.4px;color:#94a2c2" id="areaTxt">Ein glattes Rohr – viel zu wenig Fläche, um uns zu ernähren.</p>
+      </div>
+    </div>
+    <div class="note"><b>Die Antwort für den Test:</b> Durch Darmfalten und Darmzotten wird die Dünndarmwand <b>stark vergrössert (Oberflächenvergrösserung)</b>. Ausgebreitet wäre sie so gross wie ein <b>Tennisfeld – etwa 200 m²</b>. Dank dieser grossen Oberfläche können die Nährstoffe <b>schnell und in grossen Mengen</b> aufgenommen werden.</div>
+    <div class="examtip"><b>Zusatzfrage:</b> Was passiert, wenn ein Teil des Dünndarms entfernt werden muss? → Die Aufnahmefläche wird kleiner, es können weniger Nährstoffe resorbiert werden → Mangelerscheinungen trotz ausreichender Nahrung.</div>
+  </div>
+
+  <div class="card">
+    <h2>Kiloweise Darmbakterien</h2>
+    <p>Im Dünn- und Dickdarm leben <strong>viele Milliarden Darmbakterien</strong>. Sie haben vielfältige Aufgaben – unter anderem produzieren sie <strong>lebenswichtige Stoffe, die bei der Abwehr von Krankheitserregern helfen</strong>.</p>
+    <div class="examtip"><b>Verbindung zu Lernziel 10:</b> Bei Laktoseintoleranz wandert unverdauter Milchzucker in den Dickdarm und wird genau von diesen Bakterien abgebaut – dabei entstehen die Beschwerden.</div>
+  </div>`;
+  return shell(MODULES[6], body);
+}
+function m7init(){
+  shellInit(MODULES[6]);
+  const LEVELS = [
+    {v:1,   t:'Ein glattes Rohr – viel zu wenig Fläche, um uns zu ernähren.'},
+    {v:12,  t:'Erste Falten: Die Fläche steigt bereits deutlich.'},
+    {v:45,  t:'Auf den Falten sitzen winzige Ausstülpungen – die Darmzotten.'},
+    {v:120, t:'Millionen Zotten: Jede einzelne ist von Blutgefässen durchzogen.'},
+    {v:200, t:'🎾 Ausgebreitet so gross wie ein TENNISFELD – ca. 200 m²!'}
+  ];
+  function draw(lvl){
+    const g = $('#villi'); let out='';
+    if(lvl===0){ g.innerHTML=''; }
+    else {
+      const folds = [0,2,4,6,10][lvl-1]||10;
+      const count = [14,34,70,120,190][lvl-1];
+      for(let f=0; f<=folds; f++){
+        const x = f*(640/folds);
+        out += '<path d="M'+(x-640/folds/2)+',150 Q '+x+',120 '+(x+640/folds/2)+',150" fill="none" stroke="#33456e" stroke-width="2"/>';
+      }
+      for(let i=0;i<count;i++){
+        const x = 8 + (624/(count-1))*i;
+        const hgt = [8,14,20,26,32][lvl-1];
+        out += '<line x1="'+x+'" y1="150" x2="'+x+'" y2="'+(150-hgt)+'" stroke="#46e39a" stroke-width="'+(lvl>2?1.6:2.6)+'" stroke-linecap="round" opacity="'+(0.45+lvl*0.11)+'"/>';
+        if(lvl>=3) out += '<circle cx="'+x+'" cy="'+(150-hgt)+'" r="2.4" fill="#46e39a" opacity=".7"/>';
+      }
+      g.innerHTML = out;
+    }
+    const L = LEVELS[lvl];
+    $('#areaVal').innerHTML = L.v+'<small>m² Oberfläche</small>';
+    $('#areaLbl').textContent = 'Oberfläche: '+L.v+' m²';
+    $('#areaTxt').textContent = L.t;
+  }
+  $('#villiR').addEventListener('input', e=> draw(+e.target.value));
+  draw(0);
+}
+
+/* ================================================================
+   MODULE 8 — LEBER
+   ================================================================ */
+function m8(){
+  const body = `
+  <div class="card glow">
+    <span class="pill amber">KRAFTWERK &amp; RECYCLINGANLAGE</span>
+    <h2 style="margin-top:12px">Die drei Aufgaben der Leber</h2>
+    <p>Klicke die Karten um. Diese drei Aufgaben musst du für den Test auswendig können.</p>
+    <div class="flip3" style="margin-top:16px">
+      <div class="flipcard" data-flip>
+        <div class="flipin">
+          <div class="flface flfront"><span class="e">🟢</span><b>Aufgabe 1</b><span>Gallenflüssigkeit produzieren</span><span style="color:#46e39a;font-size:11px;margin-top:8px">↻ klicken</span></div>
+          <div class="flface flback"><b style="color:#46e39a;margin-bottom:6px">① Galle für die Fettverdauung</b>Die Leber bildet die Gallenflüssigkeit. Sie fliesst über den Gallengang in die <b>Gallenblase</b>, wird dort gesammelt und bei Bedarf in den <b>Zwölffingerdarm</b> ausgeschüttet. Dort zerteilt sie grosse Fetttropfen in kleine Tröpfchen, damit Enzyme die Fette besser in Grundbausteine zerlegen können.</div>
+        </div>
+      </div>
+      <div class="flipcard" data-flip>
+        <div class="flipin">
+          <div class="flface flfront"><span class="e">⚡</span><b>Aufgabe 2</b><span>Umwandeln &amp; Speichern</span><span style="color:#5fb2ff;font-size:11px;margin-top:8px">↻ klicken</span></div>
+          <div class="flface flback"><b style="color:#5fb2ff;margin-bottom:6px">② Energielieferant / Speicher</b>In der Leber werden viele Stoffe <b>umgewandelt und gespeichert</b>. Sie ist für die Energieversorgung des Körpers verantwortlich: Sie speichert <b>Traubenzucker in langen Ketten (Glykogen)</b>. Bei Bedarf wird Glykogen wieder in Traubenzucker umgewandelt und für die Energieversorgung genutzt.</div>
+        </div>
+      </div>
+      <div class="flipcard" data-flip>
+        <div class="flipin">
+          <div class="flface flfront"><span class="e">🧼</span><b>Aufgabe 3</b><span>Entgiften</span><span style="color:#ff7d7d;font-size:11px;margin-top:8px">↻ klicken</span></div>
+          <div class="flface flback"><b style="color:#ff7d7d;margin-bottom:6px">③ Entgiftung des Blutes</b>Die Leber <b>entgiftet das Blut</b> und ist verantwortlich für den <b>Abbau von Medikamenten und Giftstoffen</b> – zum Beispiel von <b>Alkohol</b>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 9 · Der Glykogen-Speicher</h2>
+    <p>Die Leber ist auch ein <strong>Energiespeicher</strong> – zusammen mit Muskulatur und Fettgewebe. Verschiebe den Regler und beobachte, was die Leber tut.</p>
+    <div class="lab">
+      <svg viewBox="0 0 640 190" width="100%">
+        <rect x="200" y="30" width="240" height="120" rx="22" fill="#1a1206" stroke="#f7b955" stroke-width="2.5"/>
+        <text x="320" y="22" class="lbl-b" text-anchor="middle" font-size="13" fill="#f7b955">LEBER</text>
+        <g id="gly"></g>
+        <rect x="200" y="30" width="240" height="120" rx="22" fill="none" stroke="#f7b955" stroke-width="2.5"/>
+        <g id="flowOut" opacity="0">
+          <circle r="7" fill="#46e39a"><animateMotion dur="1.6s" repeatCount="indefinite" path="M440,90 C 510,90 540,90 610,90"/></circle>
+          <circle r="7" fill="#46e39a"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M440,90 C 510,90 540,90 610,90"/></circle>
+          <circle r="7" fill="#46e39a"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite" path="M440,90 C 510,90 540,90 610,90"/></circle>
+        </g>
+        <g id="flowIn" opacity="0">
+          <circle r="7" fill="#5fb2ff"><animateMotion dur="1.6s" repeatCount="indefinite" path="M30,90 C 100,90 130,90 200,90"/></circle>
+          <circle r="7" fill="#5fb2ff"><animateMotion dur="1.6s" begin="0.5s" repeatCount="indefinite" path="M30,90 C 100,90 130,90 200,90"/></circle>
+          <circle r="7" fill="#5fb2ff"><animateMotion dur="1.6s" begin="1s" repeatCount="indefinite" path="M30,90 C 100,90 130,90 200,90"/></circle>
+        </g>
+        <text x="30" y="76" class="lbl" font-size="10.5">Traubenzucker aus dem Darm →</text>
+        <text x="610" y="76" class="lbl" font-size="10.5" text-anchor="end">→ Traubenzucker für die Zellen</text>
+        <text x="320" y="176" class="lbl" text-anchor="middle" font-size="11" id="glyLbl">Glykogen-Ketten im Speicher</text>
+      </svg>
+      <div class="sliderrow">
+        <span style="font-size:12.5px;color:#94a2c2">Speichern (nach dem Essen)</span>
+        <input type="range" id="glyR" min="0" max="100" value="50" style="flex:1">
+        <span style="font-size:12.5px;color:#94a2c2">Abgeben (beim Fasten/Sport)</span>
+      </div>
+      <div id="glyTxt" style="margin-top:14px;font-size:13.5px;color:#94a2c2"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Der Weg der Galle</h2>
+    <div class="lab" style="text-align:center">
+      <svg viewBox="0 0 640 130" width="100%">
+        ${[['LEBER','80','#f7b955'],['Gallengang','225','#94a2c2'],['GALLENBLASE','370','#46e39a'],['Gallengang','500','#94a2c2'],['ZWÖLFFINGERDARM','600','#5fb2ff']].map((b,i)=>
+          (i%2===0
+            ? '<rect x="'+(b[1]-58)+'" y="42" width="116" height="46" rx="13" fill="'+b[2]+'1c" stroke="'+b[2]+'" stroke-width="2"/><text x="'+b[1]+'" y="70" text-anchor="middle" font-size="11" fill="'+b[2]+'" font-weight="700">'+b[0]+'</text>'
+            : '<line x1="'+(b[1]-40)+'" y1="65" x2="'+(b[1]+40)+'" y2="65" stroke="#33456e" stroke-width="3"/><path d="M'+(b[1]+38)+',58 l10,7 l-10,7 z" fill="#33456e"/><text x="'+b[1]+'" y="106" text-anchor="middle" font-size="9.5" fill="#6c7a99">Gallengang</text>')
+          ).join('')}
+        <text x="320" y="22" class="lbl" text-anchor="middle" font-size="11">gebildet → transportiert → gesammelt → bei Bedarf ausgeschüttet</text>
+      </svg>
+    </div>
+    <div class="examtip"><b>Häufige Verwechslung:</b> Die Galle wird in der <b>Leber gebildet</b>, aber in der <b>Gallenblase gespeichert</b>. Die Gallenblase produziert sie NICHT.</div>
+  </div>`;
+  return shell(MODULES[7], body);
+}
+function m8init(){
+  shellInit(MODULES[7]);
+  $$('[data-flip]').forEach(c=> c.addEventListener('click',()=> c.classList.toggle('flipped')));
+  const r = $('#glyR');
+  function drawGly(v){
+    const chains = Math.round(v/12);
+    let out='';
+    for(let i=0;i<chains;i++){
+      const x = 216 + (i%8)*28;
+      const y = 46 + Math.floor(i/8)*36;
+      out += '<g><circle cx="'+x+'" cy="'+y+'" r="7" fill="#f7b955" opacity=".85"/><circle cx="'+(x+11)+'" cy="'+y+'" r="7" fill="#f7b955" opacity=".65"/><circle cx="'+(x+22)+'" cy="'+y+'" r="7" fill="#f7b955" opacity=".45"/></g>';
+    }
+    $('#gly').innerHTML = out;
+    $('#flowIn').setAttribute('opacity', v>55 ? '1':'0');
+    $('#flowOut').setAttribute('opacity', v<45 ? '1':'0');
+    if(v>62){
+      $('#glyLbl').textContent='Speicher füllt sich: Traubenzucker → lange Ketten (Glykogen)';
+      $('#glyTxt').innerHTML='<span class="hl-a">Nach dem Essen:</span> Es kommt viel Traubenzucker aus dem Darm an. Die Leber <b>speichert ihn in langen Ketten als Glykogen</b>. Der Speicher füllt sich auf.';
+    } else if(v<38){
+      $('#glyLbl').textContent='Speicher leert sich: Glykogen → Traubenzucker';
+      $('#glyTxt').innerHTML='<span class="hl">Beim Fasten oder Sport:</span> Der Körper braucht Energie. Die Leber <b>wandelt Glykogen wieder in Traubenzucker um</b> und gibt ihn ans Blut ab.';
+    } else {
+      $('#glyLbl').textContent='Ausgeglichener Speicher';
+      $('#glyTxt').innerHTML='Gleichgewicht: Die Leber speichert und gibt je nach Bedarf ab. Sie ist <b>für die Energieversorgung des Körpers verantwortlich</b>.';
+    }
+  }
+  r.addEventListener('input', e=>drawGly(+e.target.value));
+  drawGly(50);
+}
+
+/* ================================================================
+   MODULE 9 — NIEREN
+   ================================================================ */
+function m9(){
+  const body = `
+  <div class="card glow">
+    <span class="pill sky">KLÄRANLAGE IM KÖRPER</span>
+    <h2 style="margin-top:12px">Die Nieren entgiften</h2>
+    <p>Im Körper werden ständig Stoffe umgewandelt und abgebaut. Dabei entstehen <strong>Abfallstoffe</strong>, die sich im Blut ansammeln. Damit du gesund bleibst, müssen sie ausgeschieden werden – das ist die Aufgabe der Nieren.</p>
+    <ul class="tick" style="margin-top:12px">
+      <li>Die beiden Nieren liegen <strong>rechts und links von der Wirbelsäule</strong> im hinteren Bauchraum.</li>
+      <li>Sie sind unsere wichtigsten <strong>Filterorgane und Ausscheidungsorgane</strong>.</li>
+      <li>Innerhalb von nur <strong>fünf Minuten</strong> filtrieren und entgiften sie das <strong>gesamte Blut</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>🔬 Labor 10 · Filtration &amp; Resorption live</h2>
+    <p>Starte die Simulation und beobachte die beiden Schritte.</p>
+    <div class="lab">
+      <svg viewBox="0 0 660 300" width="100%">
+        <defs>
+          <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#46e39a"/></marker>
+        </defs>
+        <!-- Nierenkörperchen -->
+        <ellipse cx="120" cy="96" rx="80" ry="62" fill="#101c30" stroke="#5fb2ff" stroke-width="2"/>
+        <text x="120" y="26" class="lbl-b" text-anchor="middle" font-size="12" fill="#5fb2ff">NIERENKÖRPERCHEN</text>
+        <path d="M70,96 q14,-30 30,0 q14,30 30,0 q14,-30 30,0" fill="none" stroke="#ff7d7d" stroke-width="4" stroke-linecap="round"/>
+        <text x="120" y="176" class="lbl" text-anchor="middle" font-size="10">Kapillarknäuel (dünne Wände mit Löchern)</text>
+        <circle cx="52" cy="66" r="8" fill="#ff7d7d"/><circle cx="76" cy="52" r="8" fill="#ff7d7d"/>
+        <text x="30" y="50" class="lbl" font-size="9.5" fill="#ff9d9d">Blutzellen</text>
+        <rect x="168" y="46" width="17" height="11" rx="3" fill="#a98bff"/>
+        <text x="196" y="55" class="lbl" font-size="9.5" fill="#a98bff">grosse Proteine</text>
+        <text x="240" y="76" class="lbl" font-size="9.5" fill="#6c7a99">→ passen NICHT durch die Löcher</text>
+        <!-- Kanal -->
+        <path id="neph" d="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"
+          fill="none" stroke="#25314f" stroke-width="20" stroke-linecap="round"/>
+        <path d="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"
+          fill="none" stroke="#132036" stroke-width="14" stroke-linecap="round"/>
+        <text x="330" y="76" class="lbl-b" text-anchor="middle" font-size="12" fill="#94a2c2">NIERENKANÄLCHEN</text>
+        <g id="resorb" opacity="0">
+          <path d="M330,104 q-10,40 -30,58" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <path d="M420,150 q30,20 62,14" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <path d="M470,205 q-6,-46 10,-70" fill="none" stroke="#46e39a" stroke-width="2.5" marker-end="url(#ar)"/>
+          <text x="286" y="184" font-size="10.5" fill="#46e39a" font-weight="700">Wasser</text>
+          <text x="480" y="180" font-size="10.5" fill="#46e39a" font-weight="700">Zucker</text>
+          <text x="430" y="128" font-size="10.5" fill="#46e39a" font-weight="700">Mineralstoffe</text>
+          <text x="330" y="248" class="lbl-b" text-anchor="middle" font-size="11.5" fill="#46e39a">RESORPTION zurück ins Blut</text>
+        </g>
+        <text x="640" y="196" class="lbl" text-anchor="end" font-size="10.5" fill="#f7b955">→ Harnleiter → Harnblase</text>
+        <g id="drops"></g>
+      </svg>
+      <div style="display:flex;gap:9px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-primary" id="nRun">▶ Filtration starten</button>
+        <button class="btn btn-sm btn-ghost" id="nReset">↺ Zurücksetzen</button>
+      </div>
+      <div class="grid3" style="margin-top:18px">
+        <div class="stat"><div class="v" id="cPrim" style="color:#5fb2ff">0</div><div class="l">Liter Primärharn / Tag</div></div>
+        <div class="stat"><div class="v" id="cRes" style="color:#46e39a">0</div><div class="l">Liter zurück resorbiert</div></div>
+        <div class="stat"><div class="v" id="cUrin" style="color:#f7b955">0</div><div class="l">Liter Urin / Tag</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Schritt 1 · Filtration im Nierenkörperchen</h2>
+    <p>In jeder Niere befinden sich <strong>über eine Million Nierenkörperchen</strong>. Jedes besteht aus einem <strong>Knäuel von dünnen Blutgefässen (Kapillarknäuel)</strong>, das von einer <strong>Kapsel</strong> umgeben ist.</p>
+    <ul class="tick" style="margin-top:10px">
+      <li>Über das zuführende Blutgefäss fliesst ständig Blut in die Kapillaren.</li>
+      <li>Die dünnen Kapillarwände haben <strong>winzige Löcher</strong>.</li>
+      <li>Ein Teil des <strong>Blutplasmas</strong> wird wie durch einen Filter hindurchgedrückt → dieser Vorgang heisst <span class="hl-s">Filtration</span>.</li>
+      <li><strong>Blutzellen und grössere Proteine passen nicht durch die Löcher</strong> und bleiben im Blut.</li>
+      <li>Die Flüssigkeit sammelt sich in der Kapsel → sie heisst <strong>Primärharn</strong>.</li>
+      <li>Primärharn besteht aus <strong>Wasser</strong> und darin gelösten Stoffen: <strong>Abfallstoffe, Traubenzucker, Vitamine, Mineralstoffe</strong>.</li>
+    </ul>
+    <div class="note"><b>Zahl für den Test:</b> Pro Tag entstehen in den Nierenkörperchen <b>180 Liter Primärharn</b>.</div>
+  </div>
+
+  <div class="card">
+    <h2>Schritt 2 · Resorption im Nierenkanälchen</h2>
+    <p>Vom Nierenkörperchen fliesst der Primärharn in das <strong>Nierenkanälchen</strong>. Auf diesem Weg werden ihm wieder entzogen:</p>
+    <ul class="tick" style="margin-top:10px">
+      <li><strong>Wasser</strong></li>
+      <li>ein <strong>Grossteil der Mineralstoffe</strong></li>
+      <li>ein <strong>Grossteil des Traubenzuckers</strong></li>
+    </ul>
+    <p style="margin-top:12px">Diese Stoffe braucht der Körper noch – sie werden aus dem Primärharn <strong>zurück ins Blut aufgenommen</strong>. Diesen Vorgang nennt man <span class="hl">Resorption</span>.</p>
+    <div class="lab" style="margin-top:16px">
+      <div class="lab-head"><span class="pill mint">WICHTIG</span><span class="lab-title">Osmose hilft bei der Resorption</span></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px" class="grid2">
+        <div>
+          <p style="font-size:13.5px"><b style="color:#f7b955">Schritt 1 – aktiv:</b> Traubenzucker und ein Teil der Mineralstoffe werden <strong>aktiv aus dem Nierenkanälchen herausgepumpt</strong>. Dafür braucht der Körper <strong>Energie</strong>.</p>
+          <p style="font-size:13.5px;margin-top:9px">→ Jetzt befinden sich <strong>ausserhalb</strong> des Kanälchens mehr gelöste Stoffe als innerhalb.</p>
+        </div>
+        <div>
+          <p style="font-size:13.5px"><b style="color:#46e39a">Schritt 2 – passiv (Osmose):</b> Um diesen Konzentrationsunterschied auszugleichen, <strong>strömt Wasser aus dem Nierenkanälchen heraus</strong>. Diesen Vorgang nennt man <strong>Osmose</strong>.</p>
+          <p style="font-size:13.5px;margin-top:9px">Osmose ist ein <strong>passiver Vorgang – dafür braucht es keine Energie</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Ergebnis:</b> Im Nierenkanälchen bleibt der konzentrierte <b>Endharn</b> zurück – er wird <b>Urin</b> genannt. Urin besteht zu rund <b>95 % aus Wasser</b>, der Rest sind gelöste Mineralstoffe und Abfallstoffe. Von den 180 Litern Primärharn bleiben nach der Resorption <b>etwa 1,5 Liter Urin pro Tag</b> übrig.</div>
+    <p style="font-size:13.6px;margin-top:12px">Weg des Urins: <strong>Niere → Harnleiter → Harnblase → Ausscheidung</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h2>Farbe des Urins</h2>
+    <div class="grid3">
+      <div class="stat" style="padding:17px"><div style="width:100%;height:36px;border-radius:9px;background:#f7e08a;margin-bottom:9px"></div><b style="font-size:13.5px">Hell</b><p style="font-size:12.5px;margin-top:4px;color:#94a2c2">Zeichen dafür, dass man <strong>genug Flüssigkeit</strong> zu sich genommen hat.</p></div>
+      <div class="stat" style="padding:17px"><div style="width:100%;height:36px;border-radius:9px;background:#c79a2a;margin-bottom:9px"></div><b style="font-size:13.5px">Dunkel</b><p style="font-size:12.5px;margin-top:4px;color:#94a2c2">Bei <strong>Fieber und Flüssigkeitsmangel</strong> – der Urin ist konzentrierter.</p></div>
+      <div class="stat" style="padding:17px"><div style="width:100%;height:36px;border-radius:9px;background:linear-gradient(90deg,#f7e08a,#c79a2a);margin-bottom:9px"></div><b style="font-size:13.5px">Warum gelb?</b><p style="font-size:12.5px;margin-top:4px;color:#94a2c2">Beim <strong>Abbau der roten Blutzellen</strong> entsteht ein Abfallstoff, der für die gelbe Farbe verantwortlich ist.</p></div>
+    </div>
+    <div class="examtip"><b>Prüfungsfrage:</b> «Hans stellt fest, dass sein Urin dunkler ist als sonst. Was könnten Erklärungen sein?» → Er hat <b>zu wenig getrunken</b> (Flüssigkeitsmangel) oder er hat <b>Fieber</b>. Die Nieren resorbieren dann mehr Wasser zurück, der Urin wird konzentrierter und damit dunkler. Auch starkes Schwitzen beim Sport ist eine mögliche Erklärung.</div>
+  </div>`;
+  return shell(MODULES[8], body);
+}
+function m9init(){
+  shellInit(MODULES[8]);
+  let raf=null, timers=[];
+  function clearAll(){ timers.forEach(t=>clearTimeout(t)); timers=[]; if(raf)cancelAnimationFrame(raf); }
+  function count(el,to,dur,suf){
+    const t0=performance.now();
+    function f(now){
+      const t=Math.min((now-t0)/dur,1);
+      el.textContent = (to*t).toFixed(to%1?1:0)+(suf||'');
+      if(t<1) raf=requestAnimationFrame(f);
+    }
+    raf=requestAnimationFrame(f);
+  }
+  $('#nReset').addEventListener('click',()=>{
+    clearAll(); $('#drops').innerHTML=''; $('#resorb').setAttribute('opacity','0');
+    ['cPrim','cRes','cUrin'].forEach(id=>$('#'+id).textContent='0');
+  });
+  $('#nRun').addEventListener('click',()=>{
+    clearAll(); $('#drops').innerHTML=''; $('#resorb').setAttribute('opacity','0');
+    const path = $('#neph'); const L = path.getTotalLength();
+    const STUFF = [
+      {c:'#5fb2ff',r:5,t:'wasser'},{c:'#f7b955',r:4,t:'zucker'},{c:'#a98bff',r:4,t:'mineral'},
+      {c:'#46e39a',r:4,t:'vitamin'},{c:'#ff7d7d',r:5,t:'abfall'},{c:'#5fb2ff',r:5,t:'wasser'}
+    ];
+    let html='';
+    STUFF.forEach((s,i)=>{
+      html += '<circle r="'+s.r+'" fill="'+s.c+'" data-t="'+s.t+'" cx="200" cy="96"><animateMotion dur="3.4s" begin="'+(i*0.22)+'s" fill="freeze" path="M198,96 C 280,96 300,96 350,96 C 420,96 430,210 500,210 C 560,210 600,210 640,210"/></circle>';
+    });
+    $('#drops').innerHTML = html;
+    count($('#cPrim'),180,1600);
+    timers.push(setTimeout(()=>{
+      $('#resorb').setAttribute('opacity','1');
+      $('#drops').innerHTML = STUFF.filter(s=>s.t==='abfall').map((s,i)=>
+        '<circle r="'+s.r+'" fill="'+s.c+'" cx="500" cy="210"><animateMotion dur="1.6s" begin="'+(i*0.3)+'s" fill="freeze" path="M500,210 C 560,210 600,210 640,210"/></circle>').join('');
+      count($('#cRes'),178.5,2000);
+    },2400));
+    timers.push(setTimeout(()=>{ count($('#cUrin'),1.5,1400); toast('💧 180 L Primärharn → 1,5 L Urin'); },4600));
+  });
+}
+
+/* ================================================================
+   MODULE 10 — VERDAUNGSPROBLEME
+   ================================================================ */
+function m10(){
+  const body = `
+  <div class="card glow">
+    <span class="pill coral">LAKTOSE-INTOLERANZ</span>
+    <h2 style="margin-top:12px">🔬 Labor 11 · Was passiert im Körper?</h2>
+    <p>Gehe die Geschichte Schritt für Schritt durch – genau so musst du sie im Test begründen können.</p>
+    <div class="lab">
+      <div id="lakStage" style="min-height:150px;display:flex;flex-direction:column;justify-content:center"></div>
+      <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap">
+        <button class="btn btn-sm btn-ghost" id="lakPrev">← Zurück</button>
+        <button class="btn btn-sm btn-primary" id="lakNext">Weiter →</button>
+        <span class="pill mint" id="lakStep" style="margin-left:auto">Schritt 1 / 6</span>
+      </div>
+    </div>
+    <div class="examtip"><b>Musterantwort für den Test:</b> Bei einer Laktose-Intoleranz kann der Milchzucker (Laktose) im <b>Dünndarm nicht oder nur unvollständig abgebaut und aufgenommen</b> werden. Die Laktose wandert deshalb weiter in den <b>Dickdarm</b> und wird dort von den <b>Darmbakterien</b> abgebaut. Dabei entstehen <b>Abbauprodukte</b>, die <b>Bauchkrämpfe, Übelkeit, Erbrechen und häufig Durchfall</b> auslösen.</div>
+  </div>
+
+  <div class="card">
+    <h2>Weitere Ursachen für Verdauungsprobleme</h2>
+    <div class="grid2" style="margin-top:14px" id="probCards"></div>
+  </div>
+
+  <div class="card">
+    <h2>🧩 Ursache → Ort → Folge</h2>
+    <p>Im Test bekommst du ein Verdauungsproblem vorgegeben und musst die Ursache <strong>nennen und begründen</strong>. Denke immer in dieser Kette:</p>
+    <div class="lab" style="font-family:'Space Grotesk Variable',sans-serif;font-size:14px;text-align:center;line-height:2.2">
+      <span class="hl-c">URSACHE</span> <span style="color:#33456e">→</span> <span class="hl-a">WO im Verdauungstrakt?</span> <span style="color:#33456e">→</span> <span class="hl-s">WAS fehlt / was geht schief?</span> <span style="color:#33456e">→</span> <span class="hl">SYMPTOM / FOLGE</span>
+    </div>
+    <table>
+      <thead><tr><th>Problem</th><th>Ursache</th><th>Ort</th><th>Folge</th></tr></thead>
+      <tbody>
+        <tr><td>Bauchkrämpfe nach Milch</td><td>Milchzucker wird nicht abgebaut</td><td>Dünndarm → Dickdarm</td><td>Darmbakterien bauen Laktose ab → Gase, Durchfall</td></tr>
+        <tr><td>«Schwerer Magen» lange nach dem Essen</td><td>Sehr fettreiche Nahrung</td><td>Magen</td><td>Magenentleerung verzögert → Brei liegt bis zu 8 h im Magen</td></tr>
+        <tr><td>Hunger trotz Essen</td><td>Verdauungsenzyme fehlen</td><td>Mund / Magen / Dünndarm</td><td>Keine Zerlegung in Grundbausteine → keine Resorption</td></tr>
+        <tr><td>Verschlucken</td><td>Kehldeckel schliesst nicht rechtzeitig</td><td>Rachen</td><td>Nahrung gelangt in die Luftröhre → Hustenreiz</td></tr>
+        <tr><td>Harter Stuhl / Verstopfung</td><td>Zu wenig Wasser &amp; Ballaststoffe</td><td>Dickdarm</td><td>Dem Brei wird zu viel Wasser entzogen</td></tr>
+        <tr><td>Dunkler Urin</td><td>Flüssigkeitsmangel oder Fieber</td><td>Nieren</td><td>Mehr Wasser wird resorbiert → konzentrierter Urin</td></tr>
+      </tbody>
+    </table>
+  </div>`;
+  return shell(MODULES[9], body);
+}
+function m10init(){
+  shellInit(MODULES[9]);
+  const STAGES = [
+    {e:'🥛', t:'Milch wird getrunken', d:'Milch enthält <b>Milchzucker (Laktose)</b> – einen Zweifachzucker. Er muss im Dünndarm zuerst in seine Grundbausteine zerlegt werden, damit er ins Blut aufgenommen werden kann.'},
+    {e:'🚫', t:'Im Dünndarm fehlt das Enzym', d:'Bei einer Laktose-Intoleranz kann die Laktose im Dünndarm <b>nicht oder nur unvollständig abgebaut und aufgenommen</b> werden. Das passende Verdauungsenzym fehlt oder ist zu wenig vorhanden.'},
+    {e:'🛤️', t:'Die Laktose wandert weiter', d:'Weil sie nicht aufgenommen wird, wandert die Laktose mit dem Nahrungsbrei <b>weiter in den Dickdarm</b> – unverdaut.'},
+    {e:'🦠', t:'Darmbakterien stürzen sich darauf', d:'Im Dickdarm leben Milliarden <b>Darmbakterien</b>. Sie bauen die Laktose ab. Dabei entstehen <b>Abbauprodukte</b> (Gase und Säuren).'},
+    {e:'⚡', t:'Die Beschwerden entstehen', d:'Die Abbauprodukte lösen aus: <b>Bauchkrämpfe · Übelkeit · Erbrechen · häufig auch Durchfall</b>.'},
+    {e:'✅', t:'Merksatz', d:'Problem = <b>kein Abbau im Dünndarm</b> → <b>Gärung durch Dickdarm-Bakterien</b> → Beschwerden. Wichtig: Die Bakterien selbst sind nicht «böse» – sie machen nur ihren Job an der falschen Stelle.'}
+  ];
+  let si=0;
+  function drawStage(){
+    const s = STAGES[si];
+    $('#lakStage').innerHTML = '<div style="text-align:center"><div style="font-size:44px;margin-bottom:10px">'+s.e+'</div>'+
+      '<b style="font-family:\'Space Grotesk Variable\',sans-serif;font-size:18px;display:block;margin-bottom:7px">'+s.t+'</b>'+
+      '<p style="font-size:14px;color:#94a2c2;max-width:60ch;margin:0 auto">'+s.d+'</p></div>';
+    $('#lakStep').textContent = 'Schritt '+(si+1)+' / '+STAGES.length;
+    $('#lakPrev').disabled = si===0;
+    $('#lakNext').textContent = si===STAGES.length-1 ? '↺ Von vorne' : 'Weiter →';
+  }
+  $('#lakNext').addEventListener('click',()=>{ si=(si+1)%STAGES.length; drawStage(); });
+  $('#lakPrev').addEventListener('click',()=>{ si=Math.max(0,si-1); drawStage(); });
+  drawStage();
+
+  const PROBS = [
+    {e:'⏳',t:'Fettreiche Mahlzeit',d:'Fett <b>verzögert die Entleerung des Magens</b>. Der Nahrungsbrei wird nur in kleinen Portionen am Pförtner in den Dünndarm abgegeben – bei fettreicher Nahrung kann er <b>bis zu acht Stunden «schwer» im Magen liegen</b>.'},
+    {e:'🧪',t:'Fehlende Verdauungsenzyme',d:'Ohne Enzyme werden Kohlenhydrate, Fette und Proteine <b>nicht in ihre Grundbausteine zerlegt</b>. Nur Einfachzucker, Aminosäuren, Fettsäuren und Glycerin sind klein genug für die <b>Resorption</b> durch die Dünndarmwand. Man würde essen – und trotzdem hungern.'},
+    {e:'💧',t:'Zu wenig Flüssigkeit',d:'Der Dickdarm entzieht dem Nahrungsbrei Wasser. Ist insgesamt zu wenig Flüssigkeit vorhanden, wird der Stuhl <b>stark eingedickt und hart</b>. Auch die Nieren produzieren dann <b>weniger, aber konzentrierteren (dunkleren) Urin</b>.'},
+    {e:'🌾',t:'Zu wenig Ballaststoffe',d:'Ballaststoffe sind <b>unverdauliche Bestandteile</b> (z. B. Cellulose), die im Dickdarm landen. Sie halten den Brei locker und binden Wasser. Fehlen sie, arbeitet der Dickdarm träge.'}
+  ];
+  $('#probCards').innerHTML = PROBS.map(p=>
+    '<div class="lab" style="margin:0"><div class="lab-head"><span style="font-size:22px">'+p.e+'</span><span class="lab-title">'+p.t+'</span></div>'+
+    '<p style="font-size:13.4px">'+p.d+'</p></div>').join('');
+}
+
+/* ================================================================
+   CRASH-ZETTEL
+   ================================================================ */
+function renderCrash(){
+  const S = (n,t,ic,items)=> '<div class="crashsec" style="border-color:'+ic+'"><h3><span style="color:'+ic+'">'+n+'.</span> '+t+'</h3><ul style="--c:'+ic+'">'+items.map(x=>'<li>'+x+'</li>').join('')+'</ul></div>';
+  return '<div class="view">'+
+  '<div class="eyebrow">Für die letzte Nacht</div><h1>⚡ Crash-Zettel</h1>'+
+  '<p class="lead">Alles Wichtige auf einen Blick – die reine Essenz der 10 Lernziele. Fettgedrucktes sind die Stichwörter, die im Test Punkte geben.</p>'+
+  '<div style="display:flex;gap:9px;margin:20px 0 26px;flex-wrap:wrap">'+
+    '<button class="btn btn-sm" id="printBtn">🖨️ Ausdrucken</button>'+
+    '<button class="btn btn-sm btn-ghost" data-go="cards">🃏 Karteikarten</button>'+
+    '<button class="btn btn-sm btn-ghost" data-go="quiz">🎯 Prüfungssimulator</button>'+
+  '</div>'+
+  '<div class="card">'+
+  S(1,'Nährstoffe','#46e39a',[
+    '<strong>Hauptnährstoffe:</strong> Kohlenhydrate, Fette, Proteine. Dazu: Vitamine, Mineralstoffe, Ballaststoffe.',
+    '<strong>Zwei Funktionen:</strong> Baustoffe (neue Zellen) + Energielieferanten.',
+    'Energie wird gebraucht für: <strong>Muskelbewegung, Körpertemperatur, Stofftransport, chemische Reaktionen</strong>.',
+    'Energiegehalt pro 1 g: <strong>Kohlenhydrate 17 kJ · Proteine 17 kJ · Fette 39 kJ</strong> (mehr als doppelt so viel!).',
+    'Einheit: <strong>Joule (J) / Kilojoule (kJ)</strong>, früher kcal. 1 J ≈ Tafel Schokolade (100 g) 1 m anheben.',
+    '<strong>Grundumsatz</strong> = Energiebedarf im Ruhezustand (abhängig von Alter, Geschlecht, Gewicht). <strong>Leistungsumsatz</strong> = zusätzlicher Bedarf bei Bewegung/Arbeit/Sport.',
+    'Energiespeicher: <strong>Leber, Muskulatur, Fettgewebe</strong> (als Fette oder Kohlenhydrate).'])+
+  S(2,'Kohlenhydrate & Blutzucker','#f7b955',[
+    '<strong>Einfachzucker:</strong> Traubenzucker (Glukose), Fruchtzucker (Fruktose).',
+    '<strong>Zweifachzucker:</strong> Kristallzucker (Saccharose), Malzzucker.',
+    '<strong>Vielfachzucker:</strong> Stärke (pflanzlich), Glykogen (tierisch/Mensch), Cellulose (Ballaststoff).',
+    'Sportler essen vor dem Wettkampf Teigwaren, Kartoffeln, Reis → viele Kohlenhydrate = wichtige Energielieferanten.',
+    '<strong>Zucker:</strong> schneller, steiler Anstieg, schnell wieder aufgebraucht → für längere Anstrengung nicht geeignet → Heisshunger.',
+    '<strong>Stärke/Brot:</strong> lange Ketten müssen erst zerlegt werden → Zucker steigt langsam, Energie reicht für längere Zeit.',
+    'Struktur: Stärke und Glykogen sind Speicherformen, Cellulose ist Pflanzen-Baustoff.'])+
+  S(3,'Fette','#ff8fd0',[
+    'Aufbau: <strong>Glycerin + 3 Fettsäuren</strong>. Unterschied durch die Länge der Fettsäuren.',
+    '<strong>Essenzielle Fettsäuren:</strong> Omega-3 und Omega-6 → kann der Körper nicht selbst herstellen → müssen mit der Nahrung aufgenommen werden → wichtige Baustoffe für Zellen.',
+    '<strong>Vitamin-Taxis:</strong> Fette transportieren die fettlöslichen Vitamine <strong>A, D, E, K</strong> und ermöglichen deren Aufnahme.',
+    '<strong>Fettgewebe:</strong> ① Energiespeicher (Abbau bei Bedarf) ② schützt vor Kälte ③ polstert die Organe.',
+    'Fettfreie Ernährung ist gefährlich: Mangel an essenziellen Fettsäuren + fettlösliche Vitamine können nicht aufgenommen werden.'])+
+  S(4,'Proteine','#5fb2ff',[
+    'Aufbau wie eine <strong>Perlenkette</strong>; die Perlen heissen <strong>Aminosäuren</strong> = Grundbausteine.',
+    '<strong>20 verschiedene Aminosäuren, davon 8 essenziell</strong> (können nicht im Körper gebildet werden → mit der Nahrung aufnehmen).',
+    '<strong>Aussehen bestimmt die Aufgabe:</strong> Proteine sind gefaltet; nur in der dreidimensionalen Form können sie ihre Aufgabe übernehmen. Deshalb haben Antikörper und Keratine trotz gleicher Bausteine verschiedene Aufgaben.',
+    'Aufgaben: Gerüst für <strong>Haut, Sehnen, Bänder</strong> · <strong>Muskelbewegung</strong> · <strong>Sauerstofftransport</strong> im Blut · <strong>Hormone</strong> · <strong>Antikörper</strong> · <strong>Blutgerinnung</strong> · <strong>Enzyme</strong>.'])+
+  S(5,'Enzyme','#46e39a',[
+    'Enzyme sind besondere <strong>Proteine</strong>, die Stoffumwandlungen in den Zellen steuern und beschleunigen.',
+    'Sie <strong>senken die Aktivierungsenergie</strong> → deshalb heissen sie <strong>biologische Katalysatoren</strong>.',
+    'Energiemodell: Mit Enzym muss die Kugel einen <strong>kleineren Berg</strong> hinaufgerollt werden → die <strong>Körpertemperatur reicht</strong> für die Aktivierung.',
+    'Enzyme <strong>werden nicht verbraucht</strong> – sie liegen nach der Reaktion unverändert vor.',
+    '<strong>Schlüssel-Schloss-Prinzip:</strong> Jedes Enzym zerlegt nur einen bestimmten Nährstoff.',
+    '<strong>Amylase</strong> (Speichel, Mund): zerlegt Stärke (Vielfachzucker) zu Malzzucker (Zweifachzucker).',
+    '<strong>Pepsin</strong> (Magensaft, mit Salzsäure): chemische Zerlegung der Proteine.'])+
+  S(6,'Verdauungsweg','#a98bff',[
+    '<strong>Mund:</strong> mechanische Zerkleinerung (Kauen), Zunge bewegt, Speichel mit <strong>Amylase</strong>.',
+    '<strong>Schlucken:</strong> <strong>Kehldeckel verschliesst die Luftröhre</strong> → kein Verschlucken.',
+    '<strong>Speiseröhre:</strong> Muskeln transportieren den Brei in den Magen (funktioniert auch im Handstand).',
+    '<strong>Magen:</strong> durchmischen + kneten; Magensaft = <strong>Salzsäure + Schleim + Pepsin</strong>. Salzsäure vernichtet Bakterien; <strong>Schleim schützt</strong> körpereigene Proteine. Abgabe in kleinen Portionen am Pförtner; <strong>Verweildauer bis 8 h</strong>, fettreiche Nahrung verzögert.',
+    '<strong>Zwölffingerdarm:</strong> erster Abschnitt des Dünndarms; <strong>Galle</strong> hilft bei der Fettverdauung.',
+    '<strong>Dünndarm:</strong> chemische Zerlegung abgeschlossen → <strong>Grundbausteine</strong> (Einfachzucker, Aminosäuren, Fettsäuren, Glycerin) → <strong>Resorption</strong> ins Blut.',
+    '<strong>Dickdarm:</strong> fast nur unverdauliche Reste (Ballaststoffe), <strong>Wasserentzug</strong>, Eindickung.',
+    '<strong>Mastdarm → After:</strong> Ausscheidung als Stuhl/Kot.',
+    'Grundbausteine sind so klein, dass sie durch die Zellen der Dünndarmwand ins Blut gelangen.'])+
+  S(7,'Dünn- & Dickdarm','#5fb2ff',[
+    '<strong>Dünndarm (4–6 m):</strong> chemische Zerlegung + <strong>Resorption</strong> (Aufnahme ins Blut) von Grundbausteinen, Wasser, Mineralstoffen, Vitaminen. Muskeln transportieren.',
+    '<strong>Darmfalten + Darmzotten = Oberflächenvergrösserung.</strong> Ausgebreitet so gross wie ein <strong>Tennisfeld ≈ 200 m²</strong>.',
+    'Dank der grossen Oberfläche können Nährstoffe <strong>schnell und in grossen Mengen</strong> aufgenommen werden.',
+    '<strong>Dickdarm (1,5 m):</strong> weiterer <strong>Wasserentzug</strong>, Eindicken, Transport in den Mastdarm.',
+    '<strong>Darmbakterien</strong> (Milliarden im Dünn- und Dickdarm) produzieren lebenswichtige Stoffe für die <strong>Abwehr von Krankheitserregern</strong>.'])+
+  S(8,'Leber','#f7b955',[
+    '<strong>① Gallenflüssigkeit produzieren:</strong> Galle wird in der Leber gebildet → Gallengang → <strong>Gallenblase</strong> (sammeln) → Zwölffingerdarm. Dort <strong>zerteilt sie grosse Fetttropfen in kleine Tröpfchen</strong>, damit Enzyme sie leichter zerlegen können.',
+    '<strong>② Umwandeln & Speichern (Kraftwerk/Recyclinganlage):</strong> verantwortlich für die Energieversorgung; speichert <strong>Traubenzucker in langen Ketten (Glykogen)</strong> und wandelt es bei Bedarf wieder in Traubenzucker um.',
+    '<strong>③ Entgiften:</strong> entgiftet das Blut, baut <strong>Medikamente und Giftstoffe (z. B. Alkohol)</strong> ab.'])+
+  S(9,'Nieren','#46e39a',[
+    'Lage: rechts und links der Wirbelsäule im hinteren Bauchraum. Wichtigste <strong>Filter- und Ausscheidungsorgane</strong> = «Kläranlage». In <strong>5 Minuten</strong> wird das gesamte Blut filtriert.',
+    '<strong>Nierenkörperchen</strong> (>1 Million pro Niere) = <strong>Kapillarknäuel + Kapsel</strong>. Dünne Kapillarwände mit winzigen Löchern; ein Teil des Blutplasmas wird durchgedrückt = <strong>Filtration</strong>.',
+    '<strong>Blutzellen und grössere Proteine passen nicht durch die Löcher.</strong>',
+    '<strong>Primärharn</strong> = Wasser + gelöste Stoffe (Abfallstoffe, Traubenzucker, Vitamine, Mineralstoffe). <strong>180 Liter pro Tag</strong>.',
+    '<strong>Nierenkanälchen → Resorption:</strong> Wasser, ein Grossteil der Mineralstoffe und ein Grossteil des Traubenzuckers werden zurück ins Blut aufgenommen.',
+    '<strong>Osmose:</strong> Zucker + Mineralstoffe werden <strong>aktiv herausgepumpt (braucht Energie)</strong> → Konzentrationsunterschied → <strong>Wasser strömt passiv nach (keine Energie)</strong>.',
+    '<strong>Endharn = Urin:</strong> ca. <strong>1,5 Liter/Tag</strong>, rund <strong>95 % Wasser</strong> + Mineralstoffe + Abfallstoffe. Weg: <strong>Harnleiter → Harnblase</strong>.',
+    '<strong>Farbe:</strong> gelb durch Abbauprodukt der roten Blutzellen. <strong>Dunkel</strong> = Fieber/Flüssigkeitsmangel, <strong>hell</strong> = genug getrunken.'])+
+  S(10,'Verdauungsprobleme','#ff7d7d',[
+    '<strong>Laktose-Intoleranz:</strong> Milchzucker kann im <strong>Dünndarm nicht/nur unvollständig abgebaut und aufgenommen</strong> werden → wandert in den <strong>Dickdarm</strong> → <strong>Darmbakterien</strong> bauen ihn ab → <strong>Abbauprodukte</strong> → Bauchkrämpfe, Übelkeit, Erbrechen, Durchfall.',
+    '<strong>Fettreiche Nahrung:</strong> verzögert die Magenentleerung → liegt bis zu 8 Stunden «schwer» im Magen.',
+    '<strong>Fehlende Enzyme:</strong> keine Zerlegung in Grundbausteine → keine Resorption → man isst und hungert trotzdem.',
+    '<strong>Dunkler Urin:</strong> Flüssigkeitsmangel oder Fieber → konzentrierterer Urin.'])+
+  '</div></div>';
+}
+
+/* ================================================================
+   KARTEIKARTEN
+   ================================================================ */
+const CARDS = [
+  ['Nenne die drei Hauptnährstoffe.','Kohlenhydrate, Fette und Proteine. Dazu kommen Vitamine, Mineralstoffe und Ballaststoffe.'],
+  ['Zwei Hauptaufgaben der Nährstoffe im Körper?','① Baustoffe für die Bildung neuer Zellen ② Energielieferanten.'],
+  ['Wofür nutzt der Körper die Energie aus der Nahrung? (4)','Für Muskelbewegung, Aufrechterhaltung der Körpertemperatur, Transport von Stoffen und chemische Reaktionen.'],
+  ['Energiegehalt pro 1 g: Kohlenhydrate / Proteine / Fette?','Kohlenhydrate 17 kJ · Proteine 17 kJ · Fette 39 kJ. Aus Fett gewinnt man mehr als doppelt so viel Energie.'],
+  ['Was bedeutet 1 Joule anschaulich?','Etwa die Energie, die es braucht, um eine Tafel Schokolade (100 g) einen Meter anzuheben.'],
+  ['Grundumsatz?','Der Energiebedarf im Ruhezustand (Herzschlag, Atmung, Verdauung, Zellreaktionen). Abhängig von Alter, Geschlecht, Gewicht.'],
+  ['Leistungsumsatz?','Der zusätzliche Energiebedarf bei Bewegung, Arbeit oder Sport.'],
+  ['Welche drei Organe dienen als Energiespeicher?','Leber, Muskulatur und Fettgewebe. Gespeichert wird in Form von Fetten oder Kohlenhydraten.'],
+  ['Nenne je zwei Einfachzucker, Zweifachzucker, Vielfachzucker.','Einfach: Traubenzucker (Glukose), Fruchtzucker (Fruktose). Zweifach: Kristallzucker (Saccharose), Malzzucker. Vielfach: Stärke, Glykogen, Cellulose.'],
+  ['Woraus bestehen Vielfachzucker?','Aus vielen Einfachzucker-Bausteinen, die zu langen Ketten miteinander verbunden sind.'],
+  ['Warum liefert Brot länger Energie als Gummibärchen?','Brot enthält Stärke (Vielfachzucker). Die langen Ketten müssen erst zerlegt werden, deshalb steigt der Blutzuckerspiegel langsam und bleibt lange erhöht. Einfachzucker geht sofort ins Blut: steiler Peak, schneller Abfall, Heisshunger.'],
+  ['Unterschied Stärke – Glykogen – Cellulose?','Stärke = pflanzlicher Speichervielfachzucker. Glykogen = Speicherform bei Tier und Mensch (Leber, Muskeln). Cellulose = pflanzlicher Baustoff, für uns unverdaulich (Ballaststoff).'],
+  ['Woraus besteht ein Fett chemisch?','Aus Glycerin und drei Fettsäuren. Die Fette unterscheiden sich in der Länge der Fettsäuren.'],
+  ['Was bedeutet «essenziell»?','Der Körper kann den Stoff nicht selbst herstellen – er muss mit der Nahrung aufgenommen werden.'],
+  ['Nenne zwei essenzielle Fettsäuren.','Omega-3-Fettsäuren und Omega-6-Fettsäuren. Sie sind wichtige Baustoffe für unsere Zellen.'],
+  ['Welche Vitamine sind fettlöslich?','A, D, E und K.'],
+  ['Warum sind Fette «Vitamin-Taxis»?','Sie sorgen dafür, dass die fettlöslichen Vitamine A, D, E und K im Körper aufgenommen werden können.'],
+  ['Vier Aufgaben des Fettgewebes?','① Energiespeicher ② Schutz vor Kälte ③ Polstert die Organe ④ Ermöglicht Aufnahme fettlöslicher Vitamine.'],
+  ['Warum ist eine fettfreie Ernährung gefährlich? (2 Gründe)','① Essentielle Fettsäuren (Omega-3/6) fehlen – Baustoffe für Zellen. ② Fettlösliche Vitamine A, D, E, K können nicht aufgenommen werden.'],
+  ['Wie heissen die Grundbausteine der Proteine?','Aminosäuren. Das Protein ähnelt im Bau einer Perlenkette.'],
+  ['Wie viele Aminosäuren gibt es, wie viele sind essenziell?','20 verschiedene Aminosäuren, davon sind 8 essenziell (können nicht im Körper gebildet werden).'],
+  ['Warum haben Antikörper und Keratine unterschiedliche Aufgaben?','Weil sie unterschiedlich zusammengesetzt und unterschiedlich gefaltet sind. Nur in der dreidimensionalen Form kann ein Protein seine Aufgabe übernehmen – die Form bestimmt die Funktion.'],
+  ['Nenne fünf Aufgaben der Proteine.','Gerüst für Haut/Sehnen/Bänder · Muskelbewegung · Sauerstofftransport · Hormone (Botenstoffe) · Antikörper · Blutgerinnung · Enzyme.'],
+  ['Was sind Enzyme?','Besondere Proteine, die die Stoffumwandlungen in unseren Zellen steuern und beschleunigen. Sie sind biologische Katalysatoren.'],
+  ['Was machen Enzyme mit der Aktivierungsenergie?','Sie senken sie. Es braucht weniger Energie, um eine chemische Reaktion in Gang zu setzen – die Körpertemperatur reicht aus.'],
+  ['Was passiert mit Enzymen nach der Reaktion?','Sie werden nicht verbraucht und liegen nach der Reaktion unverändert vor.'],
+  ['Erkläre das Energiemodell (Berg).','Ohne Katalysator muss die Kugel einen grossen Berg hinaufgerollt werden. Mit Katalysator/Enzym ist der Berg kleiner → weniger Aktivierungsenergie nötig.'],
+  ['Schlüssel-Schloss-Prinzip?','Jedes Verdauungsenzym zerlegt nur einen bestimmten Nährstoff – wie ein Schlüssel, der nur ein bestimmtes Schloss öffnet.'],
+  ['Amylase: Wo und was?','Im Speichel (Mund). Zerlegt den Vielfachzucker Stärke zum Zweifachzucker Malzzucker.'],
+  ['Pepsin: Wo und was?','Im Magensaft (Magen). Zerlegt zusammen mit der Salzsäure die Proteine.'],
+  ['Woraus besteht der Magensaft und wozu?','Salzsäure (vernichtet schädliche Bakterien), Schleim (schützt körpereigene Proteine) und Pepsin (zerlegt Proteine).'],
+  ['Was verhindert das Verschlucken?','Der Kehldeckel verschliesst beim Schlucken die Luftröhre.'],
+  ['Wozu brauchen Speiseröhre und Magen Muskeln?','Speiseröhre: transportiert den Nahrungsbrei in den Magen. Magen: durchmischt und knetet den Brei.'],
+  ['Wie lange kann Nahrung im Magen bleiben?','Bis zu acht Stunden. Fettreiche Nahrung verzögert die Entleerung in den Dünndarm.'],
+  ['Wo wird die Gallenflüssigkeit gebildet und gespeichert?','Gebildet in der Leber, gesammelt in der Gallenblase, ausgeschüttet in den Zwölffingerdarm.'],
+  ['Was macht die Gallenflüssigkeit?','Sie zerteilt grosse Fetttropfen in kleinere Tröpfchen, damit Verdauungsenzyme die Fette leichter in Grundbausteine zerlegen können.'],
+  ['Welche vier Grundbausteine liegen nach der Verdauung vor?','Einfachzucker, Aminosäuren, Fettsäuren und Glycerin.'],
+  ['Was bedeutet Resorption?','Die Aufnahme der Nährstoffe ins Blut – sie gelangen durch die Zellen der Dünndarmwand hindurch.'],
+  ['Warum hat der Dünndarm Falten und Zotten?','Zur Oberflächenvergrösserung. Ausgebreitet wäre die Wand so gross wie ein Tennisfeld (ca. 200 m²). So können Nährstoffe schnell und in grossen Mengen aufgenommen werden.'],
+  ['Aufgabe des Dickdarms?','Dem Nahrungsbrei wird weiteres Wasser entzogen; die eingedickten Reste (Ballaststoffe) werden in den Mastdarm transportiert und als Stuhl ausgeschieden.'],
+  ['Was machen die Darmbakterien?','Sie produzieren lebenswichtige Stoffe, die bei der Abwehr von Krankheitserregern helfen. Im Dickdarm bauen sie zudem Unverdauliches ab.'],
+  ['Nenne die drei Aufgaben der Leber.','① Gallenflüssigkeit produzieren ② Stoffe umwandeln und speichern (Traubenzucker als Glykogen) ③ Blut entgiften, Abbau von Medikamenten und Alkohol.'],
+  ['Was passiert bei der Filtration im Nierenkörperchen?','Ein Teil des Blutplasmas wird durch die winzigen Löcher der dünnen Kapillarwände aus den Kapillaren gedrückt. Blutzellen und grössere Proteine passen nicht hindurch.'],
+  ['Woraus besteht Primärharn und wie viel entsteht pro Tag?','Aus Wasser und darin gelösten Stoffen (Abfallstoffe, Traubenzucker, Vitamine, Mineralstoffe). Pro Tag 180 Liter.'],
+  ['Was geschieht im Nierenkanälchen?','Resorption: Wasser, ein Grossteil der Mineralstoffe und ein Grossteil des Traubenzuckers werden zurück ins Blut aufgenommen. Übrig bleibt ca. 1,5 Liter konzentrierter Endharn (Urin).'],
+  ['Erkläre die Osmose bei der Resorption.','Traubenzucker und Mineralstoffe werden aktiv herausgepumpt (braucht Energie). Dadurch ist ausserhalb die Konzentration gelöster Stoffe höher. Zum Ausgleich strömt Wasser passiv aus dem Kanälchen – das ist Osmose, sie braucht keine Energie.'],
+  ['Woraus besteht Urin und welchen Weg nimmt er?','Rund 95 % Wasser, dazu gelöste Mineralstoffe und Abfallstoffe. Weg: Niere → Harnleiter → Harnblase → Ausscheidung.'],
+  ['Was sagt die Urinfarbe aus?','Hell = genug Flüssigkeit. Dunkel = konzentriert, z. B. bei Fieber oder Flüssigkeitsmangel. Die gelbe Farbe stammt vom Abbauprodukt der roten Blutzellen.'],
+  ['Ursache der Laktose-Intoleranz und Folgen?','Milchzucker kann im Dünndarm nicht oder nur unvollständig abgebaut/aufgenommen werden. Er wandert in den Dickdarm, wo Darmbakterien ihn abbauen. Die Abbauprodukte lösen Bauchkrämpfe, Übelkeit, Erbrechen und Durchfall aus.']
+];
+
+function renderCards(){
+  return '<div class="view">'+
+  '<div class="eyebrow">Aktives Erinnern</div><h1>🃏 Karteikarten</h1>'+
+  '<p class="lead">49 Karten – genau die Fragen, die im Test drankommen. Erst selbst überlegen, dann umdrehen. <strong>Leertaste</strong> = drehen, <strong>←/→</strong> = blättern, <strong>1</strong> = gewusst, <strong>2</strong> = nochmal.</p>'+
+  '<div style="display:flex;gap:14px;align-items:center;margin:22px 0;flex-wrap:wrap">'+
+    '<div style="flex:1;min-width:200px;height:8px;background:#1b2540;border-radius:99px;overflow:hidden"><i id="cbar" style="display:block;height:100%;width:0;background:linear-gradient(90deg,#a98bff,#5fb2ff);transition:width .4s"></i></div>'+
+    '<span style="font-size:13px;color:#94a2c2" id="ccount">Karte 1 / '+CARDS.length+'</span>'+
+  '</div>'+
+  '<div class="fc-wrap"><div class="fc" id="fc">'+
+    '<div class="fc-face fc-front"><div class="k">FRAGE</div><div class="q" id="fcQ"></div><div class="fc-hint">Klicken oder Leertaste → Antwort</div></div>'+
+    '<div class="fc-face fc-back"><div class="k">ANTWORT</div><div class="a" id="fcA"></div><div class="fc-hint">Gewusst? Drücke 1 · Noch nicht? Drücke 2</div></div>'+
+  '</div></div>'+
+  '<div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">'+
+    '<button class="btn" id="fcPrev">← Zurück</button>'+
+    '<button class="btn btn-primary" id="fcFlip">↻ Umdrehen</button>'+
+    '<button class="btn" id="fcNext">Weiter →</button>'+
+  '</div>'+
+  '<div style="display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap">'+
+    '<button class="btn btn-sm btn-ghost" id="fcKnown">✓ Gewusst</button>'+
+    '<button class="btn btn-sm btn-ghost" id="fcAgain">↺ Nochmal üben</button>'+
+    '<button class="btn btn-sm btn-ghost" id="fcShuffle">🔀 Mischen</button>'+
+    '<button class="btn btn-sm btn-ghost" id="fcReset">⟲ Alle zurücksetzen</button>'+
+  '</div>'+
+  '<div class="card" style="margin-top:26px"><h2>Bereits gemeistert</h2><p><span class="hl" id="knownTxt">'+state.knownCards.size+'</span> von '+CARDS.length+' Karten sicher gewusst.</p>'+
+  '<div style="height:8px;background:#1b2540;border-radius:99px;overflow:hidden;margin-top:12px"><i id="kbar" style="display:block;height:100%;width:'+(state.knownCards.size/CARDS.length*100)+'%;background:linear-gradient(90deg,#46e39a,#5fb2ff);transition:width .5s"></i></div></div>'+
+  '</div>';
+}
+function cardsInit(){
+  if(!state.cardOrder.length) state.cardOrder = CARDS.map((_,i)=>i);
+  const fc = $('#fc');
+  function show(){
+    const i = state.cardOrder[state.cardIdx];
+    $('#fcQ').textContent = CARDS[i][0];
+    $('#fcA').textContent = CARDS[i][1];
+    fc.classList.remove('flipped'); state.cardFlipped=false;
+    $('#ccount').textContent = 'Karte '+(state.cardIdx+1)+' / '+CARDS.length;
+    $('#cbar').style.width = ((state.cardIdx+1)/CARDS.length*100)+'%';
+  }
+  show();
+  function flip(){ fc.classList.toggle('flipped'); state.cardFlipped=!state.cardFlipped; }
+  function next(){ state.cardIdx=(state.cardIdx+1)%CARDS.length; show(); }
+  function prev(){ state.cardIdx=(state.cardIdx-1+CARDS.length)%CARDS.length; show(); }
+  function markKnown(){
+    const i = state.cardOrder[state.cardIdx];
+    state.knownCards.add(i); save();
+    $('#knownTxt').textContent = state.knownCards.size;
+    $('#kbar').style.width = (state.knownCards.size/CARDS.length*100)+'%';
+    toast('✓ Gemerkt – '+state.knownCards.size+'/'+CARDS.length+' Karten gemeistert');
+    next();
+  }
+  fc.addEventListener('click', flip);
+  $('#fcFlip').addEventListener('click', e=>{e.stopPropagation(); flip();});
+  $('#fcNext').addEventListener('click', next);
+  $('#fcPrev').addEventListener('click', prev);
+  $('#fcKnown').addEventListener('click', markKnown);
+  $('#fcShuffle').addEventListener('click',()=>{
+    state.cardOrder.sort(()=>Math.random()-.5); state.cardIdx=0; show(); toast('🔀 Karten gemischt');
+  });
+  $('#fcAgain').addEventListener('click',()=>{
+    const unknown = CARDS.map((_,i)=>i).filter(i=>!state.knownCards.has(i));
+    if(!unknown.length){ toast('🎉 Alle Karten gemeistert!'); return; }
+    state.cardOrder = unknown.sort(()=>Math.random()-.5); state.cardIdx=0; show();
+    toast('↺ '+unknown.length+' Karten zum Übrigen');
+  });
+  $('#fcReset').addEventListener('click',()=>{
+    state.knownCards.clear(); save(); state.cardOrder = CARDS.map((_,i)=>i); state.cardIdx=0; show();
+    $('#knownTxt').textContent='0'; $('#kbar').style.width='0%'; toast('⟲ Alles zurückgesetzt');
+  });
+  document.onkeydown = (e)=>{
+    if(state.view!=='cards') return;
+    if(e.code==='Space'){ e.preventDefault(); flip(); }
+    if(e.key==='ArrowRight') next();
+    if(e.key==='ArrowLeft') prev();
+    if(e.key==='1') markKnown();
+    if(e.key==='2') next();
+  };
+}
+
+/* ================================================================
+   QUIZ
+   ================================================================ */
+const QUIZ = [
+  {q:'Welche drei Nährstoffe nennt man Hauptnährstoffe?',o:['Vitamine, Mineralstoffe, Ballaststoffe','Kohlenhydrate, Fette, Proteine','Zucker, Salz, Wasser','Enzyme, Hormone, Antikörper'],a:1,e:'Sie machen den grössten Anteil unserer Nahrung aus. Vitamine, Mineralstoffe und Ballaststoffe sind weitere Nährstoffe.'},
+  {q:'Aus 100 g Fett gewinnt der Körper ungefähr … Energie wie aus 100 g Traubenzucker.',o:['halb so viel','gleich viel','doppelt so viel','viermal so viel'],a:2,e:'Fette: 39 kJ/g · Kohlenhydrate und Proteine: je 17 kJ/g. Fette sind die energiereichsten Nährstoffe.'},
+  {q:'Wie heisst die Einheit für den Energiegehalt von Nahrung?',o:['Newton (N)','Kilojoule (kJ)','Grad Celsius (°C)','Liter (l)'],a:1,e:'Heute Joule (J) bzw. Kilojoule (kJ), früher Kilokalorie (kcal).'},
+  {q:'Der Energiebedarf im Ruhezustand heisst …',o:['Leistungsumsatz','Grundumsatz','Aktivierungsenergie','Stoffwechselrate'],a:1,e:'Grundumsatz = Ruhe. Er hängt von Alter, Geschlecht und Gewicht ab. Der Leistungsumsatz kommt bei Bewegung dazu.'},
+  {q:'Welche Organe dienen als Energiespeicher?',o:['Nieren, Blase, Harnleiter','Mund, Speiseröhre, Magen','Leber, Muskulatur, Fettgewebe','Lunge, Herz, Gehirn'],a:2,e:'Überschüssige Energie wird als Fett oder Kohlenhydrat in Leber, Muskulatur und Fettgewebe gespeichert.'},
+  {q:'Zu welcher Gruppe gehört Kristallzucker (Saccharose)?',o:['Einfachzucker','Zweifachzucker','Vielfachzucker','Ballaststoffe'],a:1,e:'Einfachzucker: Glukose, Fruktose. Zweifachzucker: Saccharose, Malzzucker. Vielfachzucker: Stärke, Glykogen, Cellulose.'},
+  {q:'Stärke, Glykogen und Cellulose sind …',o:['Einfachzucker','Proteine','Vielfachzucker','Fettsäuren'],a:2,e:'Sie bestehen aus vielen Einfachzucker-Bausteinen, die zu langen Ketten verbunden sind.'},
+  {q:'Warum versorgt Brot den Körper länger mit Energie als Gummibärchen?',o:['Brot enthält mehr Fett','Die Stärke-Ketten müssen erst zerlegt werden, der Zucker steigt langsam an','Brot enthält keinen Zucker','Gummibärchen enthalten keine Energie'],a:1,e:'Einfachzucker geht sofort ins Blut → steiler Peak, schneller Abfall. Vielfachzucker wird langsam zerlegt → stetige Energieabgabe.'},
+  {q:'Woraus besteht ein Fett chemisch?',o:['Aus Aminosäuren','Aus Glycerin und drei Fettsäuren','Aus Einfachzuckerketten','Aus Wasser und Mineralstoffen'],a:1,e:'Glycerin + 3 Fettsäuren. Die Fette unterscheiden sich in der Länge der Fettsäuren.'},
+  {q:'Was bedeutet «essenziell»?',o:['Der Stoff ist besonders energiereich','Der Körper kann ihn nicht selbst herstellen und muss ihn mit der Nahrung aufnehmen','Der Stoff wird nur im Schlaf gebraucht','Der Stoff ist giftig in grossen Mengen'],a:1,e:'Gilt für Omega-3-/Omega-6-Fettsäuren und für 8 der 20 Aminosäuren.'},
+  {q:'Welche Vitamine sind fettlöslich?',o:['B und C','A, D, E und K','Nur Vitamin C','Alle Vitamine'],a:1,e:'Fette dienen als «Taxi» für A, D, E und K und ermöglichen ihre Aufnahme.'},
+  {q:'Welche Aufgabe hat das Fettgewebe NICHT?',o:['Energiespeicher','Schutz vor Kälte','Polstern der Organe','Sauerstofftransport im Blut'],a:3,e:'Den Sauerstofftransport übernehmen Proteine (Hämoglobin).'},
+  {q:'Wie heissen die Grundbausteine der Proteine?',o:['Fettsäuren','Aminosäuren','Einfachzucker','Glycerin'],a:1,e:'Das Protein ähnelt einer Perlenkette, die Perlen sind die Aminosäuren.'},
+  {q:'Wie viele Aminosäuren gibt es – und wie viele sind essenziell?',o:['20 – davon 8','8 – davon 20','10 – davon 5','25 – davon 3'],a:0,e:'20 verschiedene Aminosäuren, 8 davon essenziell (nicht im Körper bildbar).'},
+  {q:'Warum können Antikörper und Keratine verschiedene Aufgaben haben, obwohl beide Proteine sind?',o:['Sie bestehen aus unterschiedlichen Zuckerarten','Wegen ihrer unterschiedlichen Zusammensetzung und Faltung – die 3D-Form bestimmt die Aufgabe','Weil sie an verschiedenen Orten verdaut werden','Weil eines ein Enzym ist'],a:1,e:'Nur in der gefalteten, dreidimensionalen Form kann ein Protein seine Aufgabe übernehmen.'},
+  {q:'Was machen Enzyme mit der Aktivierungsenergie?',o:['Sie erhöhen sie','Sie senken sie','Sie speichern sie','Sie vernichten sie'],a:1,e:'Deshalb nennt man Enzyme biologische Katalysatoren – der «Energieberg» wird kleiner.'},
+  {q:'Was gilt für Enzyme nach einer Reaktion?',o:['Sie werden verbraucht','Sie werden in Aminosäuren zerlegt','Sie liegen unverändert vor und können erneut wirken','Sie wandern in den Dickdarm'],a:2,e:'Enzyme werden nicht verbraucht.'},
+  {q:'Das Schlüssel-Schloss-Prinzip bedeutet …',o:['jedes Enzym zerlegt nur einen bestimmten Nährstoff','Enzyme brauchen einen Schlüssel zum Aktivieren','jede Zelle hat ein Schloss','Nährstoffe öffnen die Darmwand'],a:0,e:'Wie ein Schlüssel nur ein bestimmtes Schloss öffnet, passt ein Enzym nur zu einem bestimmten Nährstoff.'},
+  {q:'Amylase wird im Speichel abgegeben und zerlegt …',o:['Proteine in Aminosäuren','Fette in Fettsäuren','Stärke in Malzzucker','Zellulose in Glukose'],a:2,e:'Amylase zerlegt den Vielfachzucker Stärke zum Zweifachzucker Malzzucker.'},
+  {q:'Pepsin befindet sich … und zerlegt …',o:['im Speichel – Stärke','im Magensaft – Proteine','in der Galle – Fette','im Dünndarm – Zucker'],a:1,e:'Pepsin ist Teil des Magensafts und zerlegt zusammen mit der Salzsäure Proteine.'},
+  {q:'Welche Aufgabe hat die Salzsäure im Magen?',o:['Sie zerlegt Fette','Sie vernichtet schädliche Bakterien aus der Nahrung','Sie macht den Zucker süss','Sie schützt die Magenschleimhaut'],a:1,e:'Die Salzsäure tötet Bakterien ab. Der Schleim schützt die körpereigenen Proteine des Magens.'},
+  {q:'Wodurch wird verhindert, dass man sich verschluckt?',o:['Durch den Pförtner','Durch den Kehldeckel, der die Luftröhre verschliesst','Durch die Darmzotten','Durch den Schleim'],a:1,e:'Beim Schlucken verschliesst der Kehldeckel die Luftröhre.'},
+  {q:'Was macht die Gallenflüssigkeit im Zwölffingerdarm?',o:['Sie zerlegt Proteine in Aminosäuren','Sie zerteilt grosse Fetttropfen in kleinere Tröpfchen','Sie entzieht Wasser','Sie tötet Bakterien ab'],a:1,e:'Dadurch können Verdauungsenzyme die Fette leichter in Grundbausteine zerlegen.'},
+  {q:'Wo wird die Gallenflüssigkeit gebildet und wo gesammelt?',o:['Gebildet in der Gallenblase, gesammelt in der Leber','Gebildet in der Leber, gesammelt in der Gallenblase','Gebildet in der Bauchspeicheldrüse','Gebildet im Zwölffingerdarm'],a:1,e:'Die Leber bildet sie, die Gallenblase sammelt sie und schüttet sie bei Bedarf aus.'},
+  {q:'Wie nennt man die Aufnahme der Nährstoffe ins Blut?',o:['Filtration','Osmose','Resorption','Sekretion'],a:2,e:'Resorption = Aufnahme. Grundbausteine, Wasser, Mineralstoffe und Vitamine gelangen durch die Dünndarmwand ins Blut.'},
+  {q:'Welche Grundbausteine liegen nach der vollständigen Verdauung vor?',o:['Stärke, Glykogen, Cellulose','Einfachzucker, Aminosäuren, Fettsäuren und Glycerin','Vitamine und Mineralstoffe','Salzsäure und Schleim'],a:1,e:'Nur diese kleinen Bausteine können durch die Darmwand ins Blut gelangen.'},
+  {q:'Warum hat der Dünndarm Falten und Darmzotten?',o:['Damit die Nahrung langsamer weitertransportiert wird','Zur Oberflächenvergrösserung – so können Nährstoffe schnell und in grossen Mengen aufgenommen werden','Zum Schutz vor Bakterien','Damit der Dickdarm weniger arbeiten muss'],a:1,e:'Ausgebreitet wäre die Dünndarmwand so gross wie ein Tennisfeld – etwa 200 m².'},
+  {q:'Wie gross ist die ausgebreitete Oberfläche des Dünndarms ungefähr?',o:['2 m²','20 m²','200 m²','2000 m²'],a:2,e:'Etwa 200 m² – die Grösse eines Tennisfeldes.'},
+  {q:'Welche Aufgabe hat der Dickdarm?',o:['Dem Nahrungsbrei wird Wasser entzogen, die Reste werden eingedickt','Er zerlegt Proteine mit Pepsin','Er produziert Gallenflüssigkeit','Er filtert das Blut'],a:0,e:'Im Dickdarm befinden sich fast nur noch unverdauliche Reste (Ballaststoffe).'},
+  {q:'Was produzieren die Darmbakterien unter anderem?',o:['Verdauungsenzyme für den Magen','Lebenswichtige Stoffe, die bei der Abwehr von Krankheitserregern helfen','Gallenflüssigkeit','Traubenzucker'],a:1,e:'Milliarden Darmbakterien leben im Dünn- und Dickdarm.'},
+  {q:'Nenne die drei Aufgaben der Leber.',o:['Kauen, Schlucken, Ausscheiden','Gallenflüssigkeit produzieren · Stoffe umwandeln und speichern · Blut entgiften','Filtration, Resorption, Osmose','Insulin, Adrenalin, Thyroxin produzieren'],a:1,e:'① Galle für die Fettverdauung ② Kraftwerk/Recycling: Traubenzucker als Glykogen speichern ③ Entgiftung (Medikamente, Alkohol).'},
+  {q:'Wie viel Primärharn entsteht pro Tag in den Nierenkörperchen?',o:['1,5 Liter','18 Liter','180 Liter','1800 Liter'],a:2,e:'180 Liter Primärharn pro Tag – nach der Resorption bleiben ca. 1,5 Liter Urin übrig.'},
+  {q:'Was passiert im Nierenkanälchen?',o:['Filtration des Blutes','Resorption: Wasser, Mineralstoffe und Traubenzucker werden zurück ins Blut aufgenommen','Produktion von Galle','Abbau von Alkohol'],a:1,e:'Diese Stoffe braucht der Körper noch, deshalb werden sie zurückgeholt.'},
+  {q:'Was ist Osmose im Nierenkanälchen?',o:['Aktives Herauspressen von Wasser mit Energieverbrauch','Passives Nachströmen von Wasser zum Ausgleich eines Konzentrationsunterschieds','Die Filtration von Blutzellen','Der Transport von Urin in die Blase'],a:1,e:'Zucker und Mineralstoffe werden aktiv herausgepumpt (Energie!), danach strömt Wasser passiv nach (keine Energie) = Osmose.'},
+  {q:'Woraus besteht Urin zu rund 95 %?',o:['Aus Proteinen','Aus Wasser','Aus Traubenzucker','Aus Fett'],a:1,e:'Der Rest sind gelöste Mineralstoffe und Abfallstoffe.'},
+  {q:'Hans hat dunkleren Urin als sonst. Mögliche Erklärungen?',o:['Er hat zu viel gegessen','Flüssigkeitsmangel oder Fieber – der Urin ist konzentrierter','Er hat zu viel getrunken','Er hat Sport gemacht und viel Zucker aufgenommen'],a:1,e:'Bei Flüssigkeitsmangel und Fieber scheiden wir konzentrierten, dunkleren Urin aus. Heller Urin = genug getrunken.'},
+  {q:'Warum ist der Urin gelb?',o:['Wegen der Gallenflüssigkeit','Wegen eines Abfallstoffs aus dem Abbau der roten Blutzellen','Wegen des Traubenzuckers','Wegen der Vitamine'],a:1,e:'Beim Abbau der roten Blutzellen entsteht ein Abfallstoff, der für die gelbe Farbe verantwortlich ist.'},
+  {q:'Warum bekommt jemand mit Laktose-Intoleranz Bauchkrämpfe?',o:['Weil Milchzucker die Magenwand verätzt','Weil der Milchzucker im Dünndarm nicht abgebaut wird, in den Dickdarm wandert und dort von Bakterien abgebaut wird','Weil die Gallenblase fehlt','Weil Pepsin fehlt'],a:1,e:'Die Abbauprodukte der Darmbakterien lösen Bauchkrämpfe, Übelkeit, Erbrechen und Durchfall aus.'},
+  {q:'Was verzögert die Entleerung des Magens?',o:['Viel Wasser trinken','Fettreiche Nahrung','Ballaststoffe','Kohlensäure'],a:1,e:'Bei fettreicher Nahrung kann der Brei bis zu acht Stunden «schwer» im Magen liegen.'},
+  {q:'«Ohne Verdauungsenzyme könnten wir essen, aber würden trotzdem hungern.» Warum?',o:['Weil die Nahrung dann zu schwer im Magen liegt','Weil die Nährstoffe nicht in Grundbausteine zerlegt werden und deshalb nicht ins Blut gelangen können','Weil Enzyme den Geschmack erzeugen','Weil ohne Enzyme keine Magensäure entsteht'],a:1,e:'Nur die Grundbausteine (Einfachzucker, Aminosäuren, Fettsäuren, Glycerin) sind klein genug für die Resorption durch die Dünndarmwand.'},
+  {q:'In welcher Reihenfolge durchläuft die Nahrung das Verdauungssystem?',o:['Mund → Magen → Speiseröhre → Dickdarm → Dünndarm → After','Mund → Speiseröhre → Magen → Zwölffingerdarm → Dünndarm → Dickdarm → Mastdarm → After','Mund → Speiseröhre → Dünndarm → Magen → Dickdarm → After','Mund → Magen → Dünndarm → Speiseröhre → Dickdarm → After'],a:1,e:'Genau diese Reihenfolge solltest du auswendig können.'},
+  {q:'Wie lange braucht die Niere, um das gesamte Blut zu filtrieren?',o:['5 Sekunden','5 Minuten','5 Stunden','5 Tage'],a:1,e:'Innerhalb von nur fünf Minuten filtrieren und entgiften die Nieren das gesamte Blut.'}
+];
+
+function renderQuiz(){
+  return '<div class="view">'+
+  '<div class="eyebrow">Simulation</div><h1>🎯 Prüfungssimulator</h1>'+
+  '<p class="lead">'+QUIZ.length+' Fragen im Stil deines Tests – zufällig gemischt, mit sofortiger Rückmeldung und Erklärung. Ziel: <strong>80 % oder mehr</strong>.</p>'+
+  '<div id="quizBox" style="margin-top:24px"></div></div>';
+}
+function quizInit(){
+  state.quizOrder = QUIZ.map((_,i)=>i).sort(()=>Math.random()-.5);
+  state.quizIdx=0; state.quizScore=0; state.quizWrong=[]; state.quizStart=Date.now();
+  drawQ();
+}
+function drawQ(){
+  const box = $('#quizBox');
+  if(state.quizIdx >= state.quizOrder.length){ return quizResult(box); }
+  const q = QUIZ[state.quizOrder[state.quizIdx]];
+  state.quizAnswered=false;
+  box.innerHTML =
+    '<div class="qprog"><i style="width:'+(state.quizIdx/state.quizOrder.length*100)+'%"></i></div>'+
+    '<div class="card">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">'+
+        '<span class="pill sky">Frage '+(state.quizIdx+1)+' / '+state.quizOrder.length+'</span>'+
+        '<span class="pill mint">✓ '+state.quizScore+' richtig</span>'+
+      '</div>'+
+      '<h2 style="font-size:21px;line-height:1.4">'+q.q+'</h2>'+
+      '<div class="qopts" id="qopts">'+
+        q.o.map((o,i)=>'<button class="qopt" data-i="'+i+'"><span class="k">'+'ABCD'[i]+'</span><span>'+o+'</span></button>').join('')+
+      '</div>'+
+      '<div class="qfb" id="qfb"></div>'+
+      '<div style="margin-top:18px;text-align:right"><button class="btn btn-primary" id="qNext" style="display:none">Weiter →</button></div>'+
+    '</div>';
+  $$('#qopts .qopt').forEach(b=> b.addEventListener('click',()=> answer(+b.dataset.i, q)));
+  $('#qNext').addEventListener('click',()=>{ state.quizIdx++; drawQ(); });
+}
+function answer(i,q){
+  if(state.quizAnswered) return;
+  state.quizAnswered=true;
+  const btns = $$('#qopts .qopt');
+  btns.forEach(b=>b.disabled=true);
+  const ok = i===q.a;
+  btns[q.a].classList.add('correct');
+  if(!ok){ btns[i].classList.add('wrong'); state.quizWrong.push({q:q.q, given:q.o[i], right:q.o[q.a], ex:q.e}); }
+  else state.quizScore++;
+  const fb = $('#qfb');
+  fb.className = 'qfb show '+(ok?'ok':'no');
+  fb.innerHTML = (ok?'<b>✓ Richtig!</b> ':'<b>✗ Leider falsch.</b> Richtig wäre: <b>'+q.o[q.a]+'</b>. ')+'<br><span style="color:#94a2c2">'+q.e+'</span>';
+  $('#qNext').style.display='inline-flex';
+}
+function quizResult(box){
+  const total = state.quizOrder.length;
+  const pct = Math.round(state.quizScore/total*100);
+  const secs = Math.round((Date.now()-state.quizStart)/1000);
+  let grade, gcol, gmsg;
+  if(pct>=90){grade='Sehr stark';gcol='#46e39a';gmsg='Du bist bereit für den Test. Geh früh schlafen!';}
+  else if(pct>=75){grade='Gut';gcol='#5fb2ff';gmsg='Solide. Schau dir die falschen Fragen unten noch einmal an.';}
+  else if(pct>=60){grade='Genügend';gcol='#f7b955';gmsg='Knapp – wiederhole die Module zu deinen Fehlern.';}
+  else {grade='Noch üben';gcol='#ff7d7d';gmsg='Lies den Crash-Zettel und wiederhole die Module gezielt.';}
+  box.innerHTML =
+  '<div class="card glow" style="text-align:center;padding:38px">'+
+    '<div style="font-size:56px;margin-bottom:8px">'+(pct>=75?'🏆':pct>=60?'👍':'📚')+'</div>'+
+    '<h2 style="font-size:34px;color:'+gcol+'">'+state.quizScore+' / '+total+' richtig · '+pct+' %</h2>'+
+    '<p style="font-size:15px;margin-top:8px"><b style="color:'+gcol+'">'+grade+'</b> — '+gmsg+'</p>'+
+    '<div class="grid3" style="margin-top:22px">'+
+      '<div class="stat"><div class="v" style="color:#46e39a">'+state.quizScore+'</div><div class="l">richtig</div></div>'+
+      '<div class="stat"><div class="v" style="color:#ff7d7d">'+(total-state.quizScore)+'</div><div class="l">falsch</div></div>'+
+      '<div class="stat"><div class="v" style="color:#5fb2ff">'+Math.floor(secs/60)+'m '+(secs%60)+'s</div><div class="l">Zeit</div></div>'+
+    '</div>'+
+    '<div style="display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap">'+
+      '<button class="btn btn-primary" id="qRestart">🔄 Nochmal (neu gemischt)</button>'+
+      '<button class="btn" id="qCards">🃏 Karteikarten üben</button>'+
+      '<button class="btn btn-ghost" id="qCrash">⚡ Crash-Zettel</button>'+
+    '</div>'+
+  '</div>'+
+  (state.quizWrong.length ?
+    '<div class="card"><h2>🔁 Das musst du nachholen</h2><p>'+state.quizWrong.length+' Fragen waren falsch. Lies die Erklärungen – genau daraus bestehen Tests.</p>'+
+    state.quizWrong.map(w=>'<div class="lab" style="margin-bottom:12px"><div class="lab-head"><span class="pill coral">FALSCH</span><span class="lab-title">'+w.q+'</span></div>'+
+      '<p style="font-size:13.4px"><span style="color:#ff9d9d">Deine Antwort:</span> '+w.given+'</p>'+
+      '<p style="font-size:13.4px"><span style="color:#46e39a">Richtig:</span> <b style="color:#fff">'+w.right+'</b></p>'+
+      '<p style="font-size:13px;margin-top:7px;color:#94a2c2">'+w.ex+'</p></div>').join('')+
+    '</div>' : '<div class="card" style="text-align:center"><h2 style="color:#46e39a">🎉 Fehlerfrei!</h2><p>Keine einzige Frage falsch. Viel Erfolg morgen!</p></div>');
+  $('#qRestart').addEventListener('click', quizInit);
+  $('#qCards').addEventListener('click',()=>go('cards'));
+  $('#qCrash').addEventListener('click',()=>go('crash'));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ================================================================
+   GLOSSAR
+   ================================================================ */
+const GLOSS = [
+ ['Stoffwechsel','Aufnahme von Sauerstoff, Nährstoffen und Wasser sowie deren Transport, Umwandlung und Abgabe von Abfallstoffen.'],
+ ['Hauptnährstoffe','Kohlenhydrate, Fette und Proteine – sie machen den grössten Anteil unserer Nahrung aus.'],
+ ['Grundumsatz','Energiebedarf im Ruhezustand. Abhängig von Alter, Geschlecht und Gewicht.'],
+ ['Leistungsumsatz','Zusätzlicher Energiebedarf bei Bewegung, Arbeit oder Sport.'],
+ ['Essenziell','Lebensnotwendig; kann der Körper nicht selbst herstellen, muss mit der Nahrung aufgenommen werden.'],
+ ['Einfachzucker','Traubenzucker (Glukose) und Fruchtzucker (Fruktose).'],
+ ['Zweifachzucker','Kristallzucker (Saccharose) und Malzzucker.'],
+ ['Vielfachzucker','Stärke, Glykogen und Cellulose – lange Ketten aus Einfachzuckern.'],
+ ['Glykogen','Speicherform des Traubenzuckers bei Tier und Mensch (lange Ketten), gespeichert in Leber und Muskulatur.'],
+ ['Blutzuckerspiegel','Zuckergehalt im Blut. Steigt nach dem Verzehr von Kohlenhydraten an.'],
+ ['Glycerin','Grundbaustein der Fette; zusammen mit drei Fettsäuren bildet es ein Fett-Molekül.'],
+ ['Fettsäuren','Grundbausteine der Fette. Omega-3 und Omega-6 sind essenziell.'],
+ ['Fettgewebe','Zusammenschluss von Fettzellen: Energiespeicher, Kälteschutz, Organpolster.'],
+ ['Aminosäuren','Grundbausteine der Proteine («Perlen» der Perlenkette). 20 verschiedene, 8 essenzielle.'],
+ ['Protein / Eiweiss','Kette aus Aminosäuren in gefalteter 3D-Form. Baustoff, Transport, Hormon, Antikörper, Enzym.'],
+ ['Enzym','Protein, das Stoffumwandlungen steuert und beschleunigt. Biologischer Katalysator.'],
+ ['Katalysator','Stoff, der die Aktivierungsenergie einer Reaktion senkt und selbst unverändert bleibt.'],
+ ['Aktivierungsenergie','Energie, die nötig ist, um eine chemische Reaktion in Gang zu setzen. Enzyme senken sie.'],
+ ['Schlüssel-Schloss-Prinzip','Ein Enzym passt nur zu einem bestimmten Nährstoff und zerlegt nur diesen.'],
+ ['Amylase','Verdauungsenzym im Speichel: zerlegt Stärke zu Malzzucker.'],
+ ['Pepsin','Verdauungsenzym im Magensaft: zerlegt zusammen mit Salzsäure Proteine.'],
+ ['Magensaft','Besteht aus Salzsäure, Schleim und Pepsin.'],
+ ['Kehldeckel','Verschliesst beim Schlucken die Luftröhre und verhindert das Verschlucken.'],
+ ['Zwölffingerdarm','Erster Abschnitt des Dünndarms; hier wirkt die Gallenflüssigkeit auf die Fette.'],
+ ['Gallenflüssigkeit','In der Leber gebildet, in der Gallenblase gesammelt. Zerteilt grosse Fetttropfen in kleine Tröpfchen.'],
+ ['Resorption','Aufnahme: im Dünndarm die Nährstoffe ins Blut, im Nierenkanälchen die Rückholung aus dem Primärharn.'],
+ ['Darmzotten','Winzige Ausstülpungen auf den Darmfalten; vergrössern die Oberfläche auf ca. 200 m².'],
+ ['Oberflächenvergrösserung','Durch Falten und Zotten; ermöglicht schnelle Aufnahme grosser Nährstoffmengen.'],
+ ['Ballaststoffe','Unverdauliche Nahrungsbestandteile (z. B. Cellulose), die im Dickdarm landen.'],
+ ['Darmbakterien','Milliarden Bakterien im Dünn- und Dickdarm; produzieren lebenswichtige Stoffe für die Abwehr von Krankheitserregern.'],
+ ['Laktose-Intoleranz','Milchzucker wird im Dünndarm nicht abgebaut, gelangt in den Dickdarm und wird dort von Bakterien zersetzt → Krämpfe, Übelkeit, Durchfall.'],
+ ['Nierenkörperchen','Filtereinheit der Niere: Kapillarknäuel umgeben von einer Kapsel. Über eine Million pro Niere.'],
+ ['Filtration','In den Nierenkörperchen wird ein Teil des Blutplasmas durch die Löcher der Kapillarwände gedrückt.'],
+ ['Primärharn','Wasser mit gelösten Abfallstoffen, Traubenzucker, Vitaminen und Mineralstoffen. 180 Liter pro Tag.'],
+ ['Nierenkanälchen','Hier wird dem Primärharn Wasser, ein Grossteil der Mineralstoffe und des Traubenzuckers wieder entzogen.'],
+ ['Endharn / Urin','Konzentrierter Rest nach der Resorption: ca. 1,5 Liter/Tag, rund 95 % Wasser.'],
+ ['Osmose','Passiver Ausgleich eines Konzentrationsunterschieds: Wasser strömt dorthin, wo mehr gelöste Stoffe sind. Braucht keine Energie.'],
+ ['Harnleiter','Leitet den Urin von den Nieren in die Harnblase.'],
+ ['Verweildauer','Zeit, die der Nahrungsbrei im Magen liegt – bis zu 8 Stunden; fettreiche Nahrung verzögert sie.']
+];
+function renderGlossar(){
+  return '<div class="view">'+
+  '<div class="eyebrow">Nachschlagewerk</div><h1>📖 Fachbegriffe</h1>'+
+  '<p class="lead">'+GLOSS.length+' Begriffe aus dem Dossier. Im Test musst du sie erklären können – suche und lies sie laut vor.</p>'+
+  '<input class="searchbar" id="gs" placeholder="🔍 Begriff suchen … (z. B. Osmose, Resorption, Zotten)" style="margin-top:20px">'+
+  '<div class="gloss" id="gl"></div></div>';
+}
+function glossarInit(){
+  function draw(f){
+    const list = GLOSS.filter(g=> !f || (g[0]+' '+g[1]).toLowerCase().includes(f));
+    $('#gl').innerHTML = list.length
+      ? list.map(g=>'<div class="gterm"><b>'+g[0]+'</b><span>'+g[1]+'</span></div>').join('')
+      : '<p style="color:#6c7a99">Kein Treffer für «'+f+'».</p>';
+  }
+  draw('');
+  $('#gs').addEventListener('input', e=> draw(e.target.value.toLowerCase().trim()));
+}
+
+/* ================================================================
+   ROUTER
+   ================================================================ */
+const VIEWS = {
+  start:{render:renderStart, init:()=>{ $$('[data-go]').forEach(b=> b.addEventListener('click',()=>go(b.dataset.go))); }},
+  m1:{render:m1, init:m1init}, m2:{render:m2, init:m2init}, m3:{render:m3, init:m3init},
+  m4:{render:m4, init:m4init}, m5:{render:m5, init:m5init}, m6:{render:m6, init:m6init},
+  m7:{render:m7, init:m7init}, m8:{render:m8, init:m8init}, m9:{render:m9, init:m9init},
+  m10:{render:m10, init:m10init},
+  crash:{render:renderCrash, init:()=>{
+    $('#printBtn').addEventListener('click',()=>window.print());
+    $$('[data-go]').forEach(b=> b.addEventListener('click',()=>go(b.dataset.go)));
+  }},
+  cards:{render:renderCards, init:cardsInit},
+  quiz:{render:renderQuiz, init:quizInit},
+  glossar:{render:renderGlossar, init:glossarInit}
+};
+
+/* ---------------- BOOT ---------------- */
+load();
+buildNav();
+updateProgress();
+go('start');
+$('#menuBtn').addEventListener('click',()=>{ $('#sidebar').classList.toggle('open'); $('#scrim').classList.toggle('show'); });
+$('#scrim').addEventListener('click',()=>{ $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show'); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape'){ $('#sidebar').classList.remove('open'); $('#scrim').classList.remove('show'); }
+});
+</script>
+</body>
+</html>
+
+
++++ index.html (修改后)
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriLab · Crashkurs Ernährung & Verdauung</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/space-grotesk/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter/index.css">
+<style>
+:root{
+  --bg:#0a0f1c;
+  --bg2:#0e1528;
+  --card:#151e35;
+  --card2:#1a2545;
+  --line:#263252;
+  --line2:#36456f;
+  --text:#f0f5ff;
+  --muted:#9fb0d0;
+  --dim:#7280a0;
+  --amber:#f7b955;
+  --mint:#46e39a;
+  --coral:#ff7d7d;
+  --sky:#5fb2ff;
+  --violet:#a98bff;
+  --pink:#ff8fd0;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:radial-gradient(900px 500px at 85% -5%, rgba(95,178,255,.1), transparent 60%),
+    radial-gradient(700px 400px at -5% 100%, rgba(169,139,255,.08), transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:'Inter Variable',Inter,system-ui,-apple-system,sans-serif;
+  font-size:15.5px;
+  line-height:1.7;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.display{font-family:'Space Grotesk Variable','Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em;line-height:1.2;font-weight:600}
+button{font-family:inherit}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#243050;border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:#324068}
+
+/* ============ LAYOUT ============ */
+.app{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+.sidebar{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,rgba(11,16,30,.97),rgba(8,11,20,.98));
+  border-right:1px solid var(--line);
+  padding:18px 12px 30px;
+  backdrop-filter:blur(8px);
+  z-index:50;
+}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 6px 16px}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;flex:0 0 36px;
+  background:conic-gradient(from 210deg,var(--mint),var(--sky),var(--violet),var(--amber),var(--mint));
+  display:grid;place-items:center;font-size:18px;
+  box-shadow:0 4px 16px rgba(70,227,154,.25);
+}
+.brand-mark span{filter:saturate(0) brightness(0)}
+.brand-txt strong{display:block;font-family:'Space Grotesk Variable',sans-serif;font-size:15.5px;letter-spacing:-.02em}
+.brand-txt small{color:var(--dim);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
+
+.progbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 6px 14px;display:flex;gap:11px;align-items:center}
+.ring{width:48px;height:48px;flex:0 0 48px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:5}
+.ring .bg{stroke:#1f2d48}
+.ring .fg{stroke:var(--mint);stroke-linecap:round;transition:stroke-dashoffset .7s cubic-bezier(.4,0,.2,1)}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:12px;font-family:'Space Grotesk Variable',sans-serif}
+.progbox p{font-size:11.5px;color:var(--muted);line-height:1.35}
+.progbox p strong{color:var(--text);display:block;font-size:12px;margin-bottom:2px}
+
+.navgroup{margin-bottom:14px;padding:0 6px}
+.navgroup>span{display:block;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin:0 0 7px 6px;font-weight:600}
+.navbtn{
+  width:100%;display:flex;align-items:center;gap:9px;
+  background:transparent;border:1px solid transparent;color:var(--muted);
+  padding:8px 9px;border-radius:10px;cursor:pointer;text-align:left;
+  font-size:13px;transition:.16s;line-height:1.3;
+}
+.navbtn:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.navbtn.active{background:linear-gradient(90deg,rgba(95,178,255,.14),rgba(95,178,255,.03));border-color:rgba(95,178,255,.3);color:#fff}
+.navbtn .num{
+  width:22px;height:22px;flex:0 0 22px;border-radius:6px;background:#1b2640;
+  display:grid;place-items:center;font-size:10.5px;font-weight:700;
+  font-family:'Space Grotesk Variable',sans-serif;color:var(--dim);transition:.16s;
+}
+.navbtn.active .num{background:var(--sky);color:#050f1a}
+.navbtn.done .num{background:var(--mint);color:#042218}
+.navbtn.done .num::after{content:'✓'}
+.navbtn.done .num i{display:none}
+.navbtn .lbl{flex:1}
+.main{padding:28px 36px 80px;max-width:1080px;width:100%}
+
+/* ============ COMPONENTS ============ */
+.view{animation:fadeUp .45s cubic-bezier(.2,.8,.3,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;margin-bottom:12px}
+.eyebrow::before{content:'';width:22px;height:2px;background:var(--mint);border-radius:2px}
+h1{font-size:clamp(30px,4.4vw,46px);margin-bottom:12px}
+.lead{color:var(--muted);font-size:17px;max-width:70ch}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.card.glow::before{content:'';position:absolute;inset:-1px;border-radius:var(--r);padding:1px;background:linear-gradient(135deg,rgba(70,227,154,.4),transparent 40%,transparent 60%,rgba(95,178,255,.3));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.card h2{font-size:20px;margin-bottom:5px}
+.card h3{font-size:15px;margin-bottom:7px;color:#fff}
+.card p{color:var(--muted);font-size:14.2px;line-height:1.65}
+.card p strong,.card li strong{color:#fff;font-weight:600}
+.hl{color:var(--mint);font-weight:600}
+.hl-a{color:var(--amber);font-weight:600}
+.hl-s{color:var(--sky);font-weight:600}
+.hl-c{color:var(--coral);font-weight:600}
+.hl-v{color:var(--violet);font-weight:600}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+@media(max-width:900px){.grid2,.grid3,.grid4{grid-template-columns:1fr}}
+
+.btn{
+  background:linear-gradient(180deg,#243356,#1a2540);border:1px solid var(--line2);color:#fff;
+  padding:10px 16px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;
+  transition:.16s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{transform:translateY(-1px);border-color:var(--sky);box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:linear-gradient(180deg,#4ee0a0,#28b878);border-color:#39d18c;color:#04231a}
+.btn-primary:hover{box-shadow:0 8px 22px rgba(70,227,154,.28);border-color:#6cf0b6}
+.btn-amber{background:linear-gradient(180deg,#ffcd75,#f0a63a);border-color:#f7b955;color:#2a1a03}
+.btn-ghost{background:transparent;border-color:var(--line)}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-sm{padding:6px 11px;font-size:12px;border-radius:8px}
+
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3.5px 9px;border-radius:99px;font-size:10.8px;font-weight:700;letter-spacing:.04em;border:1px solid}
+.pill.mint{color:var(--mint);border-color:rgba(70,227,154,.32);background:rgba(70,227,154,.08)}
+.pill.amber{color:var(--amber);border-color:rgba(247,185,85,.32);background:rgba(247,185,85,.08)}
+.pill.sky{color:var(--sky);border-color:rgba(95,178,255,.32);background:rgba(95,178,255,.08)}
+.pill.coral{color:var(--coral);border-color:rgba(255,125,125,.32);background:rgba(255,125,125,.08)}
+.pill.violet{color:var(--violet);border-color:rgba(169,139,255,.32);background:rgba(169,139,255,.08)}
+
+ul.tick{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:9px}
+ul.tick li{position:relative;padding-left:24px;font-size:14px;color:var(--muted)}
+ul.tick li::before{content:'';position:absolute;left:0;top:7px;width:13px;height:13px;border-radius:4px;background:rgba(70,227,154,.14);border:1.4px solid rgba(70,227,154,.45)}
+ul.tick li::after{content:'';position:absolute;left:3.5px;top:11px;width:4.5px;height:4.5px;border-radius:2px;background:var(--mint)}
+ul.dot{list-style:none;display:flex;flex-direction:column;gap:7px}
+ul.dot li{position:relative;padding-left:17px;font-size:14px;color:var(--muted)}
+ul.dot li::before{content:'';position:absolute;left:1.5px;top:8.5px;width:5.5px;height:5.5px;border-radius:50%;background:var(--sky)}
+
+.note{border-left:2.5px solid var(--amber);background:rgba(247,185,85,.06);padding:11px 14px;border-radius:0 9px 9px 0;font-size:13.4px;color:#e6d9bd;margin-top:12px}
+.note b{color:var(--amber)}
+.examtip{border-left:2.5px solid var(--coral);background:rgba(255,125,125,.06);padding:11px 14px;border-radius:0 9px 9px 0;font-size:13.4px;color:#f0d4d4;margin-top:12px}
+.examtip b{color:var(--coral)}
+
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:700}
+tbody tr:hover{background:rgba(255,255,255,.025)}
+td{color:var(--muted)}
+td:first-child{color:#fff;font-weight:600}
+
+.lab{background:linear-gradient(160deg,rgba(20,29,52,.9),rgba(12,18,34,.9));border:1px solid var(--line2);border-radius:12px;padding:17px;margin:14px 0}
+.lab-head{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.lab-head .lab-title{font-family:'Space Grotesk Variable',sans-serif;font-size:13px;font-weight:700;letter-spacing:.01em}
+.lab-head .lab-sub{font-size:11.5px;color:var(--dim);margin-left:auto}
+
+/* Hero */
+.hero{position:relative;padding:38px 34px 34px;border-radius:20px;overflow:hidden;margin-bottom:18px;
+  background:linear-gradient(135deg,#101a30 0%,#0d1425 50%,#131a33 100%);border:1px solid var(--line2)}
+.hero::after{content:'';position:absolute;right:-70px;top:-70px;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,rgba(70,227,154,.18),transparent 65%);pointer-events:none}
+.hero::before{content:'';position:absolute;left:-60px;bottom:-90px;width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(95,178,255,.14),transparent 65%);pointer-events:none}
+.hero>*{position:relative;z-index:2}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin-top:20px}
+@media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}
+.step{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:11px;padding:13px;transition:.18s;cursor:pointer}
+.step:hover{background:rgba(255,255,255,.055);transform:translateY(-2px);border-color:var(--line2)}
+.step b{display:flex;align-items:center;gap:6px;font-family:'Space Grotesk Variable',sans-serif;font-size:12.5px;margin-bottom:4px}
+.step .ic{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:13px}
+.step p{font-size:11.8px;color:var(--dim);line-height:1.4}
+
+.modgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.modtile{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px;cursor:pointer;transition:.18s;text-align:left;color:inherit;position:relative;overflow:hidden}
+.modtile:hover{transform:translateY(-3px);border-color:var(--line2);box-shadow:0 12px 28px rgba(0,0,0,.38)}
+.modtile .mt-n{font-family:'Space Grotesk Variable',sans-serif;font-size:10.5px;color:var(--dim);letter-spacing:.14em}
+.modtile .mt-i{font-size:24px;margin:5px 0 7px;display:block}
+.modtile .mt-t{font-weight:700;font-size:14.5px;display:block;margin-bottom:2px}
+.modtile .mt-s{font-size:11.8px;color:var(--muted);line-height:1.35;display:block}
+.modtile.isdone{border-color:rgba(70,227,154,.35)}
+.modtile.isdone::after{content:'✓ erledigt';position:absolute;top:11px;right:11px;font-size:9.5px;font-weight:700;color:var(--mint);letter-spacing:.06em}
+
+/* Module header */
+.modhead{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap}
+.modhead .big{
+  width:64px;height:64px;flex:0 0 64px;border-radius:18px;display:grid;place-items:center;font-size:30px;
+  background:linear-gradient(150deg,rgba(95,178,255,.18),rgba(169,139,255,.1));border:1px solid var(--line2);
+}
+.modhead h1{font-size:clamp(24px,3.2vw,34px);margin-bottom:7px}
+.lzbox{background:rgba(70,227,154,.06);border:1px dashed rgba(70,227,154,.3);border-radius:10px;padding:10px 13px;font-size:13px;color:#c7ecd8;margin-top:7px}
+.lzbox b{color:var(--mint);display:block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:2px}
+.modnav{display:flex;gap:9px;justify-content:space-between;margin-top:22px;flex-wrap:wrap}
 
 /* Flashcards */
 .fc-wrap{perspective:1800px;margin:0 auto;max-width:620px}
